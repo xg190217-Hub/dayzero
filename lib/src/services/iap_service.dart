@@ -16,7 +16,10 @@ const kProductIds = {
 
 /// Thin StoreKit 2 wrapper with an injectable "is Web" flag so the Edge demo
 /// runs without IAP (demo mode unlocks premium there).
-class IapService {
+///
+/// Extends ChangeNotifier so the paywall refreshes as soon as StoreKit
+/// delivers real prices (showing wrong prices is a 3.1.1 rejection risk).
+class IapService extends ChangeNotifier {
   IapService({this.enabled = !kIsWeb});
 
   /// False on the web demo: purchase calls become no-ops.
@@ -44,6 +47,7 @@ class IapService {
         products[p.id] = p;
       }
       _initialized = true;
+      notifyListeners(); // the paywall swaps placeholders for real prices
     } catch (e) {
       debugPrint('IapService.init failed: $e');
     }
@@ -117,7 +121,9 @@ class IapService {
   /// Localized display price for a product, or null when not loaded.
   String? priceFor(String productId) => products[productId]?.price;
 
+  @override
   void dispose() {
     _sub?.cancel();
+    super.dispose();
   }
 }

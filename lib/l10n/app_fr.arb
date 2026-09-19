@@ -64,6 +64,8 @@
   "sosDone": "Vous avez tenu bon. L'envie est passée.",
   "sosAgain": "Recommencer",
   "audioUnavailable": "Audio indisponible sur cet appareil",
+  "chooseAtLeastOne": "Veuillez choisir au moins une habitude",
+  "dailyAmountLabel": "Combien par jour ?",
   "statsTitle": "Vos progrès",
   "statsMood": "Humeur",
   "statsCraving": "Intensité de l'envie",

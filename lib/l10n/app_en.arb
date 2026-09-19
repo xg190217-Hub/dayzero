@@ -65,6 +65,8 @@
   "sosDone": "You made it through. The craving has passed.",
   "sosAgain": "Do it again",
   "audioUnavailable": "Audio is not available on this device",
+  "chooseAtLeastOne": "Please choose at least one habit",
+  "dailyAmountLabel": "How many per day?",
   "statsTitle": "Your progress",
   "statsMood": "Mood",
   "statsCraving": "Craving intensity",

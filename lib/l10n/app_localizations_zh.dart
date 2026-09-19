@@ -202,6 +202,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get audioUnavailable => '此设备上音频不可用';
 
   @override
+  String get chooseAtLeastOne => '请至少选择一个习惯';
+
+  @override
+  String get dailyAmountLabel => '每天多少？（数量）';
+
+  @override
   String get statsTitle => '我的进展';
 
   @override

@@ -210,6 +210,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get audioUnavailable => 'Audio indisponible sur cet appareil';
 
   @override
+  String get chooseAtLeastOne => 'Veuillez choisir au moins une habitude';
+
+  @override
+  String get dailyAmountLabel => 'Combien par jour ?';
+
+  @override
   String get statsTitle => 'Vos progrès';
 
   @override

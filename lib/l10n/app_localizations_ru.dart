@@ -209,6 +209,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get audioUnavailable => 'Аудио недоступно на этом устройстве';
 
   @override
+  String get chooseAtLeastOne => 'Выберите хотя бы одну привычку';
+
+  @override
+  String get dailyAmountLabel => 'Сколько в день?';
+
+  @override
   String get statsTitle => 'Ваш прогресс';
 
   @override

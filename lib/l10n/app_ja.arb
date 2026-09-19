@@ -64,6 +64,8 @@
   "sosDone": "乗り越えました。欲求は去っていきました。",
   "sosAgain": "もう一度",
   "audioUnavailable": "この端末では音声を利用できません",
+  "chooseAtLeastOne": "習慣を1つ以上選んでください",
+  "dailyAmountLabel": "1日にどれくらい？（本数など）",
   "statsTitle": "あなたの進歩",
   "statsMood": "気分",
   "statsCraving": "欲求の強さ",

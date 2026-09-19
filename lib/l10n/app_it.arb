@@ -64,6 +64,8 @@
   "sosDone": "Ce l'hai fatta. Il desiderio è passato.",
   "sosAgain": "Ancora",
   "audioUnavailable": "Audio non disponibile su questo dispositivo",
+  "chooseAtLeastOne": "Scegli almeno un'abitudine",
+  "dailyAmountLabel": "Quanti al giorno?",
   "statsTitle": "I tuoi progressi",
   "statsMood": "Umore",
   "statsCraving": "Intensità del desiderio",

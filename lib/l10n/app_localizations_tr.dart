@@ -209,6 +209,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get audioUnavailable => 'Bu cihazda ses kullanılamıyor';
 
   @override
+  String get chooseAtLeastOne => 'Lütfen en az bir alışkanlık seçin';
+
+  @override
+  String get dailyAmountLabel => 'Günde kaç tane?';
+
+  @override
   String get statsTitle => 'İlerlemeniz';
 
   @override

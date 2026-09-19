@@ -64,6 +64,8 @@
   "sosDone": "Geschafft. Das Verlangen ist vorbei.",
   "sosAgain": "Noch einmal",
   "audioUnavailable": "Audio ist auf diesem Gerät nicht verfügbar",
+  "chooseAtLeastOne": "Bitte wähle mindestens eine Gewohnheit",
+  "dailyAmountLabel": "Wie viele pro Tag?",
   "statsTitle": "Dein Fortschritt",
   "statsMood": "Stimmung",
   "statsCraving": "Verlangen-Stärke",

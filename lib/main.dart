@@ -68,7 +68,7 @@ Future<void> _boot() async {
       providers: [
         ChangeNotifierProvider.value(value: state),
         Provider<AudioService>.value(value: audio),
-        Provider<IapService>.value(value: iap),
+        ChangeNotifierProvider<IapService>.value(value: iap),
         Provider<NotificationService>.value(value: notifications),
       ],
       child: const DayZeroApp(),

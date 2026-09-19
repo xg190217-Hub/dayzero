@@ -7,20 +7,43 @@ import '../logic/progress.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/habit_icon.dart';
+import '../widgets/habit_selector.dart';
 import 'paywall_screen.dart';
 
-class StatsScreen extends StatelessWidget {
+class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
+
+  @override
+  State<StatsScreen> createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends State<StatsScreen> {
+  int _habitIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final state = context.watch<AppState>();
+    if (state.habits.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n.statsTitle)),
+        body: Center(child: Text(l10n.statsNoData)),
+      );
+    }
+    final habit = state.habits[_habitIndex.clamp(0, state.habits.length - 1)];
     return Scaffold(
       appBar: AppBar(title: Text(l10n.statsTitle)),
-      body: state.habits.isEmpty
-          ? Center(child: Text(l10n.statsNoData))
-          : _StatsBody(habit: state.habits.first),
+      body: Column(
+        children: [
+          if (state.habits.length > 1)
+            HabitSelector(
+              habits: state.habits,
+              index: _habitIndex,
+              onChanged: (i) => setState(() => _habitIndex = i),
+            ),
+          Expanded(child: _StatsBody(habit: habit)),
+        ],
+      ),
     );
   }
 }

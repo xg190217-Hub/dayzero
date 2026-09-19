@@ -205,6 +205,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get audioUnavailable => 'この端末では音声を利用できません';
 
   @override
+  String get chooseAtLeastOne => '習慣を1つ以上選んでください';
+
+  @override
+  String get dailyAmountLabel => '1日にどれくらい？（本数など）';
+
+  @override
   String get statsTitle => 'あなたの進歩';
 
   @override

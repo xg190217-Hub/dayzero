@@ -502,6 +502,18 @@ abstract class AppLocalizations {
   /// **'Audio is not available on this device'**
   String get audioUnavailable;
 
+  /// No description provided for @chooseAtLeastOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose at least one habit'**
+  String get chooseAtLeastOne;
+
+  /// No description provided for @dailyAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'How many per day?'**
+  String get dailyAmountLabel;
+
   /// No description provided for @statsTitle.
   ///
   /// In en, this message translates to:

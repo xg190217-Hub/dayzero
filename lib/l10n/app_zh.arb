@@ -64,6 +64,8 @@
   "sosDone": "你扛过来了，渴求已经过去。",
   "sosAgain": "再来一次",
   "audioUnavailable": "此设备上音频不可用",
+  "chooseAtLeastOne": "请至少选择一个习惯",
+  "dailyAmountLabel": "每天多少？（数量）",
   "statsTitle": "我的进展",
   "statsMood": "情绪",
   "statsCraving": "渴求强度",

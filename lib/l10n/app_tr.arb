@@ -64,6 +64,8 @@
   "sosDone": "Başardınız. İstek geçti.",
   "sosAgain": "Bir daha",
   "audioUnavailable": "Bu cihazda ses kullanılamıyor",
+  "chooseAtLeastOne": "Lütfen en az bir alışkanlık seçin",
+  "dailyAmountLabel": "Günde kaç tane?",
   "statsTitle": "İlerlemeniz",
   "statsMood": "Ruh hali",
   "statsCraving": "İstek şiddeti",

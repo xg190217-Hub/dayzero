@@ -64,6 +64,8 @@
   "sosDone": "لقد نجحت. الرغبة زالت.",
   "sosAgain": "مرة أخرى",
   "audioUnavailable": "الصوت غير متاح على هذا الجهاز",
+  "chooseAtLeastOne": "يرجى اختيار عادة واحدة على الأقل",
+  "dailyAmountLabel": "كم في اليوم؟",
   "statsTitle": "تقدمك",
   "statsMood": "المزاج",
   "statsCraving": "شدة الرغبة",

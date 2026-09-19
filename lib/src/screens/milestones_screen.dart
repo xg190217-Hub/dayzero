@@ -8,19 +8,42 @@ import '../logic/progress.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/habit_icon.dart';
+import '../widgets/habit_selector.dart';
 
-class MilestonesScreen extends StatelessWidget {
+class MilestonesScreen extends StatefulWidget {
   const MilestonesScreen({super.key});
+
+  @override
+  State<MilestonesScreen> createState() => _MilestonesScreenState();
+}
+
+class _MilestonesScreenState extends State<MilestonesScreen> {
+  int _habitIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final state = context.watch<AppState>();
+    if (state.habits.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n.milestonesTitle)),
+        body: Center(child: Text(l10n.statsNoData)),
+      );
+    }
+    final habit = state.habits[_habitIndex.clamp(0, state.habits.length - 1)];
     return Scaffold(
       appBar: AppBar(title: Text(l10n.milestonesTitle)),
-      body: state.habits.isEmpty
-          ? Center(child: Text(l10n.statsNoData))
-          : _MilestonesBody(habit: state.habits.first),
+      body: Column(
+        children: [
+          if (state.habits.length > 1)
+            HabitSelector(
+              habits: state.habits,
+              index: _habitIndex,
+              onChanged: (i) => setState(() => _habitIndex = i),
+            ),
+          Expanded(child: _MilestonesBody(habit: habit)),
+        ],
+      ),
     );
   }
 }
@@ -92,11 +115,12 @@ class _MilestonesBody extends StatelessWidget {
           (m.at - days).round() <= 0 ? null : '${(m.at - days).round()}${l10n.dayUnit}';
       entries.add((m.key, m.icon, done, done ? null : remaining));
     }
+    final currency = context.read<AppState>().currencySymbol;
     for (final m in kMoneyMilestones) {
       final done = achieved.contains(m.key);
       final remaining = money >= m.at
           ? null
-          : '${(m.at - money).round()}';
+          : '$currency${(m.at - money).round()}';
       entries.add((m.key, m.icon, done, done ? null : remaining));
     }
     kStreakMilestones.forEach((key, threshold) {

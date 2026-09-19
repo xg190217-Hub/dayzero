@@ -6,6 +6,7 @@ import '../models/habit.dart';
 import '../services/audio_service.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
+import '../widgets/habit_icon.dart';
 
 
 /// Daily check-in: mood, craving level, trigger and an optional note.
@@ -84,6 +85,23 @@ class _CheckInScreenState extends State<CheckInScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
+          // Which habit this check-in belongs to (matters with 2+ habits).
+          Row(
+            children: [
+              HabitIcon(type: widget.habit.type, size: 30),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  _habitLabel(l10n, widget.habit),
+                  style: const TextStyle(
+                      fontFamily: 'DayZeroNunito',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
           Card(
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -219,6 +237,25 @@ class _CheckInScreenState extends State<CheckInScreen> {
         ],
       ),
     );
+  }
+
+  String _habitLabel(AppLocalizations l10n, Habit h) {
+    switch (h.type) {
+      case HabitType.alcohol:
+        return l10n.habit_alcohol;
+      case HabitType.smoking:
+        return l10n.habit_smoking;
+      case HabitType.vaping:
+        return l10n.habit_vaping;
+      case HabitType.sugar:
+        return l10n.habit_sugar;
+      case HabitType.caffeine:
+        return l10n.habit_caffeine;
+      case HabitType.social:
+        return l10n.habit_social;
+      case HabitType.custom:
+        return h.name;
+    }
   }
 
   String _triggerLabel(AppLocalizations l10n, String key) {

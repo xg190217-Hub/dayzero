@@ -209,6 +209,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get audioUnavailable => 'Audio is not available on this device';
 
   @override
+  String get chooseAtLeastOne => 'Please choose at least one habit';
+
+  @override
+  String get dailyAmountLabel => 'How many per day?';
+
+  @override
   String get statsTitle => 'Your progress';
 
   @override

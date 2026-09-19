@@ -64,6 +64,8 @@
   "sosDone": "Вы справились. Тяга прошла.",
   "sosAgain": "Ещё раз",
   "audioUnavailable": "Аудио недоступно на этом устройстве",
+  "chooseAtLeastOne": "Выберите хотя бы одну привычку",
+  "dailyAmountLabel": "Сколько в день?",
   "statsTitle": "Ваш прогресс",
   "statsMood": "Настроение",
   "statsCraving": "Сила тяги",

@@ -208,6 +208,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get audioUnavailable => 'الصوت غير متاح على هذا الجهاز';
 
   @override
+  String get chooseAtLeastOne => 'يرجى اختيار عادة واحدة على الأقل';
+
+  @override
+  String get dailyAmountLabel => 'كم في اليوم؟';
+
+  @override
   String get statsTitle => 'تقدمك';
 
   @override

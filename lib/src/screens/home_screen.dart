@@ -13,6 +13,7 @@ import '../theme.dart';
 import '../widgets/habit_icon.dart';
 import 'checkin_screen.dart';
 import 'onboarding_screen.dart';
+import 'paywall_screen.dart';
 import 'sos_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -44,9 +45,16 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(l10n.appTitle),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: state.canAddHabit ? const Icon(Icons.add) : const Icon(Icons.lock_outline),
             tooltip: l10n.homeAddHabit,
-            onPressed: state.canAddHabit ? () => _addHabit(context, state) : null,
+            onPressed: () {
+              if (state.canAddHabit) {
+                _addHabit(context, state);
+              } else {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const PaywallScreen()));
+              }
+            },
           ),
         ],
       ),
@@ -120,8 +128,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _dayCounterCard(AppLocalizations l10n, Habit habit) {
     final state = context.watch<AppState>();
     final days = daysFree(habit, state.now);
-    final label =
-        days == 1 ? l10n.homeDaysSinceOne : '$days ${l10n.homeDaysSince}';
+    // Day zero shows hours+minutes: "0 days" reads as failure on launch day.
+    final label = days == 0
+        ? _hoursLabel(l10n, state.now.difference(habit.quitDate))
+        : days == 1
+            ? l10n.homeDaysSinceOne
+            : '$days ${l10n.homeDaysSince}';
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -160,9 +172,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  String _hoursLabel(AppLocalizations l10n, Duration d) {
+    final h = d.inHours;
+    final m = d.inMinutes % 60;
+    return '$h${l10n.hourUnit} $m${l10n.minuteUnit} ${l10n.homeTimeFree}';
+  }
+
   String _money(double value) {
+    final state = context.read<AppState>();
     final v = value.round();
-    return '$v';
+    return '${state.currencySymbol}$v';
   }
 
   Widget _actionRow(AppLocalizations l10n, AppState state, Habit habit) {
@@ -223,8 +242,9 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             child: Column(
               children: steps.map((step) {
-                final reached =
-                    days >= step.duration.inMinutes / (24 * 60);
+                // Duration-based: sub-day facts (20 min, 8 h) unlock on the
+                // first day instead of waiting for a full 24 h to pass.
+                final reached = state.now.difference(habit.quitDate) >= step.duration;
                 return _timelineRow(l10n, state, step, reached, days);
               }).toList(),
             ),

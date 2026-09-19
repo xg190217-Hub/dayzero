@@ -39,7 +39,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.initState();
     if (widget.addMode) {
       _selected = {};
-      _page = 1; // Skip the welcome step when adding from the home screen.
+      // The add-mode flow has no welcome/reasons pages; "choose" is page 0.
+      _page = 0;
     }
   }
 
@@ -86,6 +87,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
+    // Add mode: choose → date → spend (no welcome, no global reasons page).
+    final pages = widget.addMode
+        ? [
+            _choosePage(l10n),
+            _datePage(l10n),
+            _spendPage(l10n),
+          ]
+        : [
+            _welcomePage(l10n),
+            _choosePage(l10n),
+            _datePage(l10n),
+            _spendPage(l10n),
+            _reasonsPage(l10n),
+          ];
+    final lastPage = pages.length - 1;
+    final chooseIndex = widget.addMode ? 0 : 1;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -95,7 +112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               padding: const EdgeInsets.only(top: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(5, (i) {
+                children: List.generate(pages.length, (i) {
                   final active = i == _page;
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
@@ -114,13 +131,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: PageView(
                 controller: _controller,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  _welcomePage(l10n),
-                  _choosePage(l10n),
-                  _datePage(l10n),
-                  _spendPage(l10n),
-                  _reasonsPage(l10n),
-                ],
+                children: pages,
               ),
             ),
             Padding(
@@ -144,8 +155,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     style: FilledButton.styleFrom(
                         minimumSize: const Size(160, 52)),
                     onPressed: () async {
-                      if (_page < 4) {
-                        if (_page == 1 && _selected.isEmpty) return;
+                      if (_page == chooseIndex && _selected.isEmpty) {
+                        // Dead buttons are the worst UX: explain instead.
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(l10n.chooseAtLeastOne)));
+                        return;
+                      }
+                      if (_page < lastPage) {
                         _controller.nextPage(
                             duration: const Duration(milliseconds: 250),
                             curve: Curves.easeOut);
@@ -154,9 +170,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         await _finish();
                       }
                     },
-                    child: Text(_page < 4
-                        ? l10n.startJourney
-                        : l10n.startJourney),
+                    child: Text(l10n.startJourney),
                   ),
                 ],
               ),
@@ -329,6 +343,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _spendPage(AppLocalizations l10n) {
+    final state = context.watch<AppState>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -340,15 +355,44 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Text(l10n.onboardingSpendBody,
               style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(height: 24),
-          TextField(
-            controller: _spend,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: InputDecoration(
-              hintText: l10n.currencyPlaceholder,
-              suffixText: l10n.perDay,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Currency symbol so "money saved" feels real everywhere.
+              Container(
+                margin: const EdgeInsets.only(top: 4),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.outlineVariant),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: DropdownButton<String>(
+                  value: state.currencySymbol,
+                  underline: const SizedBox.shrink(),
+                  items: const ['¥', r'$', '€', '£', '₹', '₩', '฿', 'R\$']
+                      .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                      .toList(),
+                  onChanged: (v) async {
+                    if (v != null) await state.setCurrency(v);
+                  },
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: TextField(
+                  controller: _spend,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  decoration: InputDecoration(
+                    hintText: l10n.currencyPlaceholder,
+                    suffixText: l10n.perDay,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

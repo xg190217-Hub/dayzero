@@ -210,6 +210,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'El audio no está disponible en este dispositivo';
 
   @override
+  String get chooseAtLeastOne => 'Elige al menos un hábito';
+
+  @override
+  String get dailyAmountLabel => '¿Cuántos al día?';
+
+  @override
   String get statsTitle => 'Tu progreso';
 
   @override

@@ -64,6 +64,8 @@
   "sosDone": "Você conseguiu. A fissura passou.",
   "sosAgain": "De novo",
   "audioUnavailable": "Áudio indisponível neste dispositivo",
+  "chooseAtLeastOne": "Escolha pelo menos um hábito",
+  "dailyAmountLabel": "Quantos por dia?",
   "statsTitle": "Seu progresso",
   "statsMood": "Humor",
   "statsCraving": "Intensidade da fissura",

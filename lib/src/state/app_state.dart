@@ -45,6 +45,9 @@ class AppState extends ChangeNotifier {
   bool notificationsEnabled = true;
   String localeCode = 'system';
   String themeCode = 'sage';
+
+  /// Currency symbol for the "money saved" counters.
+  String currencySymbol = '¥';
   List<String> reasons = [];
 
   bool loaded = false;
@@ -77,6 +80,7 @@ class AppState extends ChangeNotifier {
     notificationsEnabled = _prefs.getBool('notifications') ?? true;
     localeCode = _prefs.getString('locale') ?? 'system';
     themeCode = _prefs.getString('theme') ?? 'sage';
+    currencySymbol = _prefs.getString('currency') ?? '¥';
     reasons = _prefs.getStringList('reasons') ?? [];
 
     final habitRows = await _db.query('habits', orderBy: 'created_at ASC');
@@ -277,6 +281,12 @@ class AppState extends ChangeNotifier {
   Future<void> setTheme(String code) async {
     themeCode = code;
     await _prefs.setString('theme', code);
+    notifyListeners();
+  }
+
+  Future<void> setCurrency(String symbol) async {
+    currencySymbol = symbol;
+    await _prefs.setString('currency', symbol);
     notifyListeners();
   }
 

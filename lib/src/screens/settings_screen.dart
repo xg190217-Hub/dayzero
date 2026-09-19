@@ -12,6 +12,7 @@ import '../models/habit.dart';
 import '../services/notifications.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
+import '../widgets/edit_habit_sheet.dart';
 import '../widgets/habit_icon.dart';
 import 'onboarding_screen.dart';
 import 'paywall_screen.dart';
@@ -104,6 +105,11 @@ class SettingsScreen extends StatelessWidget {
                   title: Text(_habitLabel(l10n, h)),
                   subtitle: Text(
                       '${h.quitDate.year}-${h.quitDate.month.toString().padLeft(2, '0')}-${h.quitDate.day.toString().padLeft(2, '0')}'),
+                  onTap: () => showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (_) => EditHabitSheet(habit: h),
+                  ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete_outline),
                     onPressed: () => _confirmDeleteHabit(context, h),
@@ -112,11 +118,30 @@ class SettingsScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.add, color: kLeafGreen),
               title: Text(l10n.homeAddHabit),
-              enabled: state.canAddHabit,
-              onTap: state.canAddHabit
-                  ? () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const OnboardingScreen(addMode: true)))
-                  : null,
+              onTap: () {
+                if (state.canAddHabit) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const OnboardingScreen(addMode: true)));
+                } else {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const PaywallScreen()));
+                }
+              },
+            ),
+            // Currency symbol for the money-saved counters.
+            ListTile(
+              leading: const Icon(Icons.attach_money),
+              title: Text(l10n.homeMoneySaved),
+              trailing: DropdownButton<String>(
+                value: state.currencySymbol,
+                underline: const SizedBox.shrink(),
+                items: const ['¥', r'$', '€', '£', '₹', '₩', '฿', 'R\$']
+                    .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                    .toList(),
+                onChanged: (v) async {
+                  if (v != null) await state.setCurrency(v);
+                },
+              ),
             ),
           ]),
           _section(context, l10n.settingsNotifications, [
