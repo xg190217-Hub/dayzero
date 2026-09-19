@@ -514,6 +514,24 @@ abstract class AppLocalizations {
   /// **'How many per day?'**
   String get dailyAmountLabel;
 
+  /// No description provided for @homeStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}-day streak'**
+  String homeStreak(Object days);
+
+  /// No description provided for @checkinOfferSos.
+  ///
+  /// In en, this message translates to:
+  /// **'That craving looks strong. Need help right now?'**
+  String get checkinOfferSos;
+
+  /// No description provided for @settingsReasons.
+  ///
+  /// In en, this message translates to:
+  /// **'My reasons'**
+  String get settingsReasons;
+
   /// No description provided for @statsTitle.
   ///
   /// In en, this message translates to:

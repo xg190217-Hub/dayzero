@@ -208,6 +208,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get dailyAmountLabel => '每天多少？（数量）';
 
   @override
+  String homeStreak(Object days) {
+    return '连续打卡 $days 天';
+  }
+
+  @override
+  String get checkinOfferSos => '这次渴求看起来很强。需要现在用渴求急救吗？';
+
+  @override
+  String get settingsReasons => '我的理由';
+
+  @override
   String get statsTitle => '我的进展';
 
   @override

@@ -211,6 +211,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dailyAmountLabel => '1日にどれくらい？（本数など）';
 
   @override
+  String homeStreak(Object days) {
+    return '連続$days日';
+  }
+
+  @override
+  String get checkinOfferSos => '欲求が強そうですね。今すぐSOSを使いますか？';
+
+  @override
+  String get settingsReasons => 'わたしの理由';
+
+  @override
   String get statsTitle => 'あなたの進歩';
 
   @override

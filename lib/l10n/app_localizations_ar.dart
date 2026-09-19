@@ -214,6 +214,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dailyAmountLabel => 'كم في اليوم؟';
 
   @override
+  String homeStreak(Object days) {
+    return '$days أيام متتالية';
+  }
+
+  @override
+  String get checkinOfferSos => 'يبدو أن الرغبة قوية. هل تحتاج مساعدة الآن؟';
+
+  @override
+  String get settingsReasons => 'أسبابي';
+
+  @override
   String get statsTitle => 'تقدمك';
 
   @override

@@ -148,6 +148,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       },
                       child: Text(l10n.skip),
                     )
+                  else if (widget.addMode)
+                    // Escape hatch: never trap the user in a flow they
+                    // opened by accident.
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(l10n.cancel),
+                    )
                   else
                     const SizedBox(width: 64),
                   const Spacer(),

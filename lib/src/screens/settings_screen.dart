@@ -144,6 +144,24 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
           ]),
+          _section(context, l10n.settingsReasons, [
+            ...state.reasons.map((r) => ListTile(
+                  leading: const Icon(Icons.favorite, color: kLeafGreen),
+                  title: Text(r),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () async {
+                      final updated = List.of(state.reasons)..remove(r);
+                      await state.setReasons(updated);
+                    },
+                  ),
+                )),
+            ListTile(
+              leading: const Icon(Icons.add, color: kLeafGreen),
+              title: Text(l10n.addReason),
+              onTap: () => _addReasonDialog(context),
+            ),
+          ]),
           _section(context, l10n.settingsNotifications, [
             SwitchListTile(
               secondary: const Icon(Icons.notifications_outlined),
@@ -170,8 +188,8 @@ class SettingsScreen extends StatelessWidget {
                 value: state.localeCode,
                 underline: const SizedBox.shrink(),
                 items: [
-                  const DropdownMenuItem(
-                      value: 'system', child: Text('System')),
+                  DropdownMenuItem(
+                      value: 'system', child: Text(l10n.language_system)),
                   DropdownMenuItem(
                       value: 'en', child: Text(l10n.language_en)),
                   DropdownMenuItem(
@@ -296,6 +314,38 @@ class SettingsScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _addReasonDialog(BuildContext context) async {
+    final controller = TextEditingController();
+    final text = await showDialog<String>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(AppLocalizations.of(context).addReason),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context).reasonPlaceholder,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(AppLocalizations.of(context).cancel),
+          ),
+          FilledButton(
+            onPressed: () =>
+                Navigator.of(dialogContext).pop(controller.text.trim()),
+            child: Text(AppLocalizations.of(context).save),
+          ),
+        ],
+      ),
+    );
+    if (text != null && text.isNotEmpty) {
+      final state = context.read<AppState>();
+      await state.setReasons([...state.reasons, text]);
+    }
   }
 
   Future<void> _export(BuildContext context) async {

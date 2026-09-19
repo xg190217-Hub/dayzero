@@ -7,6 +7,7 @@ import '../services/audio_service.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/habit_icon.dart';
+import 'sos_screen.dart';
 
 
 /// Daily check-in: mood, craving level, trigger and an optional note.
@@ -73,6 +74,32 @@ class _CheckInScreenState extends State<CheckInScreen> {
     context.read<AudioService>().play('sounds/chime.wav');
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.checkinDone)));
+
+    // A strong craving is the exact moment the SOS screen exists for.
+    if (_craving.round() >= 4) {
+      final goSos = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          icon: const Icon(Icons.favorite, color: Color(0xFFE57373)),
+          title: Text(l10n.checkinOfferSos),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(l10n.homeSOS),
+            ),
+          ],
+        ),
+      );
+      if (goSos == true && mounted) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => SosScreen(habit: widget.habit)));
+        return;
+      }
+    }
     Navigator.of(context).pop();
   }
 

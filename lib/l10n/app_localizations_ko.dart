@@ -212,6 +212,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String get dailyAmountLabel => '하루에 얼마나? (개수)';
 
   @override
+  String homeStreak(Object days) {
+    return '$days일 연속';
+  }
+
+  @override
+  String get checkinOfferSos => '갈망이 강해 보여요. 지금 도움이 필요하세요?';
+
+  @override
+  String get settingsReasons => '나의 이유';
+
+  @override
   String get statsTitle => '나의 진전';
 
   @override

@@ -104,7 +104,13 @@ class _SosScreenState extends State<SosScreen>
       await audio.stop();
       if (mounted) setState(() => _audioOn = false);
     } else {
-      if (mounted) setState(() => _audioOn = true);
+      // The two modes are mutually exclusive — keep both flags honest.
+      if (mounted) {
+        setState(() {
+          _audioOn = true;
+          _ambientOn = false;
+        });
+      }
       await _playPhaseSound();
       _checkAudioHealth();
     }
@@ -118,7 +124,12 @@ class _SosScreenState extends State<SosScreen>
       await audio.stop();
       if (mounted) setState(() => _ambientOn = false);
     } else {
-      if (mounted) setState(() => _ambientOn = true);
+      if (mounted) {
+        setState(() {
+          _ambientOn = true;
+          _audioOn = false;
+        });
+      }
       await audio.loop('sounds/calm_ambient.wav');
       _checkAudioHealth();
     }

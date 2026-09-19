@@ -215,6 +215,18 @@ class AppLocalizationsTr extends AppLocalizations {
   String get dailyAmountLabel => 'Günde kaç tane?';
 
   @override
+  String homeStreak(Object days) {
+    return '$days günlük seri';
+  }
+
+  @override
+  String get checkinOfferSos =>
+      'İstek güçlü görünüyor. Şimdi yardım ister misiniz?';
+
+  @override
+  String get settingsReasons => 'Nedenlerim';
+
+  @override
   String get statsTitle => 'İlerlemeniz';
 
   @override

@@ -215,6 +215,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dailyAmountLabel => 'Сколько в день?';
 
   @override
+  String homeStreak(Object days) {
+    return '$days дней подряд';
+  }
+
+  @override
+  String get checkinOfferSos =>
+      'Тяга выглядит сильной. Нужна помощь прямо сейчас?';
+
+  @override
+  String get settingsReasons => 'Мои причины';
+
+  @override
   String get statsTitle => 'Ваш прогресс';
 
   @override

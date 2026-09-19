@@ -215,6 +215,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dailyAmountLabel => 'Quanti al giorno?';
 
   @override
+  String homeStreak(Object days) {
+    return 'Serie di $days giorni';
+  }
+
+  @override
+  String get checkinOfferSos =>
+      'Il desiderio sembra forte. Ti serve aiuto adesso?';
+
+  @override
+  String get settingsReasons => 'Le mie ragioni';
+
+  @override
   String get statsTitle => 'I tuoi progressi';
 
   @override

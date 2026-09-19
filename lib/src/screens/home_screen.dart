@@ -128,9 +128,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _dayCounterCard(AppLocalizations l10n, Habit habit) {
     final state = context.watch<AppState>();
     final days = daysFree(habit, state.now);
+    final elapsed = state.now.difference(habit.quitDate);
     // Day zero shows hours+minutes: "0 days" reads as failure on launch day.
-    final label = days == 0
-        ? _hoursLabel(l10n, state.now.difference(habit.quitDate))
+    // Future quit dates clamp to zero instead of going negative.
+    final label = days == 0 && !elapsed.isNegative
+        ? _hoursLabel(l10n, elapsed)
         : days == 1
             ? l10n.homeDaysSinceOne
             : '$days ${l10n.homeDaysSince}';
@@ -140,6 +142,17 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Text(label, style: displayFont(context, size: 44)),
+            // A live streak badge: the single strongest retention hook.
+            if (_streak(state, habit) >= 2) ...[
+              const SizedBox(height: 6),
+              Text(
+                '🔥 ${l10n.homeStreak(_streak(state, habit))}',
+                style: const TextStyle(
+                    fontFamily: 'DayZeroNunito',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15),
+              ),
+            ],
             const SizedBox(height: 4),
             Text(
               '${habit.quitDate.year}-${habit.quitDate.month.toString().padLeft(2, '0')}-${habit.quitDate.day.toString().padLeft(2, '0')}',
@@ -171,6 +184,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  int _streak(AppState state, Habit habit) =>
+      currentStreak(state.checkInsFor(habit.id!), state.now);
 
   String _hoursLabel(AppLocalizations l10n, Duration d) {
     final h = d.inHours;
