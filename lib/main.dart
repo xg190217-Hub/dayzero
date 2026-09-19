@@ -15,13 +15,24 @@ Future<void> main() async {
   // First line of main(): every platform-channel call below depends on it.
   WidgetsFlutterBinding.ensureInitialized();
 
+  try {
+    await _boot();
+  } catch (e, stack) {
+    // Boot failures must be VISIBLE, never a silent white screen.
+    debugPrint('DayZero boot failed: $e\n$stack');
+    runApp(BootErrorApp(error: e));
+  }
+}
+
+Future<void> _boot() async {
   final prefs = await SharedPreferences.getInstance();
   final audio = AudioService();
   final iap = IapService();
   final notifications = NotificationService();
 
   // Open the database per platform. Web uses the main-thread ffi factory
-  // (no worker / COOP-COEP server needed); desktop uses winsqlite3 via ffi.
+  // (no worker / COOP-COEP server needed) and needs sqlite3.wasm served
+  // next to index.html; desktop uses winsqlite3 via ffi.
   final db = await openAppDatabase(await _resolveDbPath());
 
   final state = AppState(db: db, prefs: prefs);
@@ -56,6 +67,44 @@ Future<void> main() async {
       child: const DayZeroApp(),
     ),
   );
+}
+
+/// Rendered when boot throws — the user sees the failure instead of a blank
+/// page (a boot screen with no error state cost us days on the last project).
+class BootErrorApp extends StatelessWidget {
+  const BootErrorApp({super.key, required this.error});
+
+  final Object error;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                const SizedBox(height: 16),
+                const Text('DayZero failed to start',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18)),
+                const SizedBox(height: 12),
+                Text(
+                  '$error',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 Future<String> _resolveDbPath() async {
