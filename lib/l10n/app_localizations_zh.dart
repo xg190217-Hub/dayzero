@@ -213,6 +213,26 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get rateLater => '稍后再说';
+
+  @override
+  String get rateAction => '去 App Store 评分';
+
+  @override
+  String get rateBody => '你的评分能帮助更多需要支持的人找到我们。';
+
+  @override
+  String get rateTitle => '喜欢归零吗？';
+
+  @override
+  String settingsNotificationsTime(Object hour) {
+    return '每天 $hour:00 温柔提醒';
+  }
+
+  @override
+  String get notifBody => '今天怎么样？花 10 秒打卡，守住你的连续记录。';
+
+  @override
   String get checkinOfferSos => '这次渴求看起来很强。需要现在用渴求急救吗？';
 
   @override

@@ -46,8 +46,14 @@ class NotificationService {
     }
   }
 
-  /// Schedules (or replaces) the daily 8 PM reminder.
-  Future<void> scheduleDaily() async {
+  /// Schedules (or replaces) the daily reminder at [hour]:00 local time.
+  /// Title/body are passed in by the caller so the notification matches the
+  /// user's language.
+  Future<void> scheduleDaily({
+    String title = 'DayZero',
+    String body = 'How was today? A quick check-in keeps your streak alive.',
+    int hour = 20,
+  }) async {
     if (!enabled || !_initialized) return;
     try {
       await _plugin.cancel(1);
@@ -58,7 +64,7 @@ class NotificationService {
       } catch (_) {}
       final now = tz.TZDateTime.now(location);
       var scheduled = tz.TZDateTime(
-          location, now.year, now.month, now.day, 20, 0, 0);
+          location, now.year, now.month, now.day, hour, 0, 0);
       if (!scheduled.isAfter(now)) {
         scheduled = scheduled.add(const Duration(days: 1));
       }
@@ -71,8 +77,8 @@ class NotificationService {
       );
       await _plugin.zonedSchedule(
         1,
-        'DayZero',
-        'How was today? A quick check-in keeps your streak alive.',
+        title,
+        body,
         scheduled,
         details,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,

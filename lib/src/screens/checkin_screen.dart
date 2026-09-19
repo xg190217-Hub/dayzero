@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../models/habit.dart';
@@ -9,6 +10,10 @@ import '../theme.dart';
 import '../widgets/habit_icon.dart';
 import 'sos_screen.dart';
 
+
+/// App Store numeric ID. Set after the App Store Connect record is created
+/// (the rating prompt stays disabled until then).
+const int kAppStoreId = 0;
 
 /// Daily check-in: mood, craving level, trigger and an optional note.
 class CheckInScreen extends StatefulWidget {
@@ -76,6 +81,14 @@ class _CheckInScreenState extends State<CheckInScreen> {
         SnackBar(content: Text(l10n.checkinDone)));
 
     // A strong craving is the exact moment the SOS screen exists for.
+    // Fifth check-in = habit forming. The moment users feel the value is the
+    // moment they leave reviews (disabled until the ASC App ID is known).
+    final totalCheckIns = state.checkInsFor(widget.habit.id!).length;
+    if (kAppStoreId != 0 && totalCheckIns == 5) {
+      await _maybeAskForRating();
+      if (!mounted) return;
+    }
+
     if (_craving.round() >= 4) {
       final goSos = await showDialog<bool>(
         context: context,
@@ -264,6 +277,34 @@ class _CheckInScreenState extends State<CheckInScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _maybeAskForRating() async {
+    final l10n = AppLocalizations.of(context);
+    final go = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        icon: const Icon(Icons.favorite, color: kLeafGreen),
+        title: Text(l10n.rateTitle),
+        content: Text(l10n.rateBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.rateLater),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(l10n.rateAction),
+          ),
+        ],
+      ),
+    );
+    if (go == true) {
+      await launchUrl(
+        Uri.parse('https://apps.apple.com/app/id$kAppStoreId'),
+        mode: LaunchMode.externalApplication,
+      );
+    }
   }
 
   String _habitLabel(AppLocalizations l10n, Habit h) {

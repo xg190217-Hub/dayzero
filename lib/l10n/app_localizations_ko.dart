@@ -217,6 +217,26 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get rateLater => '나중에';
+
+  @override
+  String get rateAction => 'App Store에서 평가하기';
+
+  @override
+  String get rateBody => '평점을 남기면 도움이 필요한 다른 사람들이 이 앱을 찾을 수 있어요.';
+
+  @override
+  String get rateTitle => 'DayZero가 마음에 드시나요?';
+
+  @override
+  String settingsNotificationsTime(Object hour) {
+    return '매일 $hour시에 살짝 알려드려요';
+  }
+
+  @override
+  String get notifBody => '오늘은 어땠나요? 10초 체크인으로 연속 기록을 지켜보세요.';
+
+  @override
   String get checkinOfferSos => '갈망이 강해 보여요. 지금 도움이 필요하세요?';
 
   @override

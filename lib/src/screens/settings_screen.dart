@@ -166,16 +166,46 @@ class SettingsScreen extends StatelessWidget {
             SwitchListTile(
               secondary: const Icon(Icons.notifications_outlined),
               title: Text(l10n.settingsNotifications),
-              subtitle: Text(l10n.settingsNotificationsDesc),
+              subtitle: Text(l10n.settingsNotificationsTime(state.reminderHour)),
               value: state.notificationsEnabled,
               onChanged: (v) async {
                 await state.setNotifications(v);
                 final notifications = context.read<NotificationService>();
                 if (v) {
                   await notifications.requestPermission();
-                  await notifications.scheduleDaily();
+                  await notifications.scheduleDaily(
+                    title: l10n.appTitle,
+                    body: l10n.notifBody,
+                    hour: state.reminderHour,
+                  );
                 } else {
                   await notifications.cancel();
+                }
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.schedule),
+              title: Text(l10n.settingsNotifications),
+              trailing: Text(
+                '${state.reminderHour.toString().padLeft(2, '0')}:00',
+                style: const TextStyle(
+                    fontFamily: 'DayZeroNunito', fontWeight: FontWeight.w700),
+              ),
+              onTap: () async {
+                final picked = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay(hour: state.reminderHour, minute: 0),
+                );
+                if (picked != null) {
+                  await state.setReminderHour(picked.hour);
+                  if (state.notificationsEnabled) {
+                    final notifications = context.read<NotificationService>();
+                    await notifications.scheduleDaily(
+                      title: l10n.appTitle,
+                      body: l10n.notifBody,
+                      hour: picked.hour,
+                    );
+                  }
                 }
               },
             ),

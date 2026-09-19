@@ -191,6 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _hoursLabel(AppLocalizations l10n, Duration d) {
     final h = d.inHours;
     final m = d.inMinutes % 60;
+    if (m == 0) return '$h${l10n.hourUnit} ${l10n.homeTimeFree}';
     return '$h${l10n.hourUnit} $m${l10n.minuteUnit} ${l10n.homeTimeFree}';
   }
 

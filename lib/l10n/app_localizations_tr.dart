@@ -220,6 +220,28 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get rateLater => 'Daha sonra';
+
+  @override
+  String get rateAction => 'App Store\'da puanla';
+
+  @override
+  String get rateBody =>
+      'Puanınız, desteğe ihtiyacı olan başka insanların bizi bulmasına yardımcı olur.';
+
+  @override
+  String get rateTitle => 'DayZero\'yu beğendiniz mi?';
+
+  @override
+  String settingsNotificationsTime(Object hour) {
+    return 'Her gün $hour:00\'da nazik bir hatırlatma';
+  }
+
+  @override
+  String get notifBody =>
+      'Bugün nasıldı? Hızlı bir işaretleme serinizi sürdürür.';
+
+  @override
   String get checkinOfferSos =>
       'İstek güçlü görünüyor. Şimdi yardım ister misiniz?';
 

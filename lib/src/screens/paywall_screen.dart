@@ -63,6 +63,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
   Future<void> _restore() async {
     final l10n = AppLocalizations.of(context);
     final iap = context.read<IapService>();
+    final state = context.read<AppState>();
     if (!iap.enabled) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.demoMode)));
@@ -70,10 +71,19 @@ class _PaywallScreenState extends State<PaywallScreen> {
     }
     setState(() => _busy = true);
     await iap.restore();
+    // Give the purchase stream a moment to deliver restored entitlements.
+    await Future<void>.delayed(const Duration(milliseconds: 600));
     if (!mounted) return;
     setState(() => _busy = false);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(l10n.restoreDone)));
+    if (state.premium) {
+      // Restored: leave the paywall.
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.restoreDone)));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.restoreNothing)));
+    }
   }
 
   @override

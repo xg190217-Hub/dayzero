@@ -43,6 +43,9 @@ class AppState extends ChangeNotifier {
   bool premium = false;
   bool demoMode = false;
   bool notificationsEnabled = true;
+
+  /// Hour of the daily check-in reminder (24h clock).
+  int reminderHour = 20;
   String localeCode = 'system';
   String themeCode = 'sage';
 
@@ -78,6 +81,7 @@ class AppState extends ChangeNotifier {
     premium = _prefs.getBool('premium') ?? false;
     demoMode = _prefs.getBool('demoMode') ?? false;
     notificationsEnabled = _prefs.getBool('notifications') ?? true;
+    reminderHour = _prefs.getInt('reminderHour') ?? 20;
     localeCode = _prefs.getString('locale') ?? 'system';
     themeCode = _prefs.getString('theme') ?? 'sage';
     currencySymbol = _prefs.getString('currency') ?? '¥';
@@ -269,6 +273,12 @@ class AppState extends ChangeNotifier {
   Future<void> setNotifications(bool value) async {
     notificationsEnabled = value;
     await _prefs.setBool('notifications', value);
+    notifyListeners();
+  }
+
+  Future<void> setReminderHour(int hour) async {
+    reminderHour = hour;
+    await _prefs.setInt('reminderHour', hour);
     notifyListeners();
   }
 

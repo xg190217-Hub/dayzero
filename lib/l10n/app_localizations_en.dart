@@ -220,6 +220,28 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get rateLater => 'Maybe later';
+
+  @override
+  String get rateAction => 'Rate on the App Store';
+
+  @override
+  String get rateBody =>
+      'Your rating helps other people find the support they need.';
+
+  @override
+  String get rateTitle => 'Enjoying DayZero?';
+
+  @override
+  String settingsNotificationsTime(Object hour) {
+    return 'A gentle nudge at $hour:00 every day';
+  }
+
+  @override
+  String get notifBody =>
+      'How was today? A quick check-in keeps your streak alive.';
+
+  @override
   String get checkinOfferSos =>
       'That craving looks strong. Need help right now?';
 

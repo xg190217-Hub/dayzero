@@ -520,6 +520,42 @@ abstract class AppLocalizations {
   /// **'{days}-day streak'**
   String homeStreak(Object days);
 
+  /// No description provided for @rateLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe later'**
+  String get rateLater;
+
+  /// No description provided for @rateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate on the App Store'**
+  String get rateAction;
+
+  /// No description provided for @rateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rating helps other people find the support they need.'**
+  String get rateBody;
+
+  /// No description provided for @rateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoying DayZero?'**
+  String get rateTitle;
+
+  /// No description provided for @settingsNotificationsTime.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle nudge at {hour}:00 every day'**
+  String settingsNotificationsTime(Object hour);
+
+  /// No description provided for @notifBody.
+  ///
+  /// In en, this message translates to:
+  /// **'How was today? A quick check-in keeps your streak alive.'**
+  String get notifBody;
+
   /// No description provided for @checkinOfferSos.
   ///
   /// In en, this message translates to:

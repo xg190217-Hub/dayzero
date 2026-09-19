@@ -216,6 +216,26 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get rateLater => 'あとで';
+
+  @override
+  String get rateAction => 'App Storeで評価する';
+
+  @override
+  String get rateBody => '評価していただくと、同じように支えを必要とする人に届きます。';
+
+  @override
+  String get rateTitle => 'DayZeroを気に入っていますか？';
+
+  @override
+  String settingsNotificationsTime(Object hour) {
+    return '毎日 $hour時00分にやさしくお知らせ';
+  }
+
+  @override
+  String get notifBody => '今日はどうでしたか？10秒のチェックインで連続記録を守りましょう。';
+
+  @override
   String get checkinOfferSos => '欲求が強そうですね。今すぐSOSを使いますか？';
 
   @override

@@ -56,6 +56,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _finish() async {
     final state = context.read<AppState>();
     final notifications = context.read<NotificationService>();
+    final l10n = AppLocalizations.of(context);
     for (final type in _selected) {
       // Enforce the free-tier limit even when several habits are picked at
       // once (the paywall handles upgrading from here).
@@ -76,7 +77,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     // The natural moment to ask for the daily-reminder permission.
     if (state.notificationsEnabled) {
       await notifications.requestPermission();
-      await notifications.scheduleDaily();
+      await notifications.scheduleDaily(
+        title: l10n.appTitle,
+        body: l10n.notifBody,
+        hour: state.reminderHour,
+      );
     }
     if (widget.addMode && mounted) {
       Navigator.of(context).pop();
