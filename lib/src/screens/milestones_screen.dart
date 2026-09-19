@@ -5,6 +5,7 @@ import '../../l10n/app_localizations.dart';
 import '../data/milestones.dart';
 import '../l10n_helpers.dart';
 import '../logic/progress.dart';
+import '../models/habit.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/habit_icon.dart';
@@ -72,7 +73,9 @@ class _MilestonesBody extends StatelessWidget {
             HabitIcon(type: habit.type, size: 36),
             const SizedBox(width: 10),
             Text(
-              habit.name as String,
+              // Built-in habits store the l10n KEY as their name — always
+              // resolve it through the type, never print the raw key.
+              _label(l10n, habit),
               style: const TextStyle(
                   fontFamily: 'DayZeroNunito',
                   fontWeight: FontWeight.w700,
@@ -94,6 +97,26 @@ class _MilestonesBody extends StatelessWidget {
         _badgeGrid(context, l10n, achieved, false, habit, days, streak, money),
       ],
     );
+  }
+
+  String _label(AppLocalizations l10n, dynamic habit) {
+    switch (habit.type) {
+      case HabitType.alcohol:
+        return l10n.habit_alcohol;
+      case HabitType.smoking:
+        return l10n.habit_smoking;
+      case HabitType.vaping:
+        return l10n.habit_vaping;
+      case HabitType.sugar:
+        return l10n.habit_sugar;
+      case HabitType.caffeine:
+        return l10n.habit_caffeine;
+      case HabitType.social:
+        return l10n.habit_social;
+      case HabitType.custom:
+        return habit.name as String;
+    }
+    return habit.name as String; // unreachable; satisfies exhaustiveness
   }
 
   Widget _badgeGrid(
