@@ -152,15 +152,11 @@ class _StatsBody extends StatelessWidget {
                     ButtonSegment(value: 7, label: Text(l10n.statsView7)),
                     ButtonSegment(
                       value: 30,
-                      label: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(l10n.statsView30),
-                          if (!state.isPremium) ...[
-                            const SizedBox(width: 4),
-                            const Icon(Icons.lock_outline, size: 14),
-                          ],
-                        ],
+                      // Emoji lock: zero layout cost, never overflows.
+                      label: Text(
+                        state.isPremium
+                            ? l10n.statsView30
+                            : '${l10n.statsView30} 🔒',
                       ),
                     ),
                   ],
