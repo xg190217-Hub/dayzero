@@ -618,19 +618,3 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get minuteUnit => '分';
 }
-
-/// The translations for Chinese, as used in China (`zh_CN`).
-class AppLocalizationsZhCn extends AppLocalizationsZh {
-  AppLocalizationsZhCn() : super('zh_CN');
-
-  @override
-  String get appTitle => '摇摇骰盅';
-}
-
-/// The translations for Chinese, as used in Taiwan (`zh_TW`).
-class AppLocalizationsZhTw extends AppLocalizationsZh {
-  AppLocalizationsZhTw() : super('zh_TW');
-
-  @override
-  String get appTitle => '搖搖骰盅';
-}
