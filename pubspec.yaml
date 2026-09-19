@@ -1,0 +1,83 @@
+name: dayzero
+description: >-
+  DayZero — private quit-habit tracker: sober day counter, money saved, health
+  timeline, craving SOS and milestones. No account, no ads, no analytics. Your
+  journey stays on your device.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  intl: 0.20.3
+  path: ^1.9.0
+  # Pinned below 3.x: 3.x downloads a prebuilt SQLite DLL via a build hook
+  # (blocked in offline environments). 2.x loads winsqlite3.dll from the OS.
+  sqlite3: '>=2.4.0 <3.0.0'
+  sqflite: ^2.4.1
+  sqflite_common: ^2.5.0
+  sqflite_common_ffi: ^2.3.4
+  sqflite_common_ffi_web: ^1.0.0
+  provider: ^6.1.2
+  shared_preferences: ^2.3.3
+  path_provider: ^2.1.5
+  in_app_purchase: ^3.2.0
+  audioplayers: 6.8.1
+  fl_chart: ^1.0.0
+  share_plus: ^11.0.0
+  url_launcher: ^6.3.1
+  flutter_local_notifications: ^19.0.0
+  flutter_timezone: ^4.1.0
+  timezone: ^0.10.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: 0.14.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  # Bundle Roboto so Flutter Web never needs to fetch it from
+  # fonts.gstatic.com at runtime (offline-friendly, works in CN networks).
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto-latin-400-normal.ttf
+          weight: 400
+        - asset: assets/fonts/roboto-latin-500-normal.ttf
+          weight: 500
+        - asset: assets/fonts/roboto-latin-700-normal.ttf
+          weight: 700
+    - family: DayZeroNunito
+      fonts:
+        - asset: assets/fonts/nunito-latin-400-normal.ttf
+          weight: 400
+        - asset: assets/fonts/nunito-latin-500-normal.ttf
+          weight: 500
+        - asset: assets/fonts/nunito-latin-700-normal.ttf
+          weight: 700
+
+  assets:
+    - assets/sounds/
+
+# App icon generation (run `dart run flutter_launcher_icons` after
+# `node tools/gen_icon.js` to produce the iOS icon set and web favicons).
+flutter_launcher_icons:
+  image_path: "assets/icon/icon_1024.png"
+  ios: true
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/icon/icon_1024.png"
+    background_color: "#0B3D2E"
+    theme_color: "#0B3D2E"

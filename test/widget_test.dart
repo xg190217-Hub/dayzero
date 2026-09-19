@@ -1,0 +1,127 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+import 'package:dayzero/src/app.dart';
+import 'package:dayzero/src/models/habit.dart';
+import 'package:dayzero/src/screens/checkin_screen.dart';
+import 'package:dayzero/src/db/database.dart';
+import 'package:dayzero/src/services/audio_service.dart';
+import 'package:dayzero/src/services/iap_service.dart';
+import 'package:dayzero/src/services/notifications.dart';
+import 'package:dayzero/src/state/app_state.dart';
+
+/// Functional widget tests.
+///
+/// Two recipes from the previous projects, wired in from the start:
+///  - All database work runs inside tester.runAsync(): the FakeAsync test
+///    clock would otherwise deadlock the ffi database.
+///  - The clock is fixed so day-based rendering never drifts across runs.
+///  - pumpAndSettle is avoided around busy spinners (infinite animations).
+void main() {
+  setUpAll(() {
+    sqfliteFfiInit();
+  });
+
+  Future<AppState> makeState(WidgetTester tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await tester.runAsync(SharedPreferences.getInstance);
+    final db = (await tester.runAsync(() => openAppDatabase(
+        inMemoryDatabasePath,
+        factory: databaseFactoryFfi)))!;
+    final state = AppState(
+      db: db,
+      prefs: prefs!,
+      clock: () => DateTime(2026, 9, 19, 20, 0),
+    );
+    await tester.runAsync(state.load);
+    return state;
+  }
+
+  Widget wrap(AppState state) {
+    final audio = AudioService();
+    final iap = IapService(enabled: false);
+    final notifications = NotificationService(enabled: false);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: state),
+        Provider<AudioService>.value(value: audio),
+        Provider<IapService>.value(value: iap),
+        Provider<NotificationService>.value(value: notifications),
+      ],
+      child: const DayZeroApp(),
+    );
+  }
+
+  /// Phone-sized viewport so whole screens (including bottom buttons) are
+  /// built by lazy ListViews.
+  void usePhoneView(WidgetTester tester) {
+    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+  }
+
+  testWidgets('fresh install shows onboarding', (tester) async {
+    final state = await makeState(tester);
+    await tester.pumpWidget(wrap(state));
+    await tester.pumpAndSettle();
+
+    expect(find.text('A fresh start begins today'), findsOneWidget);
+    expect(find.textContaining('quit'), findsWidgets);
+  });
+
+  testWidgets('habit shows on home screen with day counter', (tester) async {
+    usePhoneView(tester);
+    final state = await makeState(tester);
+    await tester.runAsync(() => state.addHabit(
+          type: HabitType.alcohol,
+          name: 'Alcohol',
+          quitDate: DateTime(2026, 9, 16),
+          dailySpend: 10,
+        ));
+    await tester.pumpWidget(wrap(state));
+    await tester.pumpAndSettle();
+
+    // Quit 3 days ago → "3 days free".
+    expect(find.textContaining('3 days free'), findsOneWidget);
+    // Money saved = 3 × 10.
+    expect(find.textContaining('saved'), findsOneWidget);
+  });
+
+  testWidgets('check-in flow persists to the database', (tester) async {
+    usePhoneView(tester);
+    final state = await makeState(tester);
+    await tester.runAsync(() => state.addHabit(
+          type: HabitType.smoking,
+          name: 'Smoking',
+          quitDate: DateTime(2026, 9, 19),
+        ));
+    await tester.pumpWidget(wrap(state));
+    await tester.pumpAndSettle();
+
+    // Open the check-in screen and save with defaults.
+    await tester.tap(find.text('Check in today').first);
+    await tester.pumpAndSettle();
+    expect(find.text('Daily check-in'), findsOneWidget,
+        reason: 'check-in screen should be open');
+    // The save button sits below the fold of the lazy ListView.
+    final list = find.descendant(
+      of: find.byType(CheckInScreen),
+      matching: find.byType(Scrollable),
+    );
+    await tester.dragUntilVisible(
+        find.text('Save'), list, const Offset(0, -300));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Save'));
+    // Let the real database write finish (fake clock can't drive it).
+    await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 400)));
+    await tester.pumpAndSettle();
+
+    expect(state.checkIns.length, 1);
+    expect(state.checkIns.first.mood, 3);
+    expect(state.checkIns.first.craving, 2);
+  });
+}

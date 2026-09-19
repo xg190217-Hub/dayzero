@@ -1,0 +1,57 @@
+# Codemagic CI — builds DayZero for iOS on macOS and pushes to
+# TestFlight / App Store Connect. Free tier (500 min/month) is enough.
+#
+# Recipe verified across the previous two projects (Petory, 摇摇骰盅).
+# Pitfalls already solved:
+#   - Manual signing (no UI integration needed): Admin-role API key + one
+#     locally generated certificate private key stored as a secret.
+#   - CI runs FUNCTIONAL tests only — golden/screenshot tests are not
+#     pixel-stable across platforms (macOS fonts differ from Windows).
+#   - `set -e` so signing failures fail the build instead of being swallowed.
+#
+# One-time setup (App Store Connect + Codemagic UI) is documented in
+# docs/上架清单.md.
+workflows:
+  dayzero-ios:
+    name: DayZero iOS
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      groups:
+        - dayzero-app # Codemagic UI: create this variable group
+      flutter: stable
+      xcode: latest
+    scripts:
+      - name: Get dependencies
+        script: flutter pub get
+      - name: Static analysis
+        script: flutter analyze
+      - name: Run functional tests
+        # Golden/screenshot tests are excluded: cross-platform font rendering
+        # breaks golden matching.
+        script: flutter test test/progress_logic_test.dart test/widget_test.dart
+      - name: Set up iOS code signing
+        script: |
+          set -e
+          keychain initialize
+          app-store-connect fetch-signing-files "io.dayzero.app" \
+            --platform IOS \
+            --type IOS_APP_STORE \
+            --issuer-id @env:APP_STORE_CONNECT_ISSUER_ID \
+            --key-id @env:APP_STORE_CONNECT_KEY_ID \
+            --private-key @env:APP_STORE_CONNECT_API_KEY \
+            --certificate-key @env:CERTIFICATE_PRIVATE_KEY \
+            --create
+          keychain add-certificates
+          xcode-project use-profiles
+      - name: Build iOS release
+        script: flutter build ipa --release --build-name=1.0.0 --build-number=$BUILD_NUMBER
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_API_KEY
+        key_id: $APP_STORE_CONNECT_KEY_ID
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true

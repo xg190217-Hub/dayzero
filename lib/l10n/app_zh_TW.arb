@@ -1,0 +1,22 @@
+{
+  "appTitle": "搖搖骰盅",
+  "shakeButton": "搖一搖",
+  "openLidButton": "開",
+  "shakingStatus": "搖晃中…",
+  "safetySwitchLabel": "安全開關",
+  "safetyOffHint": "請先打開安全開關",
+  "diceCountLabel": "骰子數量",
+  "addDice": "添加一顆骰子",
+  "removeDice": "移除一顆骰子",
+  "diceRangeHint": "1–12 顆骰子",
+  "sumLabel": "合計：{sum}",
+  "resultsLabel": "結果",
+  "tapToShakeHint": "點擊按鈕搖動骰盅",
+  "tapToOpenHint": "點擊開蓋查看點數",
+  "settingsHeader": "設定",
+  "homeButton": "主頁",
+  "lockButton": "鎖定",
+  "soundLabel": "音效",
+  "languageLabel": "語言",
+  "totalLabel": "總點數"
+}
