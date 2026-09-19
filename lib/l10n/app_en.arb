@@ -64,6 +64,7 @@
   "sosTapsLeft": "taps left",
   "sosDone": "You made it through. The craving has passed.",
   "sosAgain": "Do it again",
+  "audioUnavailable": "Audio is not available on this device",
   "statsTitle": "Your progress",
   "statsMood": "Mood",
   "statsCraving": "Craving intensity",

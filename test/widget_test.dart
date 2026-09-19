@@ -41,7 +41,7 @@ void main() {
   }
 
   Widget wrap(AppState state) {
-    final audio = AudioService();
+    final audio = FakeAudioService();
     final iap = IapService(enabled: false);
     final notifications = NotificationService(enabled: false);
     return MultiProvider(
@@ -53,6 +53,16 @@ void main() {
       ],
       child: const DayZeroApp(),
     );
+  }
+
+  /// Dismisses the milestone celebration dialog that pops up right after a
+  /// habit is added (the "first hour" badge unlocks immediately).
+  Future<void> dismissCelebration(WidgetTester tester) async {
+    await tester.pumpAndSettle();
+    if (find.text('Done').evaluate().isNotEmpty) {
+      await tester.tap(find.text('Done'));
+      await tester.pumpAndSettle();
+    }
   }
 
   /// Phone-sized viewport so whole screens (including bottom buttons) are
@@ -82,7 +92,7 @@ void main() {
           dailySpend: 10,
         ));
     await tester.pumpWidget(wrap(state));
-    await tester.pumpAndSettle();
+    await dismissCelebration(tester);
 
     // Quit 3 days ago → "3 days free".
     expect(find.textContaining('3 days free'), findsOneWidget);
@@ -99,10 +109,12 @@ void main() {
           quitDate: DateTime(2026, 9, 19),
         ));
     await tester.pumpWidget(wrap(state));
-    await tester.pumpAndSettle();
+    await dismissCelebration(tester);
 
     // Open the check-in screen and save with defaults.
     await tester.tap(find.text('Check in today').first);
+    await tester.pumpAndSettle();
+    await dismissCelebration(tester);
     await tester.pumpAndSettle();
     expect(find.text('Daily check-in'), findsOneWidget,
         reason: 'check-in screen should be open');
@@ -124,4 +136,23 @@ void main() {
     expect(state.checkIns.first.mood, 3);
     expect(state.checkIns.first.craving, 2);
   });
+}
+
+/// No-op audio: audioplayers has no host in flutter_test and a real player
+/// would leave pending timers behind.
+class FakeAudioService extends AudioService {
+  @override
+  Future<bool> init() async {
+    status = AudioStatus.ready;
+    return true;
+  }
+
+  @override
+  Future<void> play(String assetPath) async {}
+
+  @override
+  Future<void> loop(String assetPath) async {}
+
+  @override
+  Future<void> stop() async {}
 }

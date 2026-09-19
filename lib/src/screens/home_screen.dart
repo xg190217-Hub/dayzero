@@ -7,6 +7,7 @@ import '../data/milestones.dart';
 import '../l10n_helpers.dart';
 import '../logic/progress.dart';
 import '../models/habit.dart';
+import '../services/audio_service.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/habit_icon.dart';
@@ -30,6 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final state = context.watch<AppState>();
     if (state.habits.isEmpty) {
       return const OnboardingScreen();
+    }
+    // Celebrate freshly unlocked milestones once per session.
+    if (state.newlyUnlocked.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _celebrate(l10n, state);
+      });
     }
     final habit = state.habits[_habitIndex.clamp(0, state.habits.length - 1)];
     return Scaffold(
@@ -275,6 +282,30 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Icon(next.icon, color: kLeafGreen),
         title: Text(l10n.homeNextMilestone),
         subtitle: Text('$label · ${l10n.homeIn} $remaining ${l10n.dayUnit}'),
+      ),
+    );
+  }
+
+  /// Shows a celebration for milestones unlocked by the latest action and
+  /// plays the chime (part of the premium feature set, but milestones
+  /// themselves stay free).
+  void _celebrate(AppLocalizations l10n, AppState state) {
+    final fresh = state.takeNewlyUnlocked();
+    if (fresh.isEmpty || !mounted) return;
+    context.read<AudioService>().play('sounds/chime.wav');
+    final labels = fresh.map(l10n.milestoneLabel).join(' · ');
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        icon: const Icon(Icons.emoji_events, color: Color(0xFFF9A825), size: 44),
+        title: Text(l10n.milestonesTitle),
+        content: Text(labels, textAlign: TextAlign.center),
+        actions: [
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(l10n.done),
+          ),
+        ],
       ),
     );
   }

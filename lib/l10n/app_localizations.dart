@@ -496,6 +496,12 @@ abstract class AppLocalizations {
   /// **'Do it again'**
   String get sosAgain;
 
+  /// No description provided for @audioUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio is not available on this device'**
+  String get audioUnavailable;
+
   /// No description provided for @statsTitle.
   ///
   /// In en, this message translates to:

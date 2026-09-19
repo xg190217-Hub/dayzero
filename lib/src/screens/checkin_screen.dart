@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../models/habit.dart';
+import '../services/audio_service.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 
@@ -67,6 +68,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
     );
     final l10n = AppLocalizations.of(context);
     if (!mounted) return;
+    // Small reward sound (silently skipped when audio is unavailable).
+    context.read<AudioService>().play('sounds/chime.wav');
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.checkinDone)));
     Navigator.of(context).pop();

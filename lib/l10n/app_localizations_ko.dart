@@ -203,6 +203,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get sosAgain => '한 번 더';
 
   @override
+  String get audioUnavailable => '이 기기에서는 오디오를 사용할 수 없습니다';
+
+  @override
   String get statsTitle => '나의 진전';
 
   @override

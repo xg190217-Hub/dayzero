@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../models/habit.dart';
+import '../services/notifications.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/habit_icon.dart';
@@ -53,7 +54,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Future<void> _finish() async {
     final state = context.read<AppState>();
+    final notifications = context.read<NotificationService>();
     for (final type in _selected) {
+      // Enforce the free-tier limit even when several habits are picked at
+      // once (the paywall handles upgrading from here).
+      if (!state.canAddHabit) break;
       final name = type == HabitType.custom
           ? (_customName.text.trim().isEmpty ? 'My habit' : _customName.text.trim())
           : type.nameKey;
@@ -66,6 +71,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
     if (_reasons.isNotEmpty) {
       await state.setReasons(_reasons);
+    }
+    // The natural moment to ask for the daily-reminder permission.
+    if (state.notificationsEnabled) {
+      await notifications.requestPermission();
+      await notifications.scheduleDaily();
     }
     if (widget.addMode && mounted) {
       Navigator.of(context).pop();

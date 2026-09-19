@@ -207,6 +207,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sosAgain => 'Recommencer';
 
   @override
+  String get audioUnavailable => 'Audio indisponible sur cet appareil';
+
+  @override
   String get statsTitle => 'Vos progrès';
 
   @override

@@ -202,6 +202,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get sosAgain => 'もう一度';
 
   @override
+  String get audioUnavailable => 'この端末では音声を利用できません';
+
+  @override
   String get statsTitle => 'あなたの進歩';
 
   @override

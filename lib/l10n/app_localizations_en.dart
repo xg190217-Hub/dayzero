@@ -206,6 +206,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sosAgain => 'Do it again';
 
   @override
+  String get audioUnavailable => 'Audio is not available on this device';
+
+  @override
   String get statsTitle => 'Your progress';
 
   @override

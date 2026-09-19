@@ -199,6 +199,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sosAgain => '再来一次';
 
   @override
+  String get audioUnavailable => '此设备上音频不可用';
+
+  @override
   String get statsTitle => '我的进展';
 
   @override

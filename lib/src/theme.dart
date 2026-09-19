@@ -8,19 +8,35 @@ const kSage = Color(0xFF8FBF9F);
 const kWarmBackground = Color(0xFFF6F4EE);
 const kDarkBackground = Color(0xFF101714);
 
-ThemeData buildDayZeroTheme(Brightness brightness) {
+/// Premium theme presets. Each defines a seed color and a light surface.
+class ThemePreset {
+  const ThemePreset(this.name, this.seed, this.surface);
+
+  final String name;
+  final Color seed;
+  final Color surface;
+}
+
+const kThemePresets = <String, ThemePreset>{
+  'sage': ThemePreset('sage', kLeafGreen, kWarmBackground),
+  'forest': ThemePreset('forest', Color(0xFF1B4332), Color(0xFFEDF3EC)),
+  'ocean': ThemePreset('ocean', Color(0xFF0B5563), Color(0xFFEBF3F5)),
+};
+
+ThemeData buildDayZeroTheme(Brightness brightness, {String preset = 'sage'}) {
   final isDark = brightness == Brightness.dark;
+  final p = kThemePresets[preset] ?? kThemePresets['sage']!;
   final scheme = ColorScheme.fromSeed(
-    seedColor: kLeafGreen,
+    seedColor: p.seed,
     brightness: brightness,
-    primary: kLeafGreen,
-    surface: isDark ? kDarkBackground : kWarmBackground,
+    primary: p.seed,
+    surface: isDark ? kDarkBackground : p.surface,
   );
   final base = ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
     fontFamily: 'Roboto',
-    scaffoldBackgroundColor: isDark ? kDarkBackground : kWarmBackground,
+    scaffoldBackgroundColor: isDark ? kDarkBackground : p.surface,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -39,7 +55,7 @@ ThemeData buildDayZeroTheme(Brightness brightness) {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: kLeafGreen,
+        backgroundColor: p.seed,
         foregroundColor: Colors.white,
         minimumSize: const Size.fromHeight(52),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

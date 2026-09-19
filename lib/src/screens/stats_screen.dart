@@ -99,6 +99,7 @@ class _StatsBody extends StatelessWidget {
                         values: _last7(context, checkIns, state, (c) => c.mood
                             .toDouble()),
                         maxY: 5,
+                        now: state.now,
                       ),
                       const SizedBox(height: 16),
                       _chart(
@@ -109,6 +110,7 @@ class _StatsBody extends StatelessWidget {
                             .craving
                             .toDouble()),
                         maxY: 5,
+                        now: state.now,
                       ),
                     ],
                   ),
@@ -201,6 +203,7 @@ class _StatsBody extends StatelessWidget {
     required Color color,
     required List<double?> values,
     required double maxY,
+    required DateTime now,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,7 +238,8 @@ class _StatsBody extends StatelessWidget {
                     getTitlesWidget: (value, meta) {
                       final i = value.toInt();
                       if (i < 0 || i > 6) return const SizedBox.shrink();
-                      final day = DateTime.now()
+                      // Labels derive from the same clock as the data.
+                      final day = DateTime(now.year, now.month, now.day)
                           .subtract(Duration(days: 6 - i));
                       return Padding(
                         padding: const EdgeInsets.only(top: 4),

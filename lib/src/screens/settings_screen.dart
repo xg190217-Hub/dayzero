@@ -57,6 +57,46 @@ class SettingsScreen extends StatelessWidget {
                 subtitle: Text(l10n.settingsPremiumActive),
               ),
             ),
+          // Premium themes (part of the paywall's feature list).
+          if (state.isPremium)
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(
+                      children: [
+                        Icon(Icons.palette_outlined, color: kLeafGreen),
+                        SizedBox(width: 12),
+                        Text('Themes',
+                            style: TextStyle(
+                                fontFamily: 'DayZeroNunito',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16)),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      children: kThemePresets.keys.map((code) {
+                        final preset = kThemePresets[code]!;
+                        final selected = state.themeCode == code;
+                        return ChoiceChip(
+                          avatar: CircleAvatar(
+                            backgroundColor: preset.seed,
+                            radius: 10,
+                          ),
+                          label: Text(code[0].toUpperCase() + code.substring(1)),
+                          selected: selected,
+                          onSelected: (_) => state.setTheme(code),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           const SizedBox(height: 12),
           _section(context, l10n.settingsHabits, [
             ...state.habits.map((h) => ListTile(

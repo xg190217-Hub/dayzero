@@ -206,6 +206,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sosAgain => 'Bir daha';
 
   @override
+  String get audioUnavailable => 'Bu cihazda ses kullanılamıyor';
+
+  @override
   String get statsTitle => 'İlerlemeniz';
 
   @override

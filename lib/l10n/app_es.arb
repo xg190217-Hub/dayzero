@@ -63,6 +63,7 @@
   "sosTapsLeft": "restantes",
   "sosDone": "Lo lograste. El antojo ha pasado.",
   "sosAgain": "Otra vez",
+  "audioUnavailable": "El audio no está disponible en este dispositivo",
   "statsTitle": "Tu progreso",
   "statsMood": "Ánimo",
   "statsCraving": "Intensidad del antojo",

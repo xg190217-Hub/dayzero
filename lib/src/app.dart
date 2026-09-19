@@ -45,8 +45,8 @@ class DayZeroApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: supportedLocales,
-          theme: buildDayZeroTheme(Brightness.light),
-          darkTheme: buildDayZeroTheme(Brightness.dark),
+          theme: buildDayZeroTheme(Brightness.light, preset: state.themeCode),
+          darkTheme: buildDayZeroTheme(Brightness.dark, preset: state.themeCode),
           themeMode: ThemeMode.system,
           home: state.loaded
               ? (state.habits.isEmpty

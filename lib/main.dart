@@ -52,6 +52,13 @@ Future<void> _boot() async {
     notifications.init(),
   ]);
 
+  // Re-assert the daily reminder if enabled (permission is requested at
+  // onboarding completion; re-scheduling is idempotent and repairs the
+  // schedule after reinstalls).
+  if (!kIsWeb && state.notificationsEnabled) {
+    await notifications.scheduleDaily();
+  }
+
   iap.onGranted = (productId) async {
     await state.setPremium(true);
   };

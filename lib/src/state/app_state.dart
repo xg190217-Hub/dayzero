@@ -44,6 +44,7 @@ class AppState extends ChangeNotifier {
   bool demoMode = false;
   bool notificationsEnabled = true;
   String localeCode = 'system';
+  String themeCode = 'sage';
   List<String> reasons = [];
 
   bool loaded = false;
@@ -75,6 +76,7 @@ class AppState extends ChangeNotifier {
     demoMode = _prefs.getBool('demoMode') ?? false;
     notificationsEnabled = _prefs.getBool('notifications') ?? true;
     localeCode = _prefs.getString('locale') ?? 'system';
+    themeCode = _prefs.getString('theme') ?? 'sage';
     reasons = _prefs.getStringList('reasons') ?? [];
 
     final habitRows = await _db.query('habits', orderBy: 'created_at ASC');
@@ -91,6 +93,9 @@ class AppState extends ChangeNotifier {
       final habitId = row['habit_id'] as int;
       unlocked.putIfAbsent(habitId, () => {}).add(row['key'] as String);
     }
+    // Catch-up evaluation for pre-existing data (e.g. an app update):
+    // persisted achievements are filled in silently, no celebration spam.
+    _evaluateMilestones(celebrate: false);
     loaded = true;
     notifyListeners();
   }
@@ -202,8 +207,8 @@ class AppState extends ChangeNotifier {
 
   /// Recomputes which milestones each habit has reached and persists newly
   /// unlocked ones. [newlyUnlocked] collects the fresh keys for celebration.
-  void _evaluateMilestones() {
-    newlyUnlocked = {};
+  void _evaluateMilestones({bool celebrate = true}) {
+    if (celebrate) newlyUnlocked = {};
     for (final habit in habits) {
       final set = unlocked.putIfAbsent(habit.id!, () => {});
       final days = daysFree(habit, now);
@@ -213,7 +218,7 @@ class AppState extends ChangeNotifier {
       void check(String key, bool reached) {
         if (reached && !set.contains(key)) {
           set.add(key);
-          newlyUnlocked.add(key);
+          if (celebrate) newlyUnlocked.add(key);
           _db
               .insert('achievements', {
                 'habit_id': habit.id,
@@ -266,6 +271,12 @@ class AppState extends ChangeNotifier {
   Future<void> setLocale(String code) async {
     localeCode = code;
     await _prefs.setString('locale', code);
+    notifyListeners();
+  }
+
+  Future<void> setTheme(String code) async {
+    themeCode = code;
+    await _prefs.setString('theme', code);
     notifyListeners();
   }
 

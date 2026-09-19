@@ -206,6 +206,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sosAgain => 'Ещё раз';
 
   @override
+  String get audioUnavailable => 'Аудио недоступно на этом устройстве';
+
+  @override
   String get statsTitle => 'Ваш прогресс';
 
   @override
