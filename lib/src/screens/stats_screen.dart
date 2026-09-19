@@ -139,44 +139,38 @@ class _StatsBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(l10n.statsWeeklyReport,
-                          style: const TextStyle(
-                              fontFamily: 'DayZeroNunito',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18)),
-                    ),
-                    // 7-day view is free; the 30-day view is Premium.
-                    SegmentedButton<int>(
-                      segments: [
-                        ButtonSegment(
-                            value: 7, label: Text(l10n.statsView7)),
-                        ButtonSegment(
-                          value: 30,
-                          label: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(l10n.statsView30),
-                              if (!state.isPremium) ...[
-                                const SizedBox(width: 4),
-                                const Icon(Icons.lock_outline, size: 14),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ],
-                      selected: {rangeDays},
-                      onSelectionChanged: (s) => onRangeChanged(s.first),
-                      showSelectedIcon: false,
-                      style: const ButtonStyle(
-                        visualDensity: VisualDensity.compact,
-                        textStyle: WidgetStatePropertyAll(
-                            TextStyle(fontSize: 12)),
+                Text(l10n.statsWeeklyReport,
+                    style: const TextStyle(
+                        fontFamily: 'DayZeroNunito',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18)),
+                const SizedBox(height: 8),
+                // 7-day view is free; the 30-day view is Premium.
+                // Own row: it must never squeeze the title on narrow phones.
+                SegmentedButton<int>(
+                  segments: [
+                    ButtonSegment(value: 7, label: Text(l10n.statsView7)),
+                    ButtonSegment(
+                      value: 30,
+                      label: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(l10n.statsView30),
+                          if (!state.isPremium) ...[
+                            const SizedBox(width: 4),
+                            const Icon(Icons.lock_outline, size: 14),
+                          ],
+                        ],
                       ),
                     ),
                   ],
+                  selected: {rangeDays},
+                  onSelectionChanged: (s) => onRangeChanged(s.first),
+                  showSelectedIcon: false,
+                  style: const ButtonStyle(
+                    visualDensity: VisualDensity.compact,
+                    textStyle: WidgetStatePropertyAll(fontSize: 12),
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
