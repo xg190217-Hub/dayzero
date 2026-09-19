@@ -1,0 +1,36 @@
+{
+  // DayZero（归零）— VS Code 工作区文件。双击本文件即可在 VS Code 中
+  // 打开整个项目（文件 → 打开工作区 也可）。
+  "folders": [
+    {
+      "path": ".",
+      "name": "DayZero（归零）"
+    }
+  ],
+  "settings": {
+    // 本机 Flutter SDK 路径（VS Code 无法自动探测时启用）
+    "dart.flutterSdkPath": "C:\\flutter",
+    // 保持资源管理器干净
+    "files.exclude": {
+      "**/.dart_tool": true,
+      "**/build": true,
+      "**/ios/Pods": true,
+      "**/ios/Flutter/ephemeral": true
+    },
+    "files.watcherExclude": {
+      "**/build/**": true,
+      "**/.dart_tool/**": true
+    },
+    "dart.previewFlutterUiGuides": true,
+    "[dart]": {
+      "editor.formatOnSave": true,
+      "editor.rulers": [80]
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "Dart-Code.dart-code",
+      "Dart-Code.flutter"
+    ]
+  }
+}

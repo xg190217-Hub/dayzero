@@ -24,6 +24,10 @@ Flutter single codebase (iOS + Web demo). Local SQLite storage, StoreKit 2 via `
 
 ## Development
 
+**VS Code:** double-click `DayZero.code-workspace` at the repo root to open the
+project (recommended extensions: Dart & Flutter). Debug configs for Edge /
+Chrome / web-server live in `.vscode/launch.json` (F5).
+
 ```bash
 # First time (China mirrors):
 export PUB_HOSTED_URL=https://pub.flutter-io.cn

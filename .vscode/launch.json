@@ -1,0 +1,46 @@
+{
+  // DayZero 调试配置。F5 即可启动。
+  // 注意：Edge / Chrome 调试需要先跑过一次
+  //   flutter build web --release --dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/
+  // 或者直接用命令行：node tools/serve.js && node tools/launch_edge.js
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "DayZero (Edge 调试)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "-d",
+        "edge",
+        "--dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/"
+      ]
+    },
+    {
+      "name": "DayZero (Chrome 调试)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "-d",
+        "chrome",
+        "--dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/"
+      ]
+    },
+    {
+      "name": "DayZero (Web 服务器)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "-d",
+        "web-server",
+        "--web-port",
+        "8090",
+        "--web-hostname",
+        "localhost",
+        "--dart-define=FLUTTER_WEB_CANVASKIT_URL=/canvaskit/"
+      ]
+    }
+  ]
+}
