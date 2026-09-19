@@ -4,10 +4,13 @@ import 'package:provider/provider.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../logic/progress.dart';
+import '../models/check_in.dart';
+import '../models/habit.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
 import '../widgets/habit_icon.dart';
 import '../widgets/habit_selector.dart';
+import 'checkin_screen.dart';
 import 'paywall_screen.dart';
 
 class StatsScreen extends StatefulWidget {
@@ -19,6 +22,7 @@ class StatsScreen extends StatefulWidget {
 
 class _StatsScreenState extends State<StatsScreen> {
   int _habitIndex = 0;
+  int _rangeDays = 7;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,21 @@ class _StatsScreenState extends State<StatsScreen> {
               index: _habitIndex,
               onChanged: (i) => setState(() => _habitIndex = i),
             ),
-          Expanded(child: _StatsBody(habit: habit)),
+          Expanded(
+            child: _StatsBody(
+              habit: habit,
+              rangeDays: _rangeDays,
+              onRangeChanged: (days) {
+                if (days == 30 && !state.isPremium) {
+                  // The 30-day view is the premium stats unlock.
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const PaywallScreen()));
+                  return;
+                }
+                setState(() => _rangeDays = days);
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -49,15 +67,40 @@ class _StatsScreenState extends State<StatsScreen> {
 }
 
 class _StatsBody extends StatelessWidget {
-  const _StatsBody({required this.habit});
+  const _StatsBody({
+    required this.habit,
+    required this.rangeDays,
+    required this.onRangeChanged,
+  });
 
-  final dynamic habit;
+  final Habit habit;
+  final int rangeDays;
+  final ValueChanged<int> onRangeChanged;
+
+  String _label(AppLocalizations l10n, Habit h) {
+    switch (h.type) {
+      case HabitType.alcohol:
+        return l10n.habit_alcohol;
+      case HabitType.smoking:
+        return l10n.habit_smoking;
+      case HabitType.vaping:
+        return l10n.habit_vaping;
+      case HabitType.sugar:
+        return l10n.habit_sugar;
+      case HabitType.caffeine:
+        return l10n.habit_caffeine;
+      case HabitType.social:
+        return l10n.habit_social;
+      case HabitType.custom:
+        return h.name;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final state = context.watch<AppState>();
-    final checkIns = state.checkInsFor(habit.id as int);
+    final checkIns = state.checkInsFor(habit.id!);
     final summary = weeklySummary(checkIns, state.now);
     final days = daysFree(habit, state.now);
     final streak = currentStreak(checkIns, state.now);
@@ -71,9 +114,7 @@ class _StatsBody extends StatelessWidget {
             HabitIcon(type: habit.type, size: 36),
             const SizedBox(width: 10),
             Text(
-              habit.type.nameKey == 'habit_custom'
-                  ? habit.name as String
-                  : _label(l10n, habit.type.nameKey as String),
+              _label(l10n, habit),
               style: const TextStyle(
                   fontFamily: 'DayZeroNunito',
                   fontWeight: FontWeight.w700,
@@ -98,11 +139,45 @@ class _StatsBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.statsWeeklyReport,
-                    style: const TextStyle(
-                        fontFamily: 'DayZeroNunito',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18)),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(l10n.statsWeeklyReport,
+                          style: const TextStyle(
+                              fontFamily: 'DayZeroNunito',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18)),
+                    ),
+                    // 7-day view is free; the 30-day view is Premium.
+                    SegmentedButton<int>(
+                      segments: [
+                        ButtonSegment(
+                            value: 7, label: Text(l10n.statsView7)),
+                        ButtonSegment(
+                          value: 30,
+                          label: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(l10n.statsView30),
+                              if (!state.isPremium) ...[
+                                const SizedBox(width: 4),
+                                const Icon(Icons.lock_outline, size: 14),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ],
+                      selected: {rangeDays},
+                      onSelectionChanged: (s) => onRangeChanged(s.first),
+                      showSelectedIcon: false,
+                      style: const ButtonStyle(
+                        visualDensity: VisualDensity.compact,
+                        textStyle: WidgetStatePropertyAll(
+                            TextStyle(fontSize: 12)),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 4),
                 Text(
                   '${summary.checkInCount} ${l10n.statsCheckins}',
@@ -110,8 +185,34 @@ class _StatsBody extends StatelessWidget {
                       color: Theme.of(context).colorScheme.outline),
                 ),
                 const SizedBox(height: 16),
-                if (summary.isEmpty)
-                  Text(l10n.statsNoData)
+                if (checkIns.isEmpty)
+                  // A friendly, actionable empty state instead of grey text.
+                  Column(
+                    children: [
+                      const SizedBox(height: 8),
+                      Icon(Icons.insights,
+                          size: 48,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .outlineVariant),
+                      const SizedBox(height: 12),
+                      Text(
+                        l10n.statsNoData,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.outline),
+                      ),
+                      const SizedBox(height: 12),
+                      FilledButton.icon(
+                        icon: const Icon(Icons.edit_note),
+                        label: Text(l10n.homeCheckIn),
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    CheckInScreen(habit: habit))),
+                      ),
+                    ],
+                  )
                 else
                   Column(
                     children: [
@@ -119,8 +220,8 @@ class _StatsBody extends StatelessWidget {
                         context,
                         title: l10n.statsMood,
                         color: kLeafGreen,
-                        values: _last7(context, checkIns, state, (c) => c.mood
-                            .toDouble()),
+                        values: _lastN(checkIns, state, (c) => c.mood
+                            .toDouble(), rangeDays),
                         maxY: 5,
                         now: state.now,
                       ),
@@ -129,9 +230,9 @@ class _StatsBody extends StatelessWidget {
                         context,
                         title: l10n.statsCraving,
                         color: const Color(0xFFE57373),
-                        values: _last7(context, checkIns, state, (c) => c
+                        values: _lastN(checkIns, state, (c) => c
                             .craving
-                            .toDouble()),
+                            .toDouble(), rangeDays),
                         maxY: 5,
                         now: state.now,
                       ),
@@ -158,34 +259,16 @@ class _StatsBody extends StatelessWidget {
     );
   }
 
-  String _label(AppLocalizations l10n, String key) {
-    switch (key) {
-      case 'habit_alcohol':
-        return l10n.habit_alcohol;
-      case 'habit_smoking':
-        return l10n.habit_smoking;
-      case 'habit_vaping':
-        return l10n.habit_vaping;
-      case 'habit_sugar':
-        return l10n.habit_sugar;
-      case 'habit_caffeine':
-        return l10n.habit_caffeine;
-      case 'habit_social':
-        return l10n.habit_social;
-      default:
-        return key;
-    }
-  }
-
-  /// Last 7 days of a metric, oldest first, null when missing.
-  List<double?> _last7(BuildContext context, dynamic checkIns, AppState state,
-      double Function(dynamic) pick) {
+  /// Last [n] days of a metric, oldest first, null when missing.
+  List<double?> _lastN(List<CheckIn> checkIns, AppState state,
+      double Function(CheckIn) pick, int n) {
     final result = <double?>[];
-    for (var i = 6; i >= 0; i--) {
+    for (var i = n - 1; i >= 0; i--) {
       final day = DateTime(state.now.year, state.now.month, state.now.day)
           .subtract(Duration(days: i));
-      final key = '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
-      dynamic found;
+      final key =
+          '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+      CheckIn? found;
       for (final c in checkIns) {
         if (c.date == key) {
           found = c;
@@ -228,6 +311,7 @@ class _StatsBody extends StatelessWidget {
     required double maxY,
     required DateTime now,
   }) {
+    final n = values.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -258,12 +342,14 @@ class _StatsBody extends StatelessWidget {
                   sideTitles: SideTitles(
                     showTitles: true,
                     reservedSize: 22,
+                    // Show roughly 7 day labels regardless of range.
+                    interval: n > 14 ? (n / 7).floorToDouble() : 1,
                     getTitlesWidget: (value, meta) {
                       final i = value.toInt();
-                      if (i < 0 || i > 6) return const SizedBox.shrink();
+                      if (i < 0 || i > n - 1) return const SizedBox.shrink();
                       // Labels derive from the same clock as the data.
                       final day = DateTime(now.year, now.month, now.day)
-                          .subtract(Duration(days: 6 - i));
+                          .subtract(Duration(days: n - 1 - i));
                       return Padding(
                         padding: const EdgeInsets.only(top: 4),
                         child: Text(

@@ -222,6 +222,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get rateLater => 'لاحقًا';
 
   @override
+  String get statsView7 => 'عرض 7 أيام';
+
+  @override
+  String get statsView30 => 'عرض 30 يومًا';
+
+  @override
+  String get premiumFreeTrial => 'تجربة مجانية 7 أيام';
+
+  @override
+  String get deleteAllConfirm =>
+      'حذف جميع العادات وكل سجلاتها؟ لا يمكن التراجع عن ذلك.';
+
+  @override
   String get rateAction => 'التقييم في App Store';
 
   @override

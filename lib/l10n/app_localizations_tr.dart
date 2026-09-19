@@ -223,6 +223,19 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rateLater => 'Daha sonra';
 
   @override
+  String get statsView7 => '7 günlük görünüm';
+
+  @override
+  String get statsView30 => '30 günlük görünüm';
+
+  @override
+  String get premiumFreeTrial => '7 gün ücretsiz deneme';
+
+  @override
+  String get deleteAllConfirm =>
+      'TÜM alışkanlıklar ve tüm geçmiş silinsin mi? Bu geri alınamaz.';
+
+  @override
   String get rateAction => 'App Store\'da puanla';
 
   @override

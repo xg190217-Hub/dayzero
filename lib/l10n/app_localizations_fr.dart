@@ -224,6 +224,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rateLater => 'Plus tard';
 
   @override
+  String get statsView7 => 'Vue 7 jours';
+
+  @override
+  String get statsView30 => 'Vue 30 jours';
+
+  @override
+  String get premiumFreeTrial => '7 jours d\'essai gratuit';
+
+  @override
+  String get deleteAllConfirm =>
+      'Supprimer TOUTES les habitudes et tout leur historique ? Action irréversible.';
+
+  @override
   String get rateAction => 'Noter sur l\'App Store';
 
   @override

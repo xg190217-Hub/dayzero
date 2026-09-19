@@ -220,6 +220,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get rateLater => '나중에';
 
   @override
+  String get statsView7 => '7일 보기';
+
+  @override
+  String get statsView30 => '30일 보기';
+
+  @override
+  String get premiumFreeTrial => '7일 무료 체험';
+
+  @override
+  String get deleteAllConfirm => '모든 습관과 전체 기록을 삭제할까요? 되돌릴 수 없습니다.';
+
+  @override
   String get rateAction => 'App Store에서 평가하기';
 
   @override

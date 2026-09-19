@@ -8,6 +8,12 @@ import '../state/app_state.dart';
 import '../theme.dart';
 import 'settings_screen.dart' show kPrivacyUrl, kTermsUrl;
 
+/// Set together with App Store Connect: the yearly subscription must have a
+/// 7-day introductory offer configured there for this badge to be true.
+/// (Trial conversion in Health & Fitness is ~35%, the highest of any
+/// category — this is the single biggest conversion lever we have.)
+const bool kOfferFreeTrial = true;
+
 /// Premium paywall. Compliance built in:
 ///  - prices + periods shown for every tier
 ///  - Restore Purchases button
@@ -276,11 +282,25 @@ class _PaywallScreenState extends State<PaywallScreen> {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(name,
-                  style: const TextStyle(
-                      fontFamily: 'DayZeroNunito',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(name,
+                      style: const TextStyle(
+                          fontFamily: 'DayZeroNunito',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15)),
+                  if (id == 'dayzero_yearly' && kOfferFreeTrial)
+                    Text(
+                      l10n.premiumFreeTrial,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: kLeafGreen,
+                      ),
+                    ),
+                ],
+              ),
             ),
             if (badgeKey != null)
               Container(

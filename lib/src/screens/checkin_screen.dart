@@ -77,8 +77,17 @@ class _CheckInScreenState extends State<CheckInScreen> {
     if (!mounted) return;
     // Small reward sound (silently skipped when audio is unavailable).
     context.read<AudioService>().play('sounds/chime.wav');
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.checkinDone)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(l10n.checkinDone),
+      // One-tap way back in when the user wants to adjust their entry.
+      action: SnackBarAction(
+        label: l10n.settingsEditHabit,
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => CheckInScreen(habit: widget.habit)));
+        },
+      ),
+    ));
 
     // A strong craving is the exact moment the SOS screen exists for.
     // Fifth check-in = habit forming. The moment users feel the value is the

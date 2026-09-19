@@ -219,6 +219,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get rateLater => 'あとで';
 
   @override
+  String get statsView7 => '7日ビュー';
+
+  @override
+  String get statsView30 => '30日ビュー';
+
+  @override
+  String get premiumFreeTrial => '7日間無料トライアル';
+
+  @override
+  String get deleteAllConfirm => 'すべての習慣と履歴を削除しますか？この操作は元に戻せません。';
+
+  @override
   String get rateAction => 'App Storeで評価する';
 
   @override

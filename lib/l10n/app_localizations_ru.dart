@@ -223,6 +223,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get rateLater => 'Позже';
 
   @override
+  String get statsView7 => 'Вид за 7 дней';
+
+  @override
+  String get statsView30 => 'Вид за 30 дней';
+
+  @override
+  String get premiumFreeTrial => '7 дней бесплатно';
+
+  @override
+  String get deleteAllConfirm =>
+      'Удалить ВСЕ привычки и всю их историю? Это действие необратимо.';
+
+  @override
   String get rateAction => 'Оценить в App Store';
 
   @override

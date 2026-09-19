@@ -223,6 +223,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get rateLater => 'Später';
 
   @override
+  String get statsView7 => '7-Tage-Ansicht';
+
+  @override
+  String get statsView30 => '30-Tage-Ansicht';
+
+  @override
+  String get premiumFreeTrial => '7 Tage kostenlos testen';
+
+  @override
+  String get deleteAllConfirm =>
+      'ALLE Gewohnheiten und ihre gesamte Historie löschen? Dies kann nicht rückgängig gemacht werden.';
+
+  @override
   String get rateAction => 'Im App Store bewerten';
 
   @override

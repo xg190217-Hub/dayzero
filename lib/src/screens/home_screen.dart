@@ -218,12 +218,11 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(width: 12),
         Expanded(
           child: FilledButton.tonalIcon(
+            // Warm amber, not alarm red: someone at peak craving needs a
+            // welcoming lifeline, not an error signal.
             style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context)
-                  .colorScheme
-                  .errorContainer,
-              foregroundColor:
-                  Theme.of(context).colorScheme.onErrorContainer,
+              backgroundColor: const Color(0xFFF9A825).withValues(alpha: 0.28),
+              foregroundColor: const Color(0xFF7A4F00),
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16)),
@@ -334,9 +333,29 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        icon: const Icon(Icons.emoji_events, color: Color(0xFFF9A825), size: 44),
-        title: Text(l10n.milestonesTitle),
-        content: Text(labels, textAlign: TextAlign.center),
+        // A milestone is an emotional peak: make it feel like a ceremony.
+        icon: Container(
+          width: 72,
+          height: 72,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [Color(0xFFF9A825), Color(0xFFE65100)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: const Icon(Icons.emoji_events, color: Colors.white, size: 40),
+        ),
+        title: Text(l10n.milestonesTitle, textAlign: TextAlign.center),
+        content: Text(
+          labels,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              fontFamily: 'DayZeroNunito',
+              fontWeight: FontWeight.w700,
+              fontSize: 16),
+        ),
         actions: [
           FilledButton(
             onPressed: () => Navigator.of(dialogContext).pop(),

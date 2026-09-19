@@ -425,7 +425,7 @@ class SettingsScreen extends StatelessWidget {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: Text(l10n.settingsDeleteData),
-        content: Text(l10n.deleteHabitConfirm),
+        content: Text(l10n.deleteAllConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(false),

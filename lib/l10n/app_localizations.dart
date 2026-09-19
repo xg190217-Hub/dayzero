@@ -526,6 +526,30 @@ abstract class AppLocalizations {
   /// **'Maybe later'**
   String get rateLater;
 
+  /// No description provided for @statsView7.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day view'**
+  String get statsView7;
+
+  /// No description provided for @statsView30.
+  ///
+  /// In en, this message translates to:
+  /// **'30-day view'**
+  String get statsView30;
+
+  /// No description provided for @premiumFreeTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day free trial'**
+  String get premiumFreeTrial;
+
+  /// No description provided for @deleteAllConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete ALL habits and their entire history? This cannot be undone.'**
+  String get deleteAllConfirm;
+
   /// No description provided for @rateAction.
   ///
   /// In en, this message translates to:

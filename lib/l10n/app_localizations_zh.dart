@@ -216,6 +216,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get rateLater => '稍后再说';
 
   @override
+  String get statsView7 => '7 天视图';
+
+  @override
+  String get statsView30 => '30 天视图';
+
+  @override
+  String get premiumFreeTrial => '7 天免费试用';
+
+  @override
+  String get deleteAllConfirm => '删除全部习惯及其所有记录？此操作无法撤销。';
+
+  @override
   String get rateAction => '去 App Store 评分';
 
   @override
