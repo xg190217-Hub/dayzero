@@ -170,6 +170,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get checkinDone => 'Enregistré — à demain';
 
   @override
+  String get checkinEditLabel => 'Modifier le check-in du jour';
+
+  @override
   String get sosTitle => 'SOS envie';
 
   @override

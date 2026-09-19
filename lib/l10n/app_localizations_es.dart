@@ -169,6 +169,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get checkinDone => 'Guardado. ¡Hasta mañana!';
 
   @override
+  String get checkinEditLabel => 'Editar el registro de hoy';
+
+  @override
   String get sosTitle => 'SOS antojo';
 
   @override

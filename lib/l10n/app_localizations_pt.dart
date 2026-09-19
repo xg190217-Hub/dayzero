@@ -169,6 +169,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get checkinDone => 'Salvo — até amanhã';
 
   @override
+  String get checkinEditLabel => 'Editar o registro de hoje';
+
+  @override
   String get sosTitle => 'SOS fissura';
 
   @override

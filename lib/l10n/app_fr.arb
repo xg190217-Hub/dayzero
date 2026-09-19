@@ -51,6 +51,7 @@
   "trigger_celebration": "Fêtes",
   "checkinNote": "Note (facultatif)",
   "checkinDone": "Enregistré — à demain",
+  "checkinEditLabel": "Modifier le check-in du jour",
   "sosTitle": "SOS envie",
   "sosBody": "L'envie culmine en quelques minutes puis passe. Vous pouvez tenir.",
   "sosBreathing": "Respirez avec moi",

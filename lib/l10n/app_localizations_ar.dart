@@ -169,6 +169,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get checkinDone => 'تم الحفظ — إلى الغد';
 
   @override
+  String get checkinEditLabel => 'تعديل تسجيل اليوم';
+
+  @override
   String get sosTitle => 'إنقاذ الرغبة';
 
   @override

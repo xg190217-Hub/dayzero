@@ -169,6 +169,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get checkinDone => 'Сохранено — до завтра';
 
   @override
+  String get checkinEditLabel => 'Изменить отметку за сегодня';
+
+  @override
   String get sosTitle => 'SOS при тяге';
 
   @override

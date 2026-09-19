@@ -169,6 +169,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get checkinDone => 'Kaydedildi — yarın görüşürüz';
 
   @override
+  String get checkinEditLabel => 'Bugünkü işaretlemeyi düzenle';
+
+  @override
   String get sosTitle => 'İstek SOS';
 
   @override

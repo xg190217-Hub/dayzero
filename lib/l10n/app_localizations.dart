@@ -424,6 +424,12 @@ abstract class AppLocalizations {
   /// **'Saved — see you tomorrow'**
   String get checkinDone;
 
+  /// No description provided for @checkinEditLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit today\'s check-in'**
+  String get checkinEditLabel;
+
   /// No description provided for @sosTitle.
   ///
   /// In en, this message translates to:

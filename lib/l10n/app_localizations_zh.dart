@@ -163,6 +163,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get checkinDone => '已保存——明天见';
 
   @override
+  String get checkinEditLabel => '修改今日打卡';
+
+  @override
   String get sosTitle => '渴求急救';
 
   @override

@@ -51,6 +51,7 @@
   "trigger_celebration": "Feiern",
   "checkinNote": "Notiz (optional)",
   "checkinDone": "Gespeichert – bis morgen",
+  "checkinEditLabel": "Heutigen Check-in bearbeiten",
   "sosTitle": "Verlangen-SOS",
   "sosBody": "Verlangen erreicht nach ein paar Minuten den Höhepunkt und geht vorbei. Du schaffst das.",
   "sosBreathing": "Atme mit mir",

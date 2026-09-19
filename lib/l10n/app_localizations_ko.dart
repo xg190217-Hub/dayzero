@@ -167,6 +167,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get checkinDone => '저장됐어요 — 내일 봐요';
 
   @override
+  String get checkinEditLabel => '오늘 체크인 수정';
+
+  @override
   String get sosTitle => '갈망 SOS';
 
   @override

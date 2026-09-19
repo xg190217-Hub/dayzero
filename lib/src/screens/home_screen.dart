@@ -229,8 +229,11 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Expanded(
           child: FilledButton.icon(
-            icon: Icon(checked ? Icons.check_circle : Icons.edit_note),
-            label: Text(checked ? l10n.checkinTitle : l10n.homeCheckIn),
+            // After checking in, the button explicitly becomes the edit
+            // entry point: the label says so instead of relying on a
+            // subtle icon change.
+            icon: Icon(checked ? Icons.edit : Icons.edit_note),
+            label: Text(checked ? l10n.checkinEditLabel : l10n.homeCheckIn),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => CheckInScreen(habit: habit)));

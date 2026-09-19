@@ -166,6 +166,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get checkinDone => '保存しました——また明日';
 
   @override
+  String get checkinEditLabel => '今日のチェックインを編集';
+
+  @override
   String get sosTitle => '欲求SOS';
 
   @override

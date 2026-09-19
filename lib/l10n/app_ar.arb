@@ -51,6 +51,7 @@
   "trigger_celebration": "الاحتفالات",
   "checkinNote": "ملاحظة (اختياري)",
   "checkinDone": "تم الحفظ — إلى الغد",
+  "checkinEditLabel": "تعديل تسجيل اليوم",
   "sosTitle": "إنقاذ الرغبة",
   "sosBody": "تبلغ الرغبة ذروتها في دقائق ثم تزول. يمكنك الصمود.",
   "sosBreathing": "تنفّس معي",

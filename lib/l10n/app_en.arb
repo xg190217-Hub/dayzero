@@ -52,6 +52,7 @@
   "trigger_celebration": "Celebration",
   "checkinNote": "Note (optional)",
   "checkinDone": "Saved — see you tomorrow",
+  "checkinEditLabel": "Edit today's check-in",
   "sosTitle": "Craving SOS",
   "sosBody": "Cravings peak for a few minutes and then pass. You can ride it out.",
   "sosBreathing": "Breathe with me",
