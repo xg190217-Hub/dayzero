@@ -129,22 +129,36 @@ class _HomeScreenState extends State<HomeScreen> {
     final state = context.watch<AppState>();
     final days = daysFree(habit, state.now);
     final elapsed = state.now.difference(habit.quitDate);
-    // Day zero shows hours+minutes: "0 days" reads as failure on launch day.
-    // Future quit dates clamp to zero instead of going negative.
-    final label = days == 0 && !elapsed.isNegative
-        ? _hoursLabel(l10n, elapsed)
-        : days == 1
-            ? l10n.homeDaysSinceOne
-            : '$days ${l10n.homeDaysSince}';
+    final scheme = Theme.of(context).colorScheme;
+    // The number is the hero, the unit is its caption. Rendering them as one
+    // string once produced a broken Chinese singular ("天自由" with no
+    // number); split, the count is always visible and every language works.
+    final isDayZero = days == 0 && !elapsed.isNegative;
+    final hero = isDayZero ? _hoursLabel(l10n, elapsed) : '$days';
+    final caption = isDayZero
+        ? l10n.homeTimeFree
+        : (days == 1 ? l10n.homeDaysSinceOne : l10n.homeDaysSince);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            Text(label, style: displayFont(context, size: 44)),
+            Text(
+              hero,
+              style: displayFont(context, size: isDayZero ? 40 : 72)
+                  .copyWith(color: scheme.primary),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              caption,
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: scheme.outline),
+            ),
             // A live streak badge: the single strongest retention hook.
             if (_streak(state, habit) >= 2) ...[
-              const SizedBox(height: 6),
+              const SizedBox(height: 10),
               Text(
                 '🔥 ${l10n.homeStreak(_streak(state, habit))}',
                 style: const TextStyle(
@@ -153,16 +167,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 15),
               ),
             ],
-            const SizedBox(height: 4),
-            Text(
-              '${habit.quitDate.year}-${habit.quitDate.month.toString().padLeft(2, '0')}-${habit.quitDate.day.toString().padLeft(2, '0')}',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Theme.of(context).colorScheme.outline),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.event, size: 14, color: scheme.outline),
+                const SizedBox(width: 4),
+                Text(
+                  '${habit.quitDate.year}-${habit.quitDate.month.toString().padLeft(2, '0')}-${habit.quitDate.day.toString().padLeft(2, '0')}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: scheme.outline),
+                ),
+              ],
             ),
             if (habit.dailySpend > 0) ...[
-              const SizedBox(height: 16),
+              const SizedBox(height: 14),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -188,11 +209,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int _streak(AppState state, Habit habit) =>
       currentStreak(state.checkInsFor(habit.id!), state.now);
 
+  /// "2时 15分" — the caption (unit word) is rendered separately above.
   String _hoursLabel(AppLocalizations l10n, Duration d) {
     final h = d.inHours;
     final m = d.inMinutes % 60;
-    if (m == 0) return '$h${l10n.hourUnit} ${l10n.homeTimeFree}';
-    return '$h${l10n.hourUnit} $m${l10n.minuteUnit} ${l10n.homeTimeFree}';
+    if (m == 0) return '$h${l10n.hourUnit}';
+    return '$h${l10n.hourUnit} $m${l10n.minuteUnit}';
   }
 
   String _money(double value) {

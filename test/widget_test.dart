@@ -94,8 +94,9 @@ void main() {
     await tester.pumpWidget(wrap(state));
     await dismissCelebration(tester);
 
-    // Quit 3 days ago → "3 days free".
-    expect(find.textContaining('3 days free'), findsOneWidget);
+    // Quit 3 days ago → the hero number "3" with the "days free" caption.
+    expect(find.text('3'), findsOneWidget);
+    expect(find.text('days free'), findsOneWidget);
     // Money saved = 3 × 10.
     expect(find.textContaining('saved'), findsOneWidget);
   });
