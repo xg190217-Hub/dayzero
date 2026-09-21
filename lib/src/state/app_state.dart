@@ -99,6 +99,9 @@ class AppState extends ChangeNotifier {
     reminderHour = _prefs.getInt('reminderHour') ?? 20;
     localeCode = _prefs.getString('locale') ?? 'system';
     themeCode = _prefs.getString('theme') ?? 'sage';
+    // Migration: the redundant 'forest' preset was removed — fall back to
+    // the (visually identical) sage.
+    if (themeCode == 'forest') themeCode = 'sage';
     customHue = _prefs.getInt('customHue') ?? 150;
     fontCode = _prefs.getString('font') ?? 'roboto';
     textColorCode = _prefs.getString('textColor') ?? 'auto';

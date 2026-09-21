@@ -18,9 +18,10 @@ class ThemePreset {
   final Color seed;
 }
 
+/// Five presets, every hue distinct. (A former 'forest' preset shared the
+/// sage hue and its derived background was indistinguishable — removed.)
 const kThemePresets = <String, ThemePreset>{
   'sage': ThemePreset(kLeafGreen),
-  'forest': ThemePreset(Color(0xFF1B4332)),
   'ocean': ThemePreset(Color(0xFF0B5563)),
   'rose': ThemePreset(Color(0xFFAD3A6B)),
   // #A8461A: keeps the warm sunset feel with a safer white-on contrast
