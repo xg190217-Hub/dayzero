@@ -307,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Icon(
             reached ? Icons.check_circle : Icons.radio_button_unchecked,
-            color: reached ? kLeafGreen : Theme.of(context).colorScheme.outlineVariant,
+            color: reached ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant,
             size: 20,
           ),
           const SizedBox(width: 12),
@@ -344,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final label = l10n.milestoneLabel(next.key);
     return Card(
       child: ListTile(
-        leading: Icon(next.icon, color: kLeafGreen),
+        leading: Icon(next.icon, color: Theme.of(context).colorScheme.primary),
         title: Text(l10n.homeNextMilestone),
         subtitle: Text('$label · ${l10n.homeIn} $remaining ${l10n.dayUnit}'),
       ),

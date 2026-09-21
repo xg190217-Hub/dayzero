@@ -7,7 +7,6 @@ import '../l10n_helpers.dart';
 import '../logic/progress.dart';
 import '../models/habit.dart';
 import '../state/app_state.dart';
-import '../theme.dart';
 import '../widgets/habit_icon.dart';
 import '../widgets/habit_selector.dart';
 
@@ -178,11 +177,11 @@ class _MilestonesBody extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
           decoration: BoxDecoration(
             color: unlockedOnly
-                ? kLeafGreen.withValues(alpha: 0.12)
+                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.12)
                 : scheme.surface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: unlockedOnly ? kLeafGreen : scheme.outlineVariant,
+              color: unlockedOnly ? Theme.of(context).colorScheme.primary : scheme.outlineVariant,
             ),
           ),
           child: Column(
@@ -190,7 +189,7 @@ class _MilestonesBody extends StatelessWidget {
               Icon(
                 icon,
                 color: unlockedOnly
-                    ? kLeafGreen
+                    ? Theme.of(context).colorScheme.primary
                     : scheme.outlineVariant,
                 size: 26,
               ),

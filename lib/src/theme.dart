@@ -8,23 +8,25 @@ const kSage = Color(0xFF8FBF9F);
 const kWarmBackground = Color(0xFFF6F4EE);
 const kDarkBackground = Color(0xFF101714);
 
-/// Premium theme presets. Each defines a seed color and a light surface.
+/// Premium theme presets. The seed color drives the ENTIRE tonal system
+/// (background, cards, navigation, containers) via ColorScheme.fromSeed —
+/// so switching themes re-tints the whole app, harmonized by Material 3's
+/// color science instead of hand-picked accents.
 class ThemePreset {
-  const ThemePreset(this.seed, this.surface);
+  const ThemePreset(this.seed);
 
   final Color seed;
-  final Color surface;
 }
 
 const kThemePresets = <String, ThemePreset>{
-  'sage': ThemePreset(kLeafGreen, kWarmBackground),
-  'forest': ThemePreset(Color(0xFF1B4332), Color(0xFFEDF3EC)),
-  'ocean': ThemePreset(Color(0xFF0B5563), Color(0xFFEBF3F5)),
-  'rose': ThemePreset(Color(0xFFAD3A6B), Color(0xFFF8F0F3)),
+  'sage': ThemePreset(kLeafGreen),
+  'forest': ThemePreset(Color(0xFF1B4332)),
+  'ocean': ThemePreset(Color(0xFF0B5563)),
+  'rose': ThemePreset(Color(0xFFAD3A6B)),
   // #A8461A: keeps the warm sunset feel with a safer white-on contrast
   // margin (5.9:1 vs the borderline 4.5:1 of #C4551D).
-  'sunset': ThemePreset(Color(0xFFA8461A), Color(0xFFF9F1E9)),
-  'violet': ThemePreset(Color(0xFF5B3AA8), Color(0xFFF2EFF8)),
+  'sunset': ThemePreset(Color(0xFFA8461A)),
+  'violet': ThemePreset(Color(0xFF5B3AA8)),
 };
 
 /// Body font options (all OFL-licensed, bundled locally).
@@ -80,12 +82,14 @@ ThemeData buildDayZeroTheme(
   final isDark = brightness == Brightness.dark;
   final p = kThemePresets[preset] ?? kThemePresets['sage']!;
   final seed = seedOverride ?? p.seed;
-  // No `primary:` override: ColorScheme.fromSeed already computes a lighter,
-  // desaturated primary for dark mode (WCAG-safe on dark surfaces).
+  // NO surface/primary overrides: ColorScheme.fromSeed derives the whole
+  // tonal system from the seed (background, cards, containers all tinted
+  // toward the seed hue — that's what makes a theme feel like a theme).
+  // Dark mode automatically gets lighter primaries and near-black tinted
+  // surfaces that pass WCAG.
   final scheme = ColorScheme.fromSeed(
     seedColor: seed,
     brightness: brightness,
-    surface: isDark ? kDarkBackground : p.surface,
   );
   final fontFamily = kFontFamilies[fontCode] ?? 'Roboto';
   // Text colors are brightness-paired; dark mode picks the light variant.
@@ -95,7 +99,9 @@ ThemeData buildDayZeroTheme(
     useMaterial3: true,
     colorScheme: scheme,
     fontFamily: fontFamily,
-    scaffoldBackgroundColor: isDark ? kDarkBackground : p.surface,
+    // Background = seed-tinted surface: switching themes re-tints the whole
+    // app, not just accents.
+    scaffoldBackgroundColor: scheme.surface,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -109,7 +115,9 @@ ThemeData buildDayZeroTheme(
     ),
     cardTheme: CardThemeData(
       elevation: 0,
-      color: isDark ? const Color(0xFF1A2420) : Colors.white,
+      // M3 tonal surface: slightly lighter than the background, harmonized
+      // with the seed (never hardcoded white).
+      color: scheme.surfaceContainerLow,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
     filledButtonTheme: FilledButtonThemeData(
@@ -130,8 +138,8 @@ ThemeData buildDayZeroTheme(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: isDark ? const Color(0xFF16201C) : Colors.white,
-      indicatorColor: kSage.withValues(alpha: 0.35),
+      backgroundColor: scheme.surfaceContainer,
+      indicatorColor: scheme.secondaryContainer,
       labelTextStyle: WidgetStatePropertyAll(TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w600,

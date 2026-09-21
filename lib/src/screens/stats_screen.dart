@@ -197,7 +197,7 @@ class _StatsBody extends StatelessWidget {
                       _chart(
                         context,
                         title: l10n.statsMood,
-                        color: kLeafGreen,
+                        color: Theme.of(context).colorScheme.primary,
                         values: _lastN(checkIns, state, (c) => c.mood
                             .toDouble(), rangeDays),
                         maxY: 5,
@@ -224,7 +224,7 @@ class _StatsBody extends StatelessWidget {
         if (!state.isPremium) ...[
           Card(
             child: ListTile(
-              leading: const Icon(Icons.lock_outline, color: kLeafGreen),
+              leading: Icon(Icons.lock_outline, color: Theme.of(context).colorScheme.primary),
               title: Text(l10n.settingsPremium),
               subtitle: Text(l10n.premiumFeature2),
               trailing: const Icon(Icons.chevron_right),

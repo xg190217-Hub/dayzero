@@ -8,7 +8,6 @@ import '../../l10n/app_localizations.dart';
 import '../models/habit.dart';
 import '../services/audio_service.dart';
 import '../state/app_state.dart';
-import '../theme.dart';
 import 'paywall_screen.dart';
 
 /// Craving SOS: 4-4-6 box breathing with audio + reasons + a 90-second
@@ -307,8 +306,8 @@ class _SosScreenState extends State<SosScreen>
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Row(
                             children: [
-                              const Icon(Icons.route,
-                                  color: kLeafGreen, size: 18),
+                              Icon(Icons.route,
+                                  color: Theme.of(context).colorScheme.primary, size: 18),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
@@ -339,8 +338,8 @@ class _SosScreenState extends State<SosScreen>
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Row(
                             children: [
-                              const Icon(Icons.favorite,
-                                  color: kLeafGreen, size: 18),
+                              Icon(Icons.favorite,
+                                  color: Theme.of(context).colorScheme.primary, size: 18),
                               const SizedBox(width: 10),
                               Expanded(child: Text(r)),
                             ],

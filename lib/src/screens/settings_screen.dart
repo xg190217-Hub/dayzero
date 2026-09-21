@@ -39,8 +39,8 @@ class SettingsScreen extends StatelessWidget {
           if (!state.isPremium)
             Card(
               child: ListTile(
-                leading: const Icon(Icons.workspace_premium,
-                    color: kLeafGreen),
+                leading: Icon(Icons.workspace_premium,
+                    color: Theme.of(context).colorScheme.primary),
                 title: Text(l10n.settingsPremium,
                     style: const TextStyle(fontWeight: FontWeight.w700)),
                 subtitle: Text(l10n.premiumSubtitle),
@@ -52,7 +52,7 @@ class SettingsScreen extends StatelessWidget {
           if (state.isPremium)
             Card(
               child: ListTile(
-                leading: const Icon(Icons.verified, color: kLeafGreen),
+                leading: Icon(Icons.verified, color: Theme.of(context).colorScheme.primary),
                 title: Text(l10n.settingsPremium),
                 subtitle: Text(l10n.settingsPremiumActive),
               ),
@@ -67,7 +67,7 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.palette_outlined, color: kLeafGreen),
+                        Icon(Icons.palette_outlined, color: Theme.of(context).colorScheme.primary),
                         const SizedBox(width: 12),
                         Text(l10n.settingsThemes,
                             style: const TextStyle(
@@ -112,7 +112,7 @@ class SettingsScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Icon(Icons.text_fields, color: kLeafGreen),
+                        Icon(Icons.text_fields, color: Theme.of(context).colorScheme.primary),
                         const SizedBox(width: 12),
                         Text(l10n.settingsFont,
                             style: const TextStyle(
@@ -141,7 +141,7 @@ class SettingsScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        Icon(Icons.format_color_text, color: kLeafGreen),
+                        Icon(Icons.format_color_text, color: Theme.of(context).colorScheme.primary),
                         const SizedBox(width: 12),
                         Text(l10n.settingsTextColor,
                             style: const TextStyle(
@@ -170,7 +170,7 @@ class SettingsScreen extends StatelessWidget {
                                   Theme.of(context).colorScheme.onSurface,
                               border: Border.all(
                                 color: selected
-                                    ? kLeafGreen
+                                    ? Theme.of(context).colorScheme.primary
                                     : Theme.of(context)
                                         .colorScheme
                                         .outlineVariant,
@@ -210,7 +210,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 )),
             ListTile(
-              leading: const Icon(Icons.add, color: kLeafGreen),
+              leading: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
               title: Text(l10n.homeAddHabit),
               onTap: () {
                 if (state.canAddHabit) {
@@ -241,11 +241,11 @@ class SettingsScreen extends StatelessWidget {
           _section(context, l10n.plansTitle, [
             if (state.plans.isEmpty)
               ListTile(
-                leading: const Icon(Icons.lightbulb_outline, color: kLeafGreen),
+                leading: Icon(Icons.lightbulb_outline, color: Theme.of(context).colorScheme.primary),
                 title: Text(l10n.plansEmpty),
               ),
             ...state.plans.map((p) => ListTile(
-                  leading: const Icon(Icons.route, color: kLeafGreen),
+                  leading: Icon(Icons.route, color: Theme.of(context).colorScheme.primary),
                   title: Text(
                       '${l10n.plansWhen} ${_triggerLabel(l10n, p.trigger)} → ${p.action}'),
                   trailing: IconButton(
@@ -257,14 +257,14 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 )),
             ListTile(
-              leading: const Icon(Icons.add, color: kLeafGreen),
+              leading: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
               title: Text(l10n.plansAdd),
               onTap: () => _addPlanDialog(context),
             ),
           ]),
           _section(context, l10n.settingsReasons, [
             ...state.reasons.map((r) => ListTile(
-                  leading: const Icon(Icons.favorite, color: kLeafGreen),
+                  leading: Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary),
                   title: Text(r),
                   trailing: IconButton(
                     icon: const Icon(Icons.close),
@@ -275,7 +275,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 )),
             ListTile(
-              leading: const Icon(Icons.add, color: kLeafGreen),
+              leading: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
               title: Text(l10n.addReason),
               onTap: () => _addReasonDialog(context),
             ),

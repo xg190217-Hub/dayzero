@@ -7,7 +7,6 @@ import '../logic/progress.dart';
 import '../models/habit.dart';
 import '../services/audio_service.dart';
 import '../state/app_state.dart';
-import '../theme.dart';
 import '../widgets/habit_icon.dart';
 import 'sos_screen.dart';
 
@@ -180,12 +179,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: selected
-                                ? kLeafGreen.withValues(alpha: 0.18)
+                                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.18)
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: selected
-                                  ? kLeafGreen
+                                  ? Theme.of(context).colorScheme.primary
                                   : scheme.outlineVariant,
                               width: selected ? 2 : 1,
                             ),
@@ -314,7 +313,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
     final go = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        icon: const Icon(Icons.favorite, color: kLeafGreen),
+        icon: Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary),
         title: Text(l10n.rateTitle),
         content: Text(l10n.rateBody),
         actions: [

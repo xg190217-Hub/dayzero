@@ -127,7 +127,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       width: active ? 24 : 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: active ? kLeafGreen : scheme.outlineVariant,
+                        color: active ? Theme.of(context).colorScheme.primary : scheme.outlineVariant,
                         borderRadius: BorderRadius.circular(4),
                       ),
                     );
@@ -214,7 +214,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             width: 96,
             height: 96,
             decoration: BoxDecoration(
-              color: kLeafGreen,
+              color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(28),
             ),
             child: const Icon(Icons.spa, color: Colors.white, size: 52),
@@ -329,16 +329,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: const Icon(Icons.play_circle_outline,
-                        color: kLeafGreen),
+                    leading: Icon(Icons.play_circle_outline,
+                        color: Theme.of(context).colorScheme.primary),
                     title: Text(l10n.today),
                     trailing: _quitDate.day == DateTime.now().day
-                        ? const Icon(Icons.check_circle, color: kLeafGreen)
+                        ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
                         : null,
                     onTap: () => setState(() => _quitDate = DateTime.now()),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.event, color: kLeafGreen),
+                    leading: Icon(Icons.event, color: Theme.of(context).colorScheme.primary),
                     title: Text(
                         '${_quitDate.year}-${_quitDate.month.toString().padLeft(2, '0')}-${_quitDate.day.toString().padLeft(2, '0')}'),
                     trailing: const Icon(Icons.chevron_right),
@@ -438,7 +438,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           if (_reasons.isNotEmpty)
             ..._reasons.map((r) => Card(
                   child: ListTile(
-                    leading: const Icon(Icons.favorite, color: kLeafGreen),
+                    leading: Icon(Icons.favorite, color: Theme.of(context).colorScheme.primary),
                     title: Text(r),
                     trailing: IconButton(
                       icon: const Icon(Icons.close),
