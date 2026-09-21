@@ -194,11 +194,12 @@ Future<void> _renderSet(
 void main() {
   final generating = Platform.environment['GEN_SCREENSHOTS'] == '1';
 
-  setUpAll(() {
+  setUpAll(() async {
     sqfliteFfiInit();
+    // Fonts must load BEFORE the tests render (tearDownAll would be too
+    // late — every glyph would render as a tofu block).
+    await _loadFonts();
   });
-
-  tearDownAll(_loadFonts);
 
   testWidgets('screenshots @6.9 EN (1320x2868, required set)', (tester) async {
     await _renderSet(tester, const Size(1320, 2868), '6.9_en', 'en');
