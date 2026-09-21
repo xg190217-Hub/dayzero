@@ -228,6 +228,52 @@ class AppLocalizationsJa extends AppLocalizations {
   String get sosAmbient => '環境音';
 
   @override
+  String premiumSaveAmount(Object amount) {
+    return '$amountお得';
+  }
+
+  @override
+  String get relapseRecordRestart => '失敗を記録してカウンターを再スタート';
+
+  @override
+  String get relapseRecordKeep => '失敗を記録して続ける';
+
+  @override
+  String onboardingStep(Object step, Object total) {
+    return '$step/$total ステップ';
+  }
+
+  @override
+  String get plansAction => 'わたしは…する';
+
+  @override
+  String get plansWhen => '…のとき';
+
+  @override
+  String get plansAdd => 'プランを追加';
+
+  @override
+  String get plansEmpty => '危ない瞬間にどうするか、あらかじめ書いておきましょう——必要なときに表示します';
+
+  @override
+  String get plansTitle => 'わたしの対処プラン';
+
+  @override
+  String insightNoCompare(Object now) {
+    return '今週の平均欲求：$now/5';
+  }
+
+  @override
+  String insightWorse(Object now, Object prev) {
+    return '今週の平均欲求 $now/5（先週 $prev/5）——毎日続けること自体が大切です';
+  }
+
+  @override
+  String insightBetter(Object now, Object prev) {
+    return '今週の平均欲求 $now/5（先週 $prev/5）——改善しています';
+  }
+
+  @override
   String get textAuto => '自動';
 
   @override
@@ -466,13 +512,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumFeature1 => '無制限の習慣';
 
   @override
-  String get premiumFeature2 => '全統計と週間レポート';
+  String get premiumFeature2 => '呼吸音声ライブラリ全種';
 
   @override
-  String get premiumFeature3 => '呼吸エクササイズ音声ライブラリ';
+  String get premiumFeature3 => 'テーマ・フォント・文字色';
 
   @override
-  String get premiumFeature4 => 'マイルストーンお祝いとテーマ';
+  String get premiumFeature4 => 'マイルストーンお祝いセレモニー';
 
   @override
   String get premiumFreeNote => '無料版は2つの習慣をコア統計付きでずっと使えます。広告もありません。';

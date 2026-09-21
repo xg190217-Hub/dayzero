@@ -47,7 +47,7 @@ DayZero is the private companion for your quit journey. No account, no ads, no c
 WHY DAYZERO
 • 100% private: no account, no analytics, no tracking. Your data never leaves your device.
 • Works offline, forever.
-• 12 languages, one honest price. Free tier tracks 2 habits with core stats — no ads, ever. Premium unlocks unlimited habits, full charts, the complete breathing audio library and more.
+• 12 languages, one honest price. Free tier tracks 2 habits with core stats — no ads, ever. Premium unlocks unlimited habits, custom themes fonts and colors, the complete breathing audio library and more.
 
 DayZero provides motivation and tracking only — it is not medical advice. For severe withdrawal, please consult a doctor.
 
@@ -62,7 +62,7 @@ Terms of use: https://xg190217-hub.github.io/dayzero/terms
 | `dayzero_weekly` | 自动续订订阅 | DayZero Premium | ¥18 |
 | `dayzero_monthly` | 自动续订订阅 | DayZero Premium | ¥45 |
 | `dayzero_yearly` | 自动续订订阅 | DayZero Premium | ¥268 |
-| `dayzero_lifetime` | 非消耗型 | （无组） | ¥598 |
+| `dayzero_lifetime` | 非消耗型 | （无组） | ¥998 |
 
 每个订阅产品必配 6 项（前两个项目被卡的根因）：
 1. 审核信息截图（用 `test/screenshots/6.9_en/06_paywall.png`）

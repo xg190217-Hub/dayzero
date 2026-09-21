@@ -169,6 +169,25 @@ class _SosScreenState extends State<SosScreen>
         _Phase.breatheOut => l10n.sosBreatheOut,
       };
 
+  String _triggerLabel(AppLocalizations l10n, String key) {
+    switch (key) {
+      case 'trigger_stress':
+        return l10n.trigger_stress;
+      case 'trigger_social':
+        return l10n.trigger_social;
+      case 'trigger_boredom':
+        return l10n.trigger_boredom;
+      case 'trigger_habit_loop':
+        return l10n.trigger_habit_loop;
+      case 'trigger_negative':
+        return l10n.trigger_negative;
+      case 'trigger_celebration':
+        return l10n.trigger_celebration;
+      default:
+        return l10n.trigger_none;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -214,19 +233,21 @@ class _SosScreenState extends State<SosScreen>
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               gradient: RadialGradient(
+                                // Theme-derived: the circle follows the
+                                // user's palette instead of staying green.
                                 colors: [
-                                  kSage.withValues(alpha: 0.9),
-                                  kLeafGreen.withValues(alpha: 0.25),
+                                  scheme.primaryContainer,
+                                  scheme.primary.withValues(alpha: 0.25),
                                 ],
                               ),
                             ),
                             child: Center(
                               child: Text(
                                 _phaseLabel(l10n),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 18,
-                                  color: kDeepGreen,
+                                  color: scheme.onPrimaryContainer,
                                 ),
                               ),
                             ),
@@ -267,6 +288,40 @@ class _SosScreenState extends State<SosScreen>
               ),
             ),
           ),
+          if (state.plans.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(l10n.plansTitle,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18)),
+                    const SizedBox(height: 12),
+                    // The pre-committed if-then plans, shown exactly when
+                    // the situation they were written for arrives.
+                    ...state.plans.map((p) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.route,
+                                  color: kLeafGreen, size: 18),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                    '${l10n.plansWhen} ${_triggerLabel(l10n, p.trigger)} → ${p.action}'),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ],
+                ),
+              ),
+            ),
+          ],
           if (state.reasons.isNotEmpty) ...[
             const SizedBox(height: 12),
             Card(

@@ -30,7 +30,7 @@
 为什么选归零
 • 100% 私密：无账号、无统计、无追踪，数据永不离开设备。
 • 永久离线可用。
-• 12 种语言。免费版可永久记录 2 个习惯及核心统计——无广告。高级版解锁无限习惯、完整图表、全套呼吸音频等。
+• 12 种语言。免费版可永久记录 2 个习惯及核心统计——无广告。高级版解锁无限习惯、主题字体颜色、全套呼吸音频等。
 
 归零仅提供激励与记录，不构成医疗建议。戒断反应严重时请咨询医生。
 
@@ -60,7 +60,7 @@ DayZeroは「やめる」ためのプライベートなパートナー。アカ�
 DayZeroが選ばれる理由
 • 100%プライベート：アカウントなし・解析なし・トラッキングなし。
 • ずっとオフラインで使えます。
-• 12言語対応。無料版は2つの習慣を基本統計付きで無期限に利用可能（広告なし）。プレミアムで無制限の習慣・全チャート・呼吸音声ライブラリなどが解放されます。
+• 12言語対応。無料版は2つの習慣を基本統計付きで無期限に利用可能（広告なし）。プレミアムで無制限の習慣・テーマとフォント・呼吸音声ライブラリなどが解放されます。
 
 DayZeroは動機づけと記録のサポートであり、医療アドバイスではありません。
 
@@ -90,7 +90,7 @@ DayZero ist dein privater Begleiter auf diesem Weg. Kein Konto, keine Werbung, k
 WARUM DAYZERO
 • 100 % privat: kein Konto, keine Analyse, kein Tracking.
 • Funktioniert dauerhaft offline.
-• 12 Sprachen. Die Gratisversion trackt 2 Gewohnheiten mit Kernstatistiken — für immer, ohne Werbung. Premium schaltet unbegrenzte Gewohnheiten, alle Diagramme und die komplette Audio-Bibliothek frei.
+• 12 Sprachen. Die Gratisversion trackt 2 Gewohnheiten mit Kernstatistiken — für immer, ohne Werbung. Premium schaltet unbegrenzte Gewohnheiten, Designs & Schriften und die komplette Audio-Bibliothek frei.
 
 DayZero bietet nur Motivation und Aufzeichnung — keine medizinische Beratung. Bei starken Entzugserscheinungen bitte einen Arzt aufsuchen.
 
@@ -120,7 +120,7 @@ DayZero est votre compagnon privé pour arrêter. Pas de compte, pas de pub, pas
 POURQUOI DAYZERO
 • 100 % privé : aucun compte, aucune analyse, aucun suivi.
 • Fonctionne hors ligne, pour toujours.
-• 12 langues. La version gratuite suit 2 habitudes avec les statistiques essentielles — sans pub. Premium débloque des habitudes illimitées, tous les graphiques et la bibliothèque audio complète.
+• 12 langues. La version gratuite suit 2 habitudes avec les statistiques essentielles — sans pub. Premium débloque des habitudes illimitées, thèmes et polices et la bibliothèque audio complète.
 
 DayZero fournit motivation et suivi uniquement — ce n'est pas un avis médical.
 
@@ -150,7 +150,7 @@ DayZero es tu compañero privado en el camino. Sin cuenta, sin anuncios, sin nub
 POR QUÉ DAYZERO
 • 100 % privado: sin cuenta, sin analíticas, sin rastreo.
 • Funciona sin conexión para siempre.
-• 12 idiomas. La versión gratuita sigue 2 hábitos con estadísticas básicas, sin anuncios. Premium desbloquea hábitos ilimitados, todas las gráficas y la biblioteca de audio completa.
+• 12 idiomas. La versión gratuita sigue 2 hábitos con estadísticas básicas, sin anuncios. Premium desbloquea hábitos ilimitados, temas y fuentes y la biblioteca de audio completa.
 
 DayZero solo ofrece motivación y seguimiento; no es consejo médico.
 
@@ -180,7 +180,7 @@ O DayZero é seu companheiro privado nessa jornada. Sem conta, sem anúncios, se
 POR QUE O DAYZERO
 • 100% privado: sem conta, sem análises, sem rastreamento.
 • Funciona offline para sempre.
-• 12 idiomas. A versão gratuita acompanha 2 hábitos com estatísticas essenciais — sem anúncios. O Premium libera hábitos ilimitados, todos os gráficos e a biblioteca de áudio completa.
+• 12 idiomas. A versão gratuita acompanha 2 hábitos com estatísticas essenciais — sem anúncios. O Premium libera hábitos ilimitados, temas e fontes e a biblioteca de áudio completa.
 
 O DayZero oferece apenas motivação e acompanhamento — não é aconselhamento médico.
 
@@ -210,7 +210,7 @@ DayZero — ваш приватный спутник на этом пути. Б�
 ПОЧЕМУ DAYZERO
 • 100% приватность: без аккаунта, без аналитики, без слежки.
 • Работает офлайн всегда.
-• 12 языков. Бесплатная версия отслеживает 2 привычки с базовой статистикой — навсегда и без рекламы. Premium открывает безлимитные привычки, все графики и полную аудиотеку.
+• 12 языков. Бесплатная версия отслеживает 2 привычки с базовой статистикой — навсегда и без рекламы. Premium открывает безлимитные привычки, темы и шрифты и полную аудиотеку.
 
 DayZero даёт только мотивацию и учёт — это не медицинская рекомендация.
 
@@ -240,7 +240,7 @@ DayZero는 끊기 여정의 프라이빗 동반자입니다. 계정도, 광고�
 DayZero를 선택하는 이유
 • 100% 프라이빗: 계정 없음, 분석 없음, 추적 없음.
 • 언제나 오프라인으로 작동.
-• 12개 언어. 무료 버전은 핵심 통계와 함께 2개의 습관을 영원히 추적합니다 — 광고 없이. 프리미엄은 무제한 습관, 전체 차트, 호흡 오디오 라이브러리를 해제합니다.
+• 12개 언어. 무료 버전은 핵심 통계와 함께 2개의 습관을 영원히 추적합니다 — 광고 없이. 프리미엄은 무제한 습관, 테마와 글꼴, 호흡 오디오 라이브러리를 해제합니다.
 
 DayZero는 동기 부여와 기록만 제공하며 의학적 조언이 아닙니다.
 
@@ -270,7 +270,7 @@ DayZero è il tuo compagno privato nel percorso. Nessun account, nessuna pubblic
 PERCHÉ DAYZERO
 • 100% privato: nessun account, nessuna analisi, nessun tracciamento.
 • Funziona offline, per sempre.
-• 12 lingue. La versione gratuita segue 2 abitudini con le statistiche essenziali — senza pubblicità. Premium sblocca abitudini illimitate, tutti i grafici e la libreria audio completa.
+• 12 lingue. La versione gratuita segue 2 abitudini con le statistiche essenziali — senza pubblicità. Premium sblocca abitudini illimitate, temi e font e la libreria audio completa.
 
 DayZero offre solo motivazione e monitoraggio — non è un consiglio medico.
 
@@ -300,7 +300,7 @@ DayZero هو رفيقك الخاص في رحلة الإقلاع. لا حساب،
 لماذا DayZero
 • خصوصية 100%: بلا حساب، بلا تحليلات، بلا تتبع.
 • يعمل دون اتصال دائمًا.
-• 12 لغة. النسخة المجانية تتابع عادتين بالإحصاءات الأساسية — للأبد وبدون إعلانات. النسخة المميزة تفتح عادات بلا حدود وجميع الرسوم البيانية ومكتبة الصوت الكاملة.
+• 12 لغة. النسخة المجانية تتابع عادتين بالإحصاءات الأساسية — للأبد وبدون إعلانات. النسخة المميزة تفتح عادات بلا حدود والثيمات والخطوط ومكتبة الصوت الكاملة.
 
 يقدم DayZero التحفيز والتتبع فقط وليس نصيحة طبية.
 
@@ -330,7 +330,7 @@ DayZero, bırakma yolculuğunuzdaki özel yoldaşınızdır. Hesap yok, reklam y
 NEDEN DAYZERO
 • %100 gizli: hesap yok, analiz yok, izleme yok.
 • Her zaman çevrimdışı çalışır.
-• 12 dil. Ücretsiz sürüm, temel istatistiklerle 2 alışkanlığı sonsuza kadar takip eder — reklamsız. Premium, sınırsız alışkanlık, tüm grafikler ve tam ses kütüphanesinin kilidini açar.
+• 12 dil. Ücretsiz sürüm, temel istatistiklerle 2 alışkanlığı sonsuza kadar takip eder — reklamsız. Premium, sınırsız alışkanlık, temalar ve yazı tipleri ve tam ses kütüphanesinin kilidini açar.
 
 DayZero yalnızca motivasyon ve takip sunar — tıbbi tavsiye değildir.
 

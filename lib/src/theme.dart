@@ -21,7 +21,9 @@ const kThemePresets = <String, ThemePreset>{
   'forest': ThemePreset(Color(0xFF1B4332), Color(0xFFEDF3EC)),
   'ocean': ThemePreset(Color(0xFF0B5563), Color(0xFFEBF3F5)),
   'rose': ThemePreset(Color(0xFFAD3A6B), Color(0xFFF8F0F3)),
-  'sunset': ThemePreset(Color(0xFFC4551D), Color(0xFFF9F1E9)),
+  // #A8461A: keeps the warm sunset feel with a safer white-on contrast
+  // margin (5.9:1 vs the borderline 4.5:1 of #C4551D).
+  'sunset': ThemePreset(Color(0xFFA8461A), Color(0xFFF9F1E9)),
   'violet': ThemePreset(Color(0xFF5B3AA8), Color(0xFFF2EFF8)),
 };
 
@@ -33,36 +35,62 @@ const kFontFamilies = <String, String>{
   'space': 'SpaceGrotesk',
 };
 
-/// Text color swatches offered in settings. 'auto' = theme-defined color.
-const kTextColorOptions = <String, Color?>{
-  'auto': null,
-  'ink': Color(0xFF1A1A1A),
-  'brown': Color(0xFF3E2723),
-  'navy': Color(0xFF0D3B66),
-  'violet': Color(0xFF4A148C),
-  'forest': Color(0xFF1B5E20),
-  'crimson': Color(0xFFB71C1C),
-  'teal': Color(0xFF006064),
-  'slate': Color(0xFF37474F),
+/// Text color swatches offered in settings. Each entry is a
+/// (light-mode, dark-mode) pair: dark mode needs light variants to clear
+/// WCAG AA against the dark surface (dark-on-dark would be invisible).
+const kTextColorOptions = <String, (Color?, Color?)>{
+  'auto': (null, null),
+  'ink': (Color(0xFF1A1A1A), Color(0xFFE8E6E1)),
+  'brown': (Color(0xFF3E2723), Color(0xFFE0C9C0)),
+  'navy': (Color(0xFF0D3B66), Color(0xFF9EC5FF)),
+  'forest': (Color(0xFF1B5E20), Color(0xFFA5D6A7)),
+  'crimson': (Color(0xFFB71C1C), Color(0xFFFF8A80)),
+  'teal': (Color(0xFF006064), Color(0xFF80CBC4)),
+  'violet': (Color(0xFF4A148C), Color(0xFFCE93D8)),
+  'slate': (Color(0xFF37474F), Color(0xFFB0BEC5)),
 };
+
+/// SOS button semantic pair. Warm amber (not alarm red — peak-craving users
+/// need a lifeline, not a threat cue) with contrast-safe text:
+///  - light mode: amber fill + dark-amber text (6.9:1) + a subtle border so
+///    the button shape reads against the light background (WCAG 1.4.11)
+///  - dark mode: lighter amber glow + darker text (8.4:1)
+const kSosLightFill = Color(0xFFF9A825);
+const kSosLightText = Color(0xFF3E2A00);
+const kSosBorder = Color(0xFFC98600);
+const kSosDarkFill = Color(0xFFE8A33D);
+const kSosDarkText = Color(0xFF2E1F00);
+
+/// Foreground for text/buttons on [bg]: dark text when the background is
+/// light enough that white would fail contrast (covers custom hues in the
+/// yellow range, where white-on-yellow drops below WCAG AA).
+Color onSeed(Color bg) {
+  return bg.computeLuminance() > 0.35
+      ? const Color(0xFF06301F)
+      : Colors.white;
+}
 
 ThemeData buildDayZeroTheme(
   Brightness brightness, {
   String preset = 'sage',
   Color? seedOverride,
   String fontCode = 'roboto',
-  Color? textColor,
+  String textColorCode = 'auto',
 }) {
   final isDark = brightness == Brightness.dark;
   final p = kThemePresets[preset] ?? kThemePresets['sage']!;
   final seed = seedOverride ?? p.seed;
+  // No `primary:` override: ColorScheme.fromSeed already computes a lighter,
+  // desaturated primary for dark mode (WCAG-safe on dark surfaces).
   final scheme = ColorScheme.fromSeed(
     seedColor: seed,
     brightness: brightness,
-    primary: seed,
     surface: isDark ? kDarkBackground : p.surface,
   );
   final fontFamily = kFontFamilies[fontCode] ?? 'Roboto';
+  // Text colors are brightness-paired; dark mode picks the light variant.
+  final pair = kTextColorOptions[textColorCode] ?? (null, null);
+  final textColor = isDark ? pair.$2 : pair.$1;
   final base = ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
@@ -87,7 +115,9 @@ ThemeData buildDayZeroTheme(
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: seed,
-        foregroundColor: Colors.white,
+        // Dark text on light custom hues (yellows), white on dark seeds —
+        // keeps WCAG AA for every slider position.
+        foregroundColor: onSeed(seed),
         minimumSize: const Size.fromHeight(52),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textStyle: TextStyle(

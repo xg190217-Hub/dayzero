@@ -229,6 +229,52 @@ class AppLocalizationsKo extends AppLocalizations {
   String get sosAmbient => '평온한 배경음';
 
   @override
+  String premiumSaveAmount(Object amount) {
+    return '$amount 절약';
+  }
+
+  @override
+  String get relapseRecordRestart => '실수를 기록하고 카운터 다시 시작';
+
+  @override
+  String get relapseRecordKeep => '실수를 기록하고 계속하기';
+
+  @override
+  String onboardingStep(Object step, Object total) {
+    return '$step/$total단계';
+  }
+
+  @override
+  String get plansAction => '나는 …할 것이다';
+
+  @override
+  String get plansWhen => '…할 때';
+
+  @override
+  String get plansAdd => '계획 추가';
+
+  @override
+  String get plansEmpty => '위험한 순간에 무엇을 할지 미리 적어두세요 — 필요할 때 보여드립니다';
+
+  @override
+  String get plansTitle => '나의 대처 계획';
+
+  @override
+  String insightNoCompare(Object now) {
+    return '이번 주 평균 갈망: $now/5';
+  }
+
+  @override
+  String insightWorse(Object now, Object prev) {
+    return '이번 주 평균 갈망 $now/5 (지난주 $prev/5) — 매일 기록하는 것 자체가 중요해요';
+  }
+
+  @override
+  String insightBetter(Object now, Object prev) {
+    return '이번 주 평균 갈망 $now/5 (지난주 $prev/5) — 좋아지고 있어요';
+  }
+
+  @override
   String get textAuto => '자동';
 
   @override
@@ -467,13 +513,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get premiumFeature1 => '무제한 습관';
 
   @override
-  String get premiumFeature2 => '전체 통계와 주간 리포트';
+  String get premiumFeature2 => '호흡 오디오 전체 라이브러리';
 
   @override
-  String get premiumFeature3 => '호흡 오디오 전체 라이브러리';
+  String get premiumFeature3 => '테마·글꼴·글자 색';
 
   @override
-  String get premiumFeature4 => '이정표 축하와 테마';
+  String get premiumFeature4 => '이정표 축하 세리머니';
 
   @override
   String get premiumFreeNote => '무료 버전은 핵심 통계와 함께 2개의 습관을 영원히 추적합니다 — 광고 없이.';

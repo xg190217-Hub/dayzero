@@ -49,15 +49,7 @@ class _StatsScreenState extends State<StatsScreen> {
             child: _StatsBody(
               habit: habit,
               rangeDays: _rangeDays,
-              onRangeChanged: (days) {
-                if (days == 30 && !state.isPremium) {
-                  // The 30-day view is the premium stats unlock.
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const PaywallScreen()));
-                  return;
-                }
-                setState(() => _rangeDays = days);
-              },
+              onRangeChanged: (days) => setState(() => _rangeDays = days),
             ),
           ),
         ],
@@ -150,12 +142,10 @@ class _StatsBody extends StatelessWidget {
                     ButtonSegment(value: 7, label: Text(l10n.statsView7)),
                     ButtonSegment(
                       value: 30,
-                      // Emoji lock: zero layout cost, never overflows.
-                      label: Text(
-                        state.isPremium
-                            ? l10n.statsView30
-                            : '${l10n.statsView30} 🔒',
-                      ),
+                      // The user's own data is never paywalled: seeing 30
+                      // days of their own history is free. Premium sells
+                      // customization and audio, not access to data.
+                      label: Text(l10n.statsView30),
                     ),
                   ],
                   selected: {rangeDays},

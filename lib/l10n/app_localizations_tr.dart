@@ -232,6 +232,53 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sosAmbient => 'Sakin ortam sesi';
 
   @override
+  String premiumSaveAmount(Object amount) {
+    return '$amount tasarruf';
+  }
+
+  @override
+  String get relapseRecordRestart => 'Kaymayı kaydet ve sayacı yeniden başlat';
+
+  @override
+  String get relapseRecordKeep => 'Kaymayı kaydet ve devam et';
+
+  @override
+  String onboardingStep(Object step, Object total) {
+    return 'Adım $step/$total';
+  }
+
+  @override
+  String get plansAction => 'Şunu yapacağım…';
+
+  @override
+  String get plansWhen => '…olduğunda';
+
+  @override
+  String get plansAdd => 'Plan ekle';
+
+  @override
+  String get plansEmpty =>
+      'Riskli anlarda ne yapacağınızı yazın — ihtiyacınız olduğunda gösteririz';
+
+  @override
+  String get plansTitle => 'Başa çıkma planlarım';
+
+  @override
+  String insightNoCompare(Object now) {
+    return 'Bu haftaki ortalama istek: $now/5';
+  }
+
+  @override
+  String insightWorse(Object now, Object prev) {
+    return 'Bu hafta ortalama istek $now/5, geçen hafta $prev/5 — her gün gelmeniz önemli';
+  }
+
+  @override
+  String insightBetter(Object now, Object prev) {
+    return 'Bu hafta ortalama istek $now/5, geçen hafta $prev/5 — iyiye gidiyor';
+  }
+
+  @override
   String get textAuto => 'Otomatik';
 
   @override
@@ -477,13 +524,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get premiumFeature1 => 'Sınırsız alışkanlık';
 
   @override
-  String get premiumFeature2 => 'Tam istatistikler ve haftalık raporlar';
+  String get premiumFeature2 => 'Eksiksiz nefes sesi kütüphanesi';
 
   @override
-  String get premiumFeature3 => 'Eksiksiz nefes egzersizi ses kütüphanesi';
+  String get premiumFeature3 => 'Temalar, yazı tipleri ve metin renkleri';
 
   @override
-  String get premiumFeature4 => 'Dönüm noktası kutlamaları ve temalar';
+  String get premiumFeature4 => 'Dönüm noktası kutlama törenleri';
 
   @override
   String get premiumFreeNote =>

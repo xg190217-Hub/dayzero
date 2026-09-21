@@ -232,6 +232,54 @@ class AppLocalizationsPt extends AppLocalizations {
   String get sosAmbient => 'Ambiente calmo';
 
   @override
+  String premiumSaveAmount(Object amount) {
+    return 'Economize $amount';
+  }
+
+  @override
+  String get relapseRecordRestart =>
+      'Registrar o deslize e reiniciar o contador';
+
+  @override
+  String get relapseRecordKeep => 'Registrar o deslize e seguir';
+
+  @override
+  String onboardingStep(Object step, Object total) {
+    return 'Etapa $step/$total';
+  }
+
+  @override
+  String get plansAction => 'Vou…';
+
+  @override
+  String get plansWhen => 'Quando…';
+
+  @override
+  String get plansAdd => 'Adicionar plano';
+
+  @override
+  String get plansEmpty =>
+      'Escreva o que fará nos momentos de risco — mostraremos quando precisar';
+
+  @override
+  String get plansTitle => 'Meus planos de ação';
+
+  @override
+  String insightNoCompare(Object now) {
+    return 'Fissura média desta semana: $now/5';
+  }
+
+  @override
+  String insightWorse(Object now, Object prev) {
+    return 'Fissura média $now/5 vs $prev/5 na anterior — aparecer diariamente é o que importa';
+  }
+
+  @override
+  String insightBetter(Object now, Object prev) {
+    return 'Fissura média $now/5 esta semana vs $prev/5 na anterior — melhorando';
+  }
+
+  @override
   String get textAuto => 'Automático';
 
   @override
@@ -476,13 +524,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get premiumFeature1 => 'Hábitos ilimitados';
 
   @override
-  String get premiumFeature2 => 'Estatísticas completas e relatórios semanais';
+  String get premiumFeature2 => 'Biblioteca completa de áudios de respiração';
 
   @override
-  String get premiumFeature3 => 'Biblioteca completa de áudios de respiração';
+  String get premiumFeature3 => 'Temas, fontes e cores de texto';
 
   @override
-  String get premiumFeature4 => 'Celebrações de marcos e temas';
+  String get premiumFeature4 => 'Cerimônias de celebração de marcos';
 
   @override
   String get premiumFreeNote =>

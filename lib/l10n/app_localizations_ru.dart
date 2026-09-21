@@ -232,6 +232,53 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sosAmbient => 'Спокойный фон';
 
   @override
+  String premiumSaveAmount(Object amount) {
+    return 'Экономьте $amount';
+  }
+
+  @override
+  String get relapseRecordRestart => 'Записать срыв и перезапустить счётчик';
+
+  @override
+  String get relapseRecordKeep => 'Записать срыв и продолжать';
+
+  @override
+  String onboardingStep(Object step, Object total) {
+    return 'Шаг $step/$total';
+  }
+
+  @override
+  String get plansAction => 'Я сделаю…';
+
+  @override
+  String get plansWhen => 'Когда…';
+
+  @override
+  String get plansAdd => 'Добавить план';
+
+  @override
+  String get plansEmpty =>
+      'Запишите, что вы сделаете в рискованные моменты — покажем, когда понадобится';
+
+  @override
+  String get plansTitle => 'Мои планы на случай срыва';
+
+  @override
+  String insightNoCompare(Object now) {
+    return 'Средняя тяга на этой неделе: $now/5';
+  }
+
+  @override
+  String insightWorse(Object now, Object prev) {
+    return 'Средняя тяга $now/5 против $prev/5 — важна сама ежедневная отметка';
+  }
+
+  @override
+  String insightBetter(Object now, Object prev) {
+    return 'Средняя тяга $now/5 на этой неделе против $prev/5 — лучше';
+  }
+
+  @override
   String get textAuto => 'Авто';
 
   @override
@@ -476,13 +523,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get premiumFeature1 => 'Неограниченные привычки';
 
   @override
-  String get premiumFeature2 => 'Полная статистика и недельные отчёты';
+  String get premiumFeature2 => 'Полная аудиотека дыхательных упражнений';
 
   @override
-  String get premiumFeature3 => 'Полная аудиотека дыхательных упражнений';
+  String get premiumFeature3 => 'Темы, шрифты и цвета текста';
 
   @override
-  String get premiumFeature4 => 'Празднование вех и темы';
+  String get premiumFeature4 => 'Церемонии празднования вех';
 
   @override
   String get premiumFreeNote =>

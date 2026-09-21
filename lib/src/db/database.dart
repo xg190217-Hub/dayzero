@@ -29,8 +29,28 @@ Future<sqflite.Database> openAppDatabase(String path,
   return f.openDatabase(
     path,
     options: sqflite.OpenDatabaseOptions(
-      version: 1,
+      version: 2,
       onCreate: (db, version) async {
+        await _createTables(db);
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('''
+            CREATE TABLE lapses (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              habit_id INTEGER NOT NULL,
+              date TEXT NOT NULL,
+              trigger TEXT,
+              note TEXT
+            )
+          ''');
+        }
+      },
+    ),
+  );
+}
+
+Future<void> _createTables(sqflite.DatabaseExecutor db) async {
         await db.execute('''
           CREATE TABLE habits (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,9 +83,15 @@ Future<sqflite.Database> openAppDatabase(String path,
             UNIQUE (habit_id, key)
           )
         ''');
-      },
-    ),
-  );
+        await db.execute('''
+          CREATE TABLE lapses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            habit_id INTEGER NOT NULL,
+            date TEXT NOT NULL,
+            trigger TEXT,
+            note TEXT
+          )
+        ''');
 }
 
 /// Default DB filename inside the app documents directory.

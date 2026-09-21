@@ -225,6 +225,52 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sosAmbient => '静心环境音';
 
   @override
+  String premiumSaveAmount(Object amount) {
+    return '省 $amount';
+  }
+
+  @override
+  String get relapseRecordRestart => '记录失误并重新计时';
+
+  @override
+  String get relapseRecordKeep => '记录失误并继续前进';
+
+  @override
+  String onboardingStep(Object step, Object total) {
+    return '第 $step/$total 步';
+  }
+
+  @override
+  String get plansAction => '我会…';
+
+  @override
+  String get plansWhen => '当…时';
+
+  @override
+  String get plansAdd => '添加计划';
+
+  @override
+  String get plansEmpty => '提前写好在高危时刻你会怎么做——关键时刻我们会展示给你';
+
+  @override
+  String get plansTitle => '我的应对计划';
+
+  @override
+  String insightNoCompare(Object now) {
+    return '本周渴求均值：$now/5';
+  }
+
+  @override
+  String insightWorse(Object now, Object prev) {
+    return '本周渴求均值 $now/5，高于上周 $prev/5——但每天打卡本身最重要';
+  }
+
+  @override
+  String insightBetter(Object now, Object prev) {
+    return '本周渴求均值 $now/5，低于上周 $prev/5——在变好';
+  }
+
+  @override
   String get textAuto => '默认';
 
   @override
@@ -461,13 +507,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumFeature1 => '无限个习惯';
 
   @override
-  String get premiumFeature2 => '完整统计与每周报告';
+  String get premiumFeature2 => '全套呼吸练习音频';
 
   @override
-  String get premiumFeature3 => '全套呼吸练习音频';
+  String get premiumFeature3 => '主题、字体与文字颜色';
 
   @override
-  String get premiumFeature4 => '里程碑庆祝与主题';
+  String get premiumFeature4 => '里程碑庆祝仪式';
 
   @override
   String get premiumFreeNote => '免费版可永久记录 2 个习惯及核心统计——无广告。';

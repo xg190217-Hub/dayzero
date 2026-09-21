@@ -112,24 +112,35 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Progress dots.
+            // Progress dots + step counter (endowed progress: showing
+            // "step 2/5" from the start raises completion — Nunes & Drèze).
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(pages.length, (i) {
-                  final active = i == _page;
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: active ? 24 : 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: active ? kLeafGreen : scheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  );
-                }),
+                children: [
+                  ...List.generate(pages.length, (i) {
+                    final active = i == _page;
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: active ? 24 : 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: active ? kLeafGreen : scheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    );
+                  }),
+                  const SizedBox(width: 12),
+                  Text(
+                    l10n.onboardingStep(_page + 1, pages.length),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: scheme.outline),
+                  ),
+                ],
               ),
             ),
             Expanded(

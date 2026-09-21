@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../models/habit.dart';
+import '../models/if_then_plan.dart';
 
 import '../services/notifications.dart';
 import '../state/app_state.dart';
@@ -153,6 +154,11 @@ class SettingsScreen extends StatelessWidget {
                       runSpacing: 8,
                       children: kTextColorOptions.entries.map((entry) {
                         final selected = state.textColorCode == entry.key;
+                        final isDark = Theme.of(context).brightness ==
+                            Brightness.dark;
+                        // Brightness-paired: the swatch shows the color that
+                        // will actually be used in the current mode.
+                        final swatch = isDark ? entry.value.$2 : entry.value.$1;
                         return GestureDetector(
                           onTap: () => state.setTextColor(entry.key),
                           child: Container(
@@ -160,7 +166,7 @@ class SettingsScreen extends StatelessWidget {
                             height: 36,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: entry.value ??
+                              color: swatch ??
                                   Theme.of(context).colorScheme.onSurface,
                               border: Border.all(
                                 color: selected
@@ -171,7 +177,7 @@ class SettingsScreen extends StatelessWidget {
                                 width: selected ? 3 : 1,
                               ),
                             ),
-                            child: entry.value == null
+                            child: swatch == null
                                 ? Icon(Icons.text_fields,
                                     size: 16,
                                     color: Theme.of(context)
@@ -230,6 +236,30 @@ class SettingsScreen extends StatelessWidget {
                   if (v != null) await state.setCurrency(v);
                 },
               ),
+            ),
+          ]),
+          _section(context, l10n.plansTitle, [
+            if (state.plans.isEmpty)
+              ListTile(
+                leading: const Icon(Icons.lightbulb_outline, color: kLeafGreen),
+                title: Text(l10n.plansEmpty),
+              ),
+            ...state.plans.map((p) => ListTile(
+                  leading: const Icon(Icons.route, color: kLeafGreen),
+                  title: Text(
+                      '${l10n.plansWhen} ${_triggerLabel(l10n, p.trigger)} → ${p.action}'),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () async {
+                      final updated = List.of(state.plans)..remove(p);
+                      await state.setPlans(updated);
+                    },
+                  ),
+                )),
+            ListTile(
+              leading: const Icon(Icons.add, color: kLeafGreen),
+              title: Text(l10n.plansAdd),
+              onTap: () => _addPlanDialog(context),
             ),
           ]),
           _section(context, l10n.settingsReasons, [
@@ -522,6 +552,95 @@ class SettingsScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _triggerLabel(AppLocalizations l10n, String key) {
+    switch (key) {
+      case 'trigger_stress':
+        return l10n.trigger_stress;
+      case 'trigger_social':
+        return l10n.trigger_social;
+      case 'trigger_boredom':
+        return l10n.trigger_boredom;
+      case 'trigger_habit_loop':
+        return l10n.trigger_habit_loop;
+      case 'trigger_negative':
+        return l10n.trigger_negative;
+      case 'trigger_celebration':
+        return l10n.trigger_celebration;
+      default:
+        return l10n.trigger_none;
+    }
+  }
+
+  /// if-then editor: pick a concrete trigger, write the concrete action.
+  Future<void> _addPlanDialog(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final controller = TextEditingController();
+    var trigger = 'trigger_stress';
+    const triggers = [
+      'trigger_stress',
+      'trigger_social',
+      'trigger_boredom',
+      'trigger_habit_loop',
+      'trigger_negative',
+      'trigger_celebration',
+    ];
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialogState) => AlertDialog(
+          title: Text(l10n.plansAdd),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.plansWhen,
+                  style: const TextStyle(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: triggers.map((key) {
+                  final selected = trigger == key;
+                  return ChoiceChip(
+                    label: Text(_triggerLabel(l10n, key)),
+                    selected: selected,
+                    onSelected: (_) => setDialogState(() => trigger = key),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: controller,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: l10n.plansAction,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(l10n.cancel),
+            ),
+            FilledButton(
+              onPressed: () =>
+                  Navigator.of(dialogContext).pop(true),
+              child: Text(l10n.save),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (saved == true && controller.text.trim().isNotEmpty) {
+      final state = context.read<AppState>();
+      await state.setPlans([
+        ...state.plans,
+        IfThenPlan(trigger: trigger, action: controller.text.trim()),
+      ]);
+    }
   }
 
   Future<void> _addReasonDialog(BuildContext context) async {

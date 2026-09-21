@@ -544,6 +544,78 @@ abstract class AppLocalizations {
   /// **'Calm ambient'**
   String get sosAmbient;
 
+  /// No description provided for @premiumSaveAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Save {amount}'**
+  String premiumSaveAmount(Object amount);
+
+  /// No description provided for @relapseRecordRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Record the slip and restart the counter'**
+  String get relapseRecordRestart;
+
+  /// No description provided for @relapseRecordKeep.
+  ///
+  /// In en, this message translates to:
+  /// **'Record the slip and keep going'**
+  String get relapseRecordKeep;
+
+  /// No description provided for @onboardingStep.
+  ///
+  /// In en, this message translates to:
+  /// **'{step}/{total}'**
+  String onboardingStep(Object step, Object total);
+
+  /// No description provided for @plansAction.
+  ///
+  /// In en, this message translates to:
+  /// **'I will…'**
+  String get plansAction;
+
+  /// No description provided for @plansWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'When…'**
+  String get plansWhen;
+
+  /// No description provided for @plansAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a plan'**
+  String get plansAdd;
+
+  /// No description provided for @plansEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Write down what you\'ll do in your high-risk moments — we\'ll show it when you need it'**
+  String get plansEmpty;
+
+  /// No description provided for @plansTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My coping plans'**
+  String get plansTitle;
+
+  /// No description provided for @insightNoCompare.
+  ///
+  /// In en, this message translates to:
+  /// **'This week\'s average craving: {now}/5'**
+  String insightNoCompare(Object now);
+
+  /// No description provided for @insightWorse.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg craving {now}/5 this week vs {prev}/5 last week — showing up daily is what counts'**
+  String insightWorse(Object now, Object prev);
+
+  /// No description provided for @insightBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg craving {now}/5 this week vs {prev}/5 last week — getting better'**
+  String insightBetter(Object now, Object prev);
+
   /// No description provided for @textAuto.
   ///
   /// In en, this message translates to:
@@ -1015,19 +1087,19 @@ abstract class AppLocalizations {
   /// No description provided for @premiumFeature2.
   ///
   /// In en, this message translates to:
-  /// **'Full stats and weekly reports'**
+  /// **'Complete breathing audio library'**
   String get premiumFeature2;
 
   /// No description provided for @premiumFeature3.
   ///
   /// In en, this message translates to:
-  /// **'Complete breathing audio library'**
+  /// **'Themes, fonts & text colors'**
   String get premiumFeature3;
 
   /// No description provided for @premiumFeature4.
   ///
   /// In en, this message translates to:
-  /// **'Milestone celebrations and themes'**
+  /// **'Milestone celebration ceremonies'**
   String get premiumFeature4;
 
   /// No description provided for @premiumFreeNote.

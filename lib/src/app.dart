@@ -39,7 +39,6 @@ class DayZeroApp extends StatelessWidget {
             ? HSLColor.fromAHSL(1, state.customHue.toDouble(), 0.55, 0.35)
                 .toColor()
             : null;
-        final textColor = kTextColorOptions[state.textColorCode];
         return MaterialApp(
           title: 'DayZero',
           debugShowCheckedModeBanner: false,
@@ -56,14 +55,14 @@ class DayZeroApp extends StatelessWidget {
             preset: state.themeCode,
             seedOverride: seedOverride,
             fontCode: state.fontCode,
-            textColor: textColor,
+            textColorCode: state.textColorCode,
           ),
           darkTheme: buildDayZeroTheme(
             Brightness.dark,
             preset: state.themeCode,
             seedOverride: seedOverride,
             fontCode: state.fontCode,
-            textColor: textColor,
+            textColorCode: state.textColorCode,
           ),
           themeMode: ThemeMode.system,
           home: state.loaded

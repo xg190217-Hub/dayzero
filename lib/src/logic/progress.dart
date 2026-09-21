@@ -67,6 +67,31 @@ List<CheckIn> recentCheckIns(
   }).toList();
 }
 
+/// Average of [pick] over check-ins within the window from
+/// [endDaysAgo] days ago back to [endDaysAgo + windowDays] days ago.
+/// Returns null when the window has no check-ins.
+double? averageOver(
+  List<CheckIn> checkIns,
+  DateTime now, {
+  required int endDaysAgo,
+  required int windowDays,
+  required double Function(CheckIn) pick,
+}) {
+  final start = DateTime(now.year, now.month, now.day)
+      .subtract(Duration(days: endDaysAgo + windowDays - 1));
+  final end = DateTime(now.year, now.month, now.day)
+      .subtract(Duration(days: endDaysAgo));
+  final values = <double>[];
+  for (final c in checkIns) {
+    final date = DateTime.parse(c.date);
+    if (!date.isBefore(start) && !date.isAfter(end)) {
+      values.add(pick(c));
+    }
+  }
+  if (values.isEmpty) return null;
+  return values.reduce((a, b) => a + b) / values.length;
+}
+
 class WeeklySummary {
   const WeeklySummary({
     required this.checkInCount,

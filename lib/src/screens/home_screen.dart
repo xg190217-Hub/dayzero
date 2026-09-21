@@ -187,14 +187,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: kSage.withValues(alpha: 0.25),
+                  // Theme-derived so every preset tints this chip coherently.
+                  color: scheme.primaryContainer,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   '${l10n.homeMoneySaved}: ${_money(habit.dailySpend * days)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: kDeepGreen),
+                      color: scheme.onPrimaryContainer),
                 ),
               ),
             ],
@@ -223,6 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _actionRow(AppLocalizations l10n, AppState state, Habit habit) {
     final checked = state.checkInToday(habit.id!) != null;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         Expanded(
@@ -242,10 +244,15 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: FilledButton.tonalIcon(
             // Warm amber, not alarm red: someone at peak craving needs a
-            // welcoming lifeline, not an error signal.
+            // welcoming lifeline, not an error signal. Brightness-paired
+            // fill/text keep WCAG AA in both modes, and the light-mode
+            // border keeps the button shape readable (1.4.11 ≥3:1).
             style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFF9A825).withValues(alpha: 0.28),
-              foregroundColor: const Color(0xFF7A4F00),
+              backgroundColor: isDark ? kSosDarkFill : kSosLightFill,
+              foregroundColor: isDark ? kSosDarkText : kSosLightText,
+              side: isDark
+                  ? null
+                  : const BorderSide(color: kSosBorder, width: 1.5),
               minimumSize: const Size.fromHeight(52),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16)),
@@ -356,18 +363,20 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         // A milestone is an emotional peak: make it feel like a ceremony.
+        // Darker gradient + dark trophy keep ≥3:1 on every stop.
         icon: Container(
           width: 72,
           height: 72,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
-              colors: [Color(0xFFF9A825), Color(0xFFE65100)],
+              colors: [Color(0xFFE8A33D), Color(0xFFC04000)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
-          child: const Icon(Icons.emoji_events, color: Colors.white, size: 40),
+          child: const Icon(Icons.emoji_events,
+              color: Color(0xFF3E2A00), size: 40),
         ),
         title: Text(l10n.milestonesTitle, textAlign: TextAlign.center),
         content: Text(
@@ -388,24 +397,103 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _relapseDialog(AppLocalizations l10n, AppState state, Habit habit) {
+    String? trigger;
+    final noteController = TextEditingController();
+    const triggers = [
+      'trigger_stress',
+      'trigger_social',
+      'trigger_boredom',
+      'trigger_habit_loop',
+      'trigger_negative',
+      'trigger_celebration',
+      'trigger_none',
+    ];
+    String triggerLabel(String key) {
+      switch (key) {
+        case 'trigger_stress':
+          return l10n.trigger_stress;
+        case 'trigger_social':
+          return l10n.trigger_social;
+        case 'trigger_boredom':
+          return l10n.trigger_boredom;
+        case 'trigger_habit_loop':
+          return l10n.trigger_habit_loop;
+        case 'trigger_negative':
+          return l10n.trigger_negative;
+        case 'trigger_celebration':
+          return l10n.trigger_celebration;
+        default:
+          return l10n.trigger_none;
+      }
+    }
+
     showDialog<void>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.relapseTitle),
-        content: Text(l10n.relapseBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(l10n.relapseKeep),
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialogState) => AlertDialog(
+          title: Text(l10n.relapseTitle),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.relapseBody),
+              const SizedBox(height: 12),
+              // Attribution matters more than the reset: "what triggered
+              // it" turns a lapse into data for the next plan.
+              Text(l10n.checkinTrigger,
+                  style: const TextStyle(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: triggers.map((key) {
+                  final selected = trigger == key;
+                  return ChoiceChip(
+                    label: Text(triggerLabel(key)),
+                    selected: selected,
+                    onSelected: (_) => setDialogState(() =>
+                        trigger = selected ? null : key),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: noteController,
+                maxLines: 2,
+                decoration: InputDecoration(
+                  hintText: l10n.checkinNote,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+            ],
           ),
-          FilledButton(
-            onPressed: () async {
-              Navigator.of(dialogContext).pop();
-              await state.resetQuitDate(habit);
-            },
-            child: Text(l10n.relapseRestart),
-          ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.of(dialogContext).pop();
+                await state.recordLapse(habit,
+                    trigger: trigger,
+                    note: noteController.text.trim().isEmpty
+                        ? null
+                        : noteController.text.trim());
+              },
+              child: Text(l10n.relapseRecordKeep),
+            ),
+            FilledButton(
+              onPressed: () async {
+                Navigator.of(dialogContext).pop();
+                await state.recordLapse(habit,
+                    trigger: trigger,
+                    note: noteController.text.trim().isEmpty
+                        ? null
+                        : noteController.text.trim());
+                await state.resetQuitDate(habit);
+              },
+              child: Text(l10n.relapseRecordRestart),
+            ),
+          ],
+        ),
       ),
     );
   }

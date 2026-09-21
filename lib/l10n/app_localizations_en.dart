@@ -232,6 +232,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sosAmbient => 'Calm ambient';
 
   @override
+  String premiumSaveAmount(Object amount) {
+    return 'Save $amount';
+  }
+
+  @override
+  String get relapseRecordRestart => 'Record the slip and restart the counter';
+
+  @override
+  String get relapseRecordKeep => 'Record the slip and keep going';
+
+  @override
+  String onboardingStep(Object step, Object total) {
+    return '$step/$total';
+  }
+
+  @override
+  String get plansAction => 'I will…';
+
+  @override
+  String get plansWhen => 'When…';
+
+  @override
+  String get plansAdd => 'Add a plan';
+
+  @override
+  String get plansEmpty =>
+      'Write down what you\'ll do in your high-risk moments — we\'ll show it when you need it';
+
+  @override
+  String get plansTitle => 'My coping plans';
+
+  @override
+  String insightNoCompare(Object now) {
+    return 'This week\'s average craving: $now/5';
+  }
+
+  @override
+  String insightWorse(Object now, Object prev) {
+    return 'Avg craving $now/5 this week vs $prev/5 last week — showing up daily is what counts';
+  }
+
+  @override
+  String insightBetter(Object now, Object prev) {
+    return 'Avg craving $now/5 this week vs $prev/5 last week — getting better';
+  }
+
+  @override
   String get textAuto => 'Auto (default)';
 
   @override
@@ -476,13 +523,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumFeature1 => 'Unlimited habits';
 
   @override
-  String get premiumFeature2 => 'Full stats and weekly reports';
+  String get premiumFeature2 => 'Complete breathing audio library';
 
   @override
-  String get premiumFeature3 => 'Complete breathing audio library';
+  String get premiumFeature3 => 'Themes, fonts & text colors';
 
   @override
-  String get premiumFeature4 => 'Milestone celebrations and themes';
+  String get premiumFeature4 => 'Milestone celebration ceremonies';
 
   @override
   String get premiumFreeNote =>

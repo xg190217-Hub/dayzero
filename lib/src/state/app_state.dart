@@ -8,6 +8,8 @@ import '../data/milestones.dart';
 import '../logic/progress.dart';
 import '../models/check_in.dart';
 import '../models/habit.dart';
+import '../models/if_then_plan.dart';
+import '../models/lapse.dart';
 
 /// Free tier: up to 2 habits. Premium removes the cap and unlocks advanced
 /// stats, the full audio library and themes.
@@ -33,6 +35,7 @@ class AppState extends ChangeNotifier {
 
   final List<Habit> habits = [];
   final List<CheckIn> checkIns = [];
+  final List<Lapse> lapses = [];
 
   /// habitId -> set of unlocked milestone keys (time/money/streak combined).
   final Map<int, Set<String>> unlocked = {};
@@ -61,6 +64,9 @@ class AppState extends ChangeNotifier {
   /// Currency symbol for the "money saved" counters.
   String currencySymbol = '¥';
   List<String> reasons = [];
+
+  /// If-then coping plans: the app's strongest evidence-based mechanism.
+  List<IfThenPlan> plans = [];
 
   bool loaded = false;
 
@@ -98,6 +104,7 @@ class AppState extends ChangeNotifier {
     textColorCode = _prefs.getString('textColor') ?? 'auto';
     currencySymbol = _prefs.getString('currency') ?? '¥';
     reasons = _prefs.getStringList('reasons') ?? [];
+    plans = IfThenPlan.decodeList(_prefs.getString('plans'));
 
     final habitRows = await _db.query('habits', orderBy: 'created_at ASC');
     habits
@@ -107,6 +114,10 @@ class AppState extends ChangeNotifier {
     checkIns
       ..clear()
       ..addAll(checkInRows.map(CheckIn.fromRow));
+    final lapseRows = await _db.query('lapses');
+    lapses
+      ..clear()
+      ..addAll(lapseRows.map(Lapse.fromRow));
     final achievementRows = await _db.query('achievements');
     unlocked.clear();
     for (final row in achievementRows) {
@@ -157,6 +168,35 @@ class AppState extends ChangeNotifier {
       _evaluateMilestones();
       notifyListeners();
     }
+  }
+
+  /// Lapses for one habit (newest first).
+  List<Lapse> lapsesFor(int habitId) {
+    final list = lapses.where((l) => l.habitId == habitId).toList();
+    list.sort((a, b) => b.date.compareTo(a.date));
+    return list;
+  }
+
+  /// Records a slip with its trigger and an optional note. Keeping the
+  /// history (instead of just resetting) is the data basis for relapse
+  /// prevention: triggers repeat, and seeing the pattern is the fix.
+  Future<void> recordLapse(Habit habit,
+      {String? trigger, String? note}) async {
+    final lapse = Lapse(
+      habitId: habit.id!,
+      date: CheckIn.dateKey(now),
+      trigger: trigger,
+      note: note,
+    );
+    final id = await _db.insert('lapses', lapse.toRow());
+    lapses.add(Lapse(
+      id: id,
+      habitId: lapse.habitId,
+      date: lapse.date,
+      trigger: lapse.trigger,
+      note: lapse.note,
+    ));
+    notifyListeners();
   }
 
   /// Restarts the counter (relapse handling).
@@ -333,6 +373,12 @@ class AppState extends ChangeNotifier {
   Future<void> setReasons(List<String> value) async {
     reasons = List.of(value);
     await _prefs.setStringList('reasons', reasons);
+    notifyListeners();
+  }
+
+  Future<void> setPlans(List<IfThenPlan> value) async {
+    plans = List.of(value);
+    await _prefs.setString('plans', IfThenPlan.encodeList(plans));
     notifyListeners();
   }
 

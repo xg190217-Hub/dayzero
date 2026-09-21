@@ -233,6 +233,53 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sosAmbient => 'Ambiance calme';
 
   @override
+  String premiumSaveAmount(Object amount) {
+    return 'Économisez $amount';
+  }
+
+  @override
+  String get relapseRecordRestart => 'Noter l\'écart et redémarrer le compteur';
+
+  @override
+  String get relapseRecordKeep => 'Noter l\'écart et continuer';
+
+  @override
+  String onboardingStep(Object step, Object total) {
+    return 'Étape $step/$total';
+  }
+
+  @override
+  String get plansAction => 'Je vais…';
+
+  @override
+  String get plansWhen => 'Quand…';
+
+  @override
+  String get plansAdd => 'Ajouter un plan';
+
+  @override
+  String get plansEmpty =>
+      'Écrivez ce que vous ferez dans les moments à risque — nous l\'afficherons quand il le faudra';
+
+  @override
+  String get plansTitle => 'Mes plans d\'action';
+
+  @override
+  String insightNoCompare(Object now) {
+    return 'Envie moyenne cette semaine : $now/5';
+  }
+
+  @override
+  String insightWorse(Object now, Object prev) {
+    return 'Envie moy. $now/5 vs $prev/5 la semaine dernière — être là chaque jour compte';
+  }
+
+  @override
+  String insightBetter(Object now, Object prev) {
+    return 'Envie moy. $now/5 cette semaine vs $prev/5 la semaine dernière — mieux';
+  }
+
+  @override
   String get textAuto => 'Auto';
 
   @override
@@ -479,15 +526,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get premiumFeature1 => 'Habitudes illimitées';
 
   @override
-  String get premiumFeature2 =>
-      'Statistiques complètes et rapports hebdomadaires';
+  String get premiumFeature2 => 'Bibliothèque audio de respiration complète';
 
   @override
-  String get premiumFeature3 =>
-      'Bibliothèque audio complète d\'exercices de respiration';
+  String get premiumFeature3 => 'Thèmes, polices & couleurs de texte';
 
   @override
-  String get premiumFeature4 => 'Célébrations de paliers et thèmes';
+  String get premiumFeature4 => 'Cérémonies de célébration des étapes';
 
   @override
   String get premiumFreeNote =>

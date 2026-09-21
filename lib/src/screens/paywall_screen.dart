@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../logic/progress.dart';
 import '../services/iap_service.dart';
 import '../state/app_state.dart';
-import '../theme.dart';
 import 'settings_screen.dart' show kPrivacyUrl, kTermsUrl;
 
 /// Set together with App Store Connect: the yearly subscription must have a
@@ -108,7 +108,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [kLeafGreen, kDeepGreen],
+                colors: [scheme.primary, Color.lerp(scheme.primary, Colors.black, 0.35)!],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -118,8 +118,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
               children: [
                 const Icon(Icons.spa, color: Colors.white, size: 44),
                 const SizedBox(height: 12),
+                // The user's OWN words lead the paywall (commitment-
+                // consistency: a written reason is the strongest anchor).
                 Text(
-                  l10n.premiumSubtitle,
+                  state.reasons.isNotEmpty
+                      ? '“${state.reasons.first}”'
+                      : l10n.premiumSubtitle,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
@@ -127,15 +131,38 @@ class _PaywallScreenState extends State<PaywallScreen> {
                     color: Colors.white,
                   ),
                 ),
+                const SizedBox(height: 6),
+                Text(
+                  l10n.premiumSubtitle,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white.withValues(alpha: 0.85),
+                  ),
+                ),
               ],
             ),
           ),
+          // The user's own, verifiable number beats any feature list.
+          if (_totalSaved(state) > 0) ...[
+            const SizedBox(height: 12),
+            Center(
+              child: Text(
+                '${l10n.homeMoneySaved} ${state.currencySymbol}${_totalSaved(state).round()}',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                  color: scheme.primary,
+                ),
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
           for (final (key, feature) in const [
             ('premiumFeature1', Icons.all_inclusive),
-            ('premiumFeature2', Icons.insights),
-            ('premiumFeature3', Icons.graphic_eq),
-            ('premiumFeature4', Icons.palette),
+            ('premiumFeature2', Icons.graphic_eq),
+            ('premiumFeature3', Icons.palette),
+            ('premiumFeature4', Icons.emoji_events),
           ])
             _featureRow(context, l10n, key, feature),
           const SizedBox(height: 16),
@@ -202,6 +229,16 @@ class _PaywallScreenState extends State<PaywallScreen> {
     );
   }
 
+  /// Total money saved across all habits — the user's own strongest
+  /// argument for the price of the app.
+  double _totalSaved(AppState state) {
+    var total = 0.0;
+    for (final habit in state.habits) {
+      total += moneySaved(habit, state.now);
+    }
+    return total;
+  }
+
   Widget _featureRow(BuildContext context, AppLocalizations l10n, String key,
       IconData icon) {
     String label;
@@ -219,7 +256,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Icon(icon, color: kLeafGreen, size: 22),
+          Icon(icon, color: Theme.of(context).colorScheme.primary, size: 22),
           const SizedBox(width: 12),
           Expanded(child: Text(label)),
         ],
@@ -265,11 +302,11 @@ class _PaywallScreenState extends State<PaywallScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: selected
-              ? kLeafGreen.withValues(alpha: 0.10)
+              ? scheme.primary.withValues(alpha: 0.10)
               : scheme.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: selected ? kLeafGreen : scheme.outlineVariant,
+            color: selected ? scheme.primary : scheme.outlineVariant,
             width: selected ? 2 : 1,
           ),
         ),
@@ -277,7 +314,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
           children: [
             Icon(
               selected ? Icons.radio_button_checked : Icons.radio_button_off,
-              color: selected ? kLeafGreen : scheme.outlineVariant,
+              color: selected ? scheme.primary : scheme.outlineVariant,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -294,7 +331,16 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
-                        color: kLeafGreen,
+                        color: scheme.primary,
+                      ),
+                    ),
+                  if (id == 'dayzero_yearly')
+                    Text(
+                      l10n.premiumSaveAmount(yearlySavings(context)!),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: scheme.outline,
                       ),
                     ),
                 ],
@@ -309,11 +355,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
+                  // Dark-on-amber: 10.7:1 (white-on-amber was 1.97:1).
                   l10n.premiumBestValue,
                   style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white),
+                      color: Color(0xFF3E2A00)),
                 ),
               ),
             const SizedBox(width: 8),
@@ -341,7 +388,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
         case 'dayzero_yearly':
           return r'$34.99';
         default:
-          return r'$69.99';
+          return r'$129.99';
       }
     }
     switch (id) {
@@ -352,8 +399,17 @@ class _PaywallScreenState extends State<PaywallScreen> {
       case 'dayzero_yearly':
         return '¥268';
       default:
-        return '¥598';
+        // 3.7× yearly: lifetime anchors the annual plan instead of
+        // undercutting it (was ¥598 = only 2.2×).
+        return '¥998';
     }
+  }
+
+  /// Absolute savings on the yearly tier vs paying monthly (marketing
+  /// evidence: "save ¥272" beats "50% off" — percentages force mental math).
+  String? yearlySavings(BuildContext context) {
+    final isEn = Localizations.localeOf(context).languageCode == 'en';
+    return isEn ? r'$48.89' : '¥272';
   }
 
   Future<void> _open(String url) async {

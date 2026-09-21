@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../logic/progress.dart';
 import '../models/habit.dart';
 import '../services/audio_service.dart';
 import '../state/app_state.dart';
@@ -77,8 +78,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
     if (!mounted) return;
     // Small reward sound (silently skipped when audio is unavailable).
     context.read<AudioService>().play('sounds/chime.wav');
+    // Monitoring must close the loop into feedback: compare this week's
+    // average craving with last week's (Harkin 2016: monitoring+feedback
+    // d=.42 vs monitoring alone d=.25).
+    final insight = _insight(l10n, state);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(l10n.checkinDone),
+      content: Text(insight == null ? l10n.checkinDone : '$l10n.checkinDone\n$insight'),
       // One-tap way back in when the user wants to adjust their entry.
       action: SnackBarAction(
         label: l10n.settingsEditHabit,
@@ -282,6 +287,26 @@ class _CheckInScreenState extends State<CheckInScreen> {
         ],
       ),
     );
+  }
+
+  /// "本周渴求均值 3.2/5，低于上周 4.1——在变好" — or null when there is
+  /// not enough history for a comparison.
+  String? _insight(AppLocalizations l10n, AppState state) {
+    final checkIns = state.checkInsFor(widget.habit.id!);
+    final now = state.now;
+    final thisWeek =
+        averageOver(checkIns, now, endDaysAgo: 0, windowDays: 7, pick: (c) => c.craving.toDouble());
+    if (thisWeek == null) return null;
+    final lastWeek =
+        averageOver(checkIns, now, endDaysAgo: 7, windowDays: 7, pick: (c) => c.craving.toDouble());
+    if (lastWeek == null) {
+      return l10n.insightNoCompare(thisWeek.toStringAsFixed(1));
+    }
+    final nowS = thisWeek.toStringAsFixed(1);
+    final prevS = lastWeek.toStringAsFixed(1);
+    return thisWeek <= lastWeek
+        ? l10n.insightBetter(nowS, prevS)
+        : l10n.insightWorse(nowS, prevS);
   }
 
   Future<void> _maybeAskForRating() async {
