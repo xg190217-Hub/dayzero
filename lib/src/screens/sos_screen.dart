@@ -24,7 +24,7 @@ class SosScreen extends StatefulWidget {
 enum _Phase { breatheIn, hold, breatheOut }
 
 class _SosScreenState extends State<SosScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _controller;
   _Phase _phase = _Phase.breatheIn;
   Timer? _phaseTimer;
