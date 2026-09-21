@@ -22,15 +22,13 @@ typedef Clock = DateTime Function();
 /// Global app state: habits, check-ins, achievements, premium and settings.
 class AppState extends ChangeNotifier {
   AppState({
-    required sqflite.Database db,
-    required SharedPreferences prefs,
+    required this.db,
+    required this.prefs,
     Clock? clock,
-  })  : _db = db,
-        _prefs = prefs,
-        _clock = clock ?? DateTime.now;
+  }) : _clock = clock ?? DateTime.now;
 
-  final sqflite.Database _db;
-  final SharedPreferences _prefs;
+  final sqflite.Database db;
+  final SharedPreferences prefs;
   final Clock _clock;
 
   final List<Habit> habits = [];
@@ -93,35 +91,35 @@ class AppState extends ChangeNotifier {
   // ---------------------------------------------------------------- loading
 
   Future<void> load() async {
-    premium = _prefs.getBool('premium') ?? false;
-    demoMode = _prefs.getBool('demoMode') ?? false;
-    notificationsEnabled = _prefs.getBool('notifications') ?? true;
-    reminderHour = _prefs.getInt('reminderHour') ?? 20;
-    localeCode = _prefs.getString('locale') ?? 'system';
-    themeCode = _prefs.getString('theme') ?? 'sage';
+    premium = prefs.getBool('premium') ?? false;
+    demoMode = prefs.getBool('demoMode') ?? false;
+    notificationsEnabled = prefs.getBool('notifications') ?? true;
+    reminderHour = prefs.getInt('reminderHour') ?? 20;
+    localeCode = prefs.getString('locale') ?? 'system';
+    themeCode = prefs.getString('theme') ?? 'sage';
     // Migration: the redundant 'forest' preset was removed — fall back to
     // the (visually identical) sage.
     if (themeCode == 'forest') themeCode = 'sage';
-    customHue = _prefs.getInt('customHue') ?? 150;
-    fontCode = _prefs.getString('font') ?? 'roboto';
-    textColorCode = _prefs.getString('textColor') ?? 'auto';
-    currencySymbol = _prefs.getString('currency') ?? '¥';
-    reasons = _prefs.getStringList('reasons') ?? [];
-    plans = IfThenPlan.decodeList(_prefs.getString('plans'));
+    customHue = prefs.getInt('customHue') ?? 150;
+    fontCode = prefs.getString('font') ?? 'roboto';
+    textColorCode = prefs.getString('textColor') ?? 'auto';
+    currencySymbol = prefs.getString('currency') ?? '¥';
+    reasons = prefs.getStringList('reasons') ?? [];
+    plans = IfThenPlan.decodeList(prefs.getString('plans'));
 
-    final habitRows = await _db.query('habits', orderBy: 'created_at ASC');
+    final habitRows = await db.query('habits', orderBy: 'created_at ASC');
     habits
       ..clear()
       ..addAll(habitRows.map(Habit.fromRow));
-    final checkInRows = await _db.query('check_ins');
+    final checkInRows = await db.query('check_ins');
     checkIns
       ..clear()
       ..addAll(checkInRows.map(CheckIn.fromRow));
-    final lapseRows = await _db.query('lapses');
+    final lapseRows = await db.query('lapses');
     lapses
       ..clear()
       ..addAll(lapseRows.map(Lapse.fromRow));
-    final achievementRows = await _db.query('achievements');
+    final achievementRows = await db.query('achievements');
     unlocked.clear();
     for (final row in achievementRows) {
       final habitId = row['habit_id'] as int;
@@ -151,7 +149,7 @@ class AppState extends ChangeNotifier {
       dailyAmount: dailyAmount,
       createdAt: now,
     );
-    final id = await _db.insert('habits', habit.toRow());
+    final id = await db.insert('habits', habit.toRow());
     habits.add(habit.copyWith(id: id));
     _evaluateMilestones();
     notifyListeners();
@@ -159,7 +157,7 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> updateHabit(Habit habit) async {
-    await _db.update(
+    await db.update(
       'habits',
       habit.toRow(),
       where: 'id = ?',
@@ -191,7 +189,7 @@ class AppState extends ChangeNotifier {
       trigger: trigger,
       note: note,
     );
-    final id = await _db.insert('lapses', lapse.toRow());
+    final id = await db.insert('lapses', lapse.toRow());
     lapses.add(Lapse(
       id: id,
       habitId: lapse.habitId,
@@ -208,11 +206,11 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> deleteHabit(Habit habit) async {
-    await _db
+    await db
         .delete('habits', where: 'id = ?', whereArgs: [habit.id]);
-    await _db
+    await db
         .delete('check_ins', where: 'habit_id = ?', whereArgs: [habit.id]);
-    await _db
+    await db
         .delete('achievements', where: 'habit_id = ?', whereArgs: [habit.id]);
     habits.removeWhere((h) => h.id == habit.id);
     checkIns.removeWhere((c) => c.habitId == habit.id);
@@ -235,7 +233,7 @@ class AppState extends ChangeNotifier {
     if (existing != null) {
       final updated = existing.copyWith(
           mood: mood, craving: craving, trigger: trigger, note: note);
-      await _db.update('check_ins', updated.toRow(),
+      await db.update('check_ins', updated.toRow(),
           where: 'id = ?', whereArgs: [updated.id]);
       final i = checkIns.indexWhere((c) => c.id == existing.id);
       checkIns[i] = updated;
@@ -251,7 +249,7 @@ class AppState extends ChangeNotifier {
       trigger: trigger,
       note: note,
     );
-    final id = await _db.insert('check_ins', checkIn.toRow());
+    final id = await db.insert('check_ins', checkIn.toRow());
     checkIns.add(CheckIn(
       id: id,
       habitId: checkIn.habitId,
@@ -282,7 +280,7 @@ class AppState extends ChangeNotifier {
         if (reached && !set.contains(key)) {
           set.add(key);
           if (celebrate) newlyUnlocked.add(key);
-          _db
+          db
               .insert('achievements', {
                 'habit_id': habit.id,
                 'key': key,
@@ -315,73 +313,73 @@ class AppState extends ChangeNotifier {
 
   Future<void> setPremium(bool value) async {
     premium = value;
-    await _prefs.setBool('premium', value);
+    await prefs.setBool('premium', value);
     notifyListeners();
   }
 
   Future<void> setDemoMode(bool value) async {
     demoMode = value;
-    await _prefs.setBool('demoMode', value);
+    await prefs.setBool('demoMode', value);
     notifyListeners();
   }
 
   Future<void> setNotifications(bool value) async {
     notificationsEnabled = value;
-    await _prefs.setBool('notifications', value);
+    await prefs.setBool('notifications', value);
     notifyListeners();
   }
 
   Future<void> setReminderHour(int hour) async {
     reminderHour = hour;
-    await _prefs.setInt('reminderHour', hour);
+    await prefs.setInt('reminderHour', hour);
     notifyListeners();
   }
 
   Future<void> setLocale(String code) async {
     localeCode = code;
-    await _prefs.setString('locale', code);
+    await prefs.setString('locale', code);
     notifyListeners();
   }
 
   Future<void> setTheme(String code) async {
     themeCode = code;
-    await _prefs.setString('theme', code);
+    await prefs.setString('theme', code);
     notifyListeners();
   }
 
   Future<void> setCurrency(String symbol) async {
     currencySymbol = symbol;
-    await _prefs.setString('currency', symbol);
+    await prefs.setString('currency', symbol);
     notifyListeners();
   }
 
   Future<void> setCustomHue(int hue) async {
     customHue = hue;
-    await _prefs.setInt('customHue', hue);
+    await prefs.setInt('customHue', hue);
     notifyListeners();
   }
 
   Future<void> setFont(String code) async {
     fontCode = code;
-    await _prefs.setString('font', code);
+    await prefs.setString('font', code);
     notifyListeners();
   }
 
   Future<void> setTextColor(String code) async {
     textColorCode = code;
-    await _prefs.setString('textColor', code);
+    await prefs.setString('textColor', code);
     notifyListeners();
   }
 
   Future<void> setReasons(List<String> value) async {
     reasons = List.of(value);
-    await _prefs.setStringList('reasons', reasons);
+    await prefs.setStringList('reasons', reasons);
     notifyListeners();
   }
 
   Future<void> setPlans(List<IfThenPlan> value) async {
     plans = List.of(value);
-    await _prefs.setString('plans', IfThenPlan.encodeList(plans));
+    await prefs.setString('plans', IfThenPlan.encodeList(plans));
     notifyListeners();
   }
 

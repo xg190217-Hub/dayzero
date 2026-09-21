@@ -287,8 +287,8 @@ class SettingsScreen extends StatelessWidget {
               subtitle: Text(l10n.settingsNotificationsTime(state.reminderHour)),
               value: state.notificationsEnabled,
               onChanged: (v) async {
-                await state.setNotifications(v);
                 final notifications = context.read<NotificationService>();
+                await state.setNotifications(v);
                 if (v) {
                   await notifications.requestPermission();
                   await notifications.scheduleDaily(
@@ -309,6 +309,7 @@ class SettingsScreen extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               onTap: () async {
+                final notifications = context.read<NotificationService>();
                 final picked = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay(hour: state.reminderHour, minute: 0),
@@ -316,7 +317,6 @@ class SettingsScreen extends StatelessWidget {
                 if (picked != null) {
                   await state.setReminderHour(picked.hour);
                   if (state.notificationsEnabled) {
-                    final notifications = context.read<NotificationService>();
                     await notifications.scheduleDaily(
                       title: l10n.appTitle,
                       body: l10n.notifBody,
@@ -635,6 +635,7 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
     if (saved == true && controller.text.trim().isNotEmpty) {
+      if (!context.mounted) return;
       final state = context.read<AppState>();
       await state.setPlans([
         ...state.plans,
@@ -670,6 +671,7 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
     if (text != null && text.isNotEmpty) {
+      if (!context.mounted) return;
       final state = context.read<AppState>();
       await state.setReasons([...state.reasons, text]);
     }
@@ -712,6 +714,7 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
     if (confirmed == true) {
+      if (!context.mounted) return;
       await context.read<AppState>().deleteHabit(habit);
     }
   }
@@ -736,6 +739,7 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
     if (confirmed == true) {
+      if (!context.mounted) return;
       final state = context.read<AppState>();
       for (final h in List.of(state.habits)) {
         await state.deleteHabit(h);

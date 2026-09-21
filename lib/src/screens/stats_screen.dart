@@ -116,7 +116,7 @@ class _StatsBody extends StatelessWidget {
         const SizedBox(height: 16),
         Row(
           children: [
-            _statCard(context, '${days}', l10n.statsTotalFree),
+            _statCard(context, '$days', l10n.statsTotalFree),
             const SizedBox(width: 10),
             _statCard(context, '$streak', l10n.statsStreak),
             const SizedBox(width: 10),

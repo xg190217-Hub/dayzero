@@ -13,8 +13,7 @@ import 'package:flutter/foundation.dart';
 enum AudioStatus { idle, initializing, ready, failed }
 
 class AudioService {
-  AudioService({Duration timeout = const Duration(seconds: 5)})
-      : _timeout = timeout;
+  AudioService({this._timeout = const Duration(seconds: 5)});
 
   final Duration _timeout;
   AudioStatus status = AudioStatus.idle;

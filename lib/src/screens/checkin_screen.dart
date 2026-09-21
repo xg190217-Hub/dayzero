@@ -81,6 +81,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
   Future<void> _save() async {
     setState(() => _saving = true);
     final state = context.read<AppState>();
+    final l10n = AppLocalizations.of(context);
     await state.saveCheckIn(
       habit: widget.habit,
       mood: _mood,
@@ -88,7 +89,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
       trigger: _trigger,
       note: _note.text.trim().isEmpty ? null : _note.text.trim(),
     );
-    final l10n = AppLocalizations.of(context);
     if (!mounted) return;
     // Small reward sound (silently skipped when audio is unavailable).
     context.read<AudioService>().play('sounds/chime.wav');
@@ -141,6 +141,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         return;
       }
     }
+    if (!mounted) return;
     Navigator.of(context).pop();
   }
 

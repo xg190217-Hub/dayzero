@@ -7,7 +7,7 @@ import 'package:timezone/timezone.dart' as tz;
 /// Daily 8 PM check-in reminder. iOS-only in practice; guarded so the web
 /// demo and tests never touch the platform channel.
 class NotificationService {
-  NotificationService({bool enabled = !kIsWeb}) : enabled = enabled;
+  NotificationService({this.enabled = !kIsWeb});
 
   final bool enabled;
 
