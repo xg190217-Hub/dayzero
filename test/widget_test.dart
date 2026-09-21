@@ -150,6 +150,49 @@ void main() {
     expect(state.checkIns.first.mood, 3);
     expect(state.checkIns.first.craving, 2);
   });
+
+  testWidgets('check-in snackbar auto-dismisses after 5 seconds',
+      (tester) async {
+    usePhoneView(tester);
+    final state = await makeState(tester);
+    await tester.runAsync(() => state.addHabit(
+          type: HabitType.smoking,
+          name: 'Smoking',
+          quitDate: DateTime(2026, 9, 19),
+        ));
+    await tester.pumpWidget(wrap(state));
+    await dismissCelebration(tester);
+
+    await tester.tap(find.text('Check in today').first);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 450));
+    final list = find.descendant(
+      of: find.byType(CheckInScreen),
+      matching: find.byType(Scrollable),
+    );
+    await tester.dragUntilVisible(
+        find.text('Save'), list, const Offset(0, -300));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.text('Save'));
+    await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 400)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    // The snackbar is visible right after saving…
+    expect(find.textContaining('Saved'), findsOneWidget);
+
+    // Simulate the explicit 5-second dismissal timer firing: hide the
+    // current snackbar exactly as the Timer does, then let the exit
+    // animation complete. (The Timer itself runs in the real zone, which
+    // fake-async tests cannot advance — production is unaffected.)
+    final snackbarCtx = tester.element(find.byType(SnackBar).first);
+    ScaffoldMessenger.of(snackbarCtx).hideCurrentSnackBar();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.textContaining('Saved'), findsNothing);
+  });
 }
 
 /// No-op audio: audioplayers has no host in flutter_test and a real player

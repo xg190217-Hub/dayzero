@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -102,7 +104,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
     final insight = _insight(l10n, state);
     messenger.showSnackBar(SnackBar(
       duration: const Duration(seconds: 5),
-      content: Text(insight == null ? l10n.checkinDone : '$l10n.checkinDone\n$insight'),
+      content: Text(insight == null ? l10n.checkinDone : '${l10n.checkinDone}\n$insight'),
       // One-tap way back in when the user wants to adjust their entry.
       action: SnackBarAction(
         label: l10n.settingsEditHabit,
