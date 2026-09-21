@@ -10,39 +10,70 @@ const kDarkBackground = Color(0xFF101714);
 
 /// Premium theme presets. Each defines a seed color and a light surface.
 class ThemePreset {
-  const ThemePreset(this.name, this.seed, this.surface);
+  const ThemePreset(this.seed, this.surface);
 
-  final String name;
   final Color seed;
   final Color surface;
 }
 
 const kThemePresets = <String, ThemePreset>{
-  'sage': ThemePreset('sage', kLeafGreen, kWarmBackground),
-  'forest': ThemePreset('forest', Color(0xFF1B4332), Color(0xFFEDF3EC)),
-  'ocean': ThemePreset('ocean', Color(0xFF0B5563), Color(0xFFEBF3F5)),
+  'sage': ThemePreset(kLeafGreen, kWarmBackground),
+  'forest': ThemePreset(Color(0xFF1B4332), Color(0xFFEDF3EC)),
+  'ocean': ThemePreset(Color(0xFF0B5563), Color(0xFFEBF3F5)),
+  'rose': ThemePreset(Color(0xFFAD3A6B), Color(0xFFF8F0F3)),
+  'sunset': ThemePreset(Color(0xFFC4551D), Color(0xFFF9F1E9)),
+  'violet': ThemePreset(Color(0xFF5B3AA8), Color(0xFFF2EFF8)),
 };
 
-ThemeData buildDayZeroTheme(Brightness brightness, {String preset = 'sage'}) {
+/// Body font options (all OFL-licensed, bundled locally).
+const kFontFamilies = <String, String>{
+  'roboto': 'Roboto',
+  'nunito': 'DayZeroNunito',
+  'lora': 'Lora',
+  'space': 'SpaceGrotesk',
+};
+
+/// Text color swatches offered in settings. 'auto' = theme-defined color.
+const kTextColorOptions = <String, Color?>{
+  'auto': null,
+  'ink': Color(0xFF1A1A1A),
+  'brown': Color(0xFF3E2723),
+  'navy': Color(0xFF0D3B66),
+  'violet': Color(0xFF4A148C),
+  'forest': Color(0xFF1B5E20),
+  'crimson': Color(0xFFB71C1C),
+  'teal': Color(0xFF006064),
+  'slate': Color(0xFF37474F),
+};
+
+ThemeData buildDayZeroTheme(
+  Brightness brightness, {
+  String preset = 'sage',
+  Color? seedOverride,
+  String fontCode = 'roboto',
+  Color? textColor,
+}) {
   final isDark = brightness == Brightness.dark;
   final p = kThemePresets[preset] ?? kThemePresets['sage']!;
+  final seed = seedOverride ?? p.seed;
   final scheme = ColorScheme.fromSeed(
-    seedColor: p.seed,
+    seedColor: seed,
     brightness: brightness,
-    primary: p.seed,
+    primary: seed,
     surface: isDark ? kDarkBackground : p.surface,
   );
+  final fontFamily = kFontFamilies[fontCode] ?? 'Roboto';
   final base = ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
-    fontFamily: 'Roboto',
+    fontFamily: fontFamily,
     scaffoldBackgroundColor: isDark ? kDarkBackground : p.surface,
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: false,
       titleTextStyle: TextStyle(
-        fontFamily: 'DayZeroNunito',
+        fontFamily: fontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 22,
         color: scheme.onSurface,
@@ -55,12 +86,12 @@ ThemeData buildDayZeroTheme(Brightness brightness, {String preset = 'sage'}) {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: p.seed,
+        backgroundColor: seed,
         foregroundColor: Colors.white,
         minimumSize: const Size.fromHeight(52),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        textStyle: const TextStyle(
-            fontFamily: 'DayZeroNunito',
+        textStyle: TextStyle(
+            fontFamily: fontFamily,
             fontWeight: FontWeight.w700,
             fontSize: 16),
       ),
@@ -78,17 +109,19 @@ ThemeData buildDayZeroTheme(Brightness brightness, {String preset = 'sage'}) {
       )),
     ),
   );
+  final bodyColor = textColor ?? scheme.onSurface;
   return base.copyWith(
     textTheme: base.textTheme.apply(
-      bodyColor: scheme.onSurface,
-      displayColor: scheme.onSurface,
+      bodyColor: bodyColor,
+      displayColor: bodyColor,
     ),
   );
 }
 
-/// Display numbers in the big counters with the rounded display font.
+/// Display numbers in the big counters with the active theme font.
 TextStyle displayFont(BuildContext context, {double size = 64}) => TextStyle(
-      fontFamily: 'DayZeroNunito',
+      // ThemeData doesn't expose fontFamily; the text theme carries it.
+      fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,
       fontWeight: FontWeight.w700,
       fontSize: size,
       color: Theme.of(context).colorScheme.onSurface,

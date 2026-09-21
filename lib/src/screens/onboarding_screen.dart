@@ -503,8 +503,7 @@ class _HabitOption extends StatelessWidget {
             HabitIcon(type: type, size: 22),
             const SizedBox(width: 8),
             Text(label,
-                style: const TextStyle(
-                    fontFamily: 'DayZeroNunito', fontWeight: FontWeight.w700)),
+                style: const TextStyle(fontWeight: FontWeight.w700)),
           ],
         ),
       ),

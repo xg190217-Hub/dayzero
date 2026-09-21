@@ -77,7 +77,6 @@ class _MilestonesBody extends StatelessWidget {
               // resolve it through the type, never print the raw key.
               _label(l10n, habit),
               style: const TextStyle(
-                  fontFamily: 'DayZeroNunito',
                   fontWeight: FontWeight.w700,
                   fontSize: 18),
             ),

@@ -34,6 +34,12 @@ class DayZeroApp extends StatelessWidget {
         if (state.localeCode != 'system') {
           locale = Locale(state.localeCode);
         }
+        // 'custom' theme: the hue slider drives the seed color directly.
+        final seedOverride = state.themeCode == 'custom'
+            ? HSLColor.fromAHSL(1, state.customHue.toDouble(), 0.55, 0.35)
+                .toColor()
+            : null;
+        final textColor = kTextColorOptions[state.textColorCode];
         return MaterialApp(
           title: 'DayZero',
           debugShowCheckedModeBanner: false,
@@ -45,8 +51,20 @@ class DayZeroApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: supportedLocales,
-          theme: buildDayZeroTheme(Brightness.light, preset: state.themeCode),
-          darkTheme: buildDayZeroTheme(Brightness.dark, preset: state.themeCode),
+          theme: buildDayZeroTheme(
+            Brightness.light,
+            preset: state.themeCode,
+            seedOverride: seedOverride,
+            fontCode: state.fontCode,
+            textColor: textColor,
+          ),
+          darkTheme: buildDayZeroTheme(
+            Brightness.dark,
+            preset: state.themeCode,
+            seedOverride: seedOverride,
+            fontCode: state.fontCode,
+            textColor: textColor,
+          ),
           themeMode: ThemeMode.system,
           home: state.loaded
               ? (state.habits.isEmpty

@@ -226,6 +226,42 @@ class AppLocalizationsKo extends AppLocalizations {
   String get statsView7 => '7일 보기';
 
   @override
+  String get sosAmbient => '평온한 배경음';
+
+  @override
+  String get textAuto => '자동';
+
+  @override
+  String get theme_violet => '보라';
+
+  @override
+  String get theme_sunset => '노을';
+
+  @override
+  String get theme_rose => '로즈';
+
+  @override
+  String get theme_ocean => '바다';
+
+  @override
+  String get theme_forest => '숲';
+
+  @override
+  String get theme_sage => '세이지';
+
+  @override
+  String get theme_custom => '사용자 지정';
+
+  @override
+  String get settingsTextColor => '글자 색';
+
+  @override
+  String get settingsFont => '글꼴';
+
+  @override
+  String get settingsThemes => '테마';
+
+  @override
   String get statsView30 => '30일 보기';
 
   @override

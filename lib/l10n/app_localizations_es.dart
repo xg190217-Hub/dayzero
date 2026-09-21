@@ -230,6 +230,42 @@ class AppLocalizationsEs extends AppLocalizations {
   String get statsView7 => 'Vista de 7 días';
 
   @override
+  String get sosAmbient => 'Ambiente relajante';
+
+  @override
+  String get textAuto => 'Automático';
+
+  @override
+  String get theme_violet => 'Violeta';
+
+  @override
+  String get theme_sunset => 'Atardecer';
+
+  @override
+  String get theme_rose => 'Rosa';
+
+  @override
+  String get theme_ocean => 'Océano';
+
+  @override
+  String get theme_forest => 'Bosque';
+
+  @override
+  String get theme_sage => 'Salvia';
+
+  @override
+  String get theme_custom => 'Personalizado';
+
+  @override
+  String get settingsTextColor => 'Color del texto';
+
+  @override
+  String get settingsFont => 'Fuente';
+
+  @override
+  String get settingsThemes => 'Temas';
+
+  @override
   String get statsView30 => 'Vista de 30 días';
 
   @override

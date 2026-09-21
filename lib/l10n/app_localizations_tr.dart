@@ -229,6 +229,42 @@ class AppLocalizationsTr extends AppLocalizations {
   String get statsView7 => '7 günlük görünüm';
 
   @override
+  String get sosAmbient => 'Sakin ortam sesi';
+
+  @override
+  String get textAuto => 'Otomatik';
+
+  @override
+  String get theme_violet => 'Mor';
+
+  @override
+  String get theme_sunset => 'Gün batımı';
+
+  @override
+  String get theme_rose => 'Gül';
+
+  @override
+  String get theme_ocean => 'Okyanus';
+
+  @override
+  String get theme_forest => 'Orman';
+
+  @override
+  String get theme_sage => 'Adaçayı';
+
+  @override
+  String get theme_custom => 'Özel';
+
+  @override
+  String get settingsTextColor => 'Metin rengi';
+
+  @override
+  String get settingsFont => 'Yazı tipi';
+
+  @override
+  String get settingsThemes => 'Temalar';
+
+  @override
   String get statsView30 => '30 günlük görünüm';
 
   @override

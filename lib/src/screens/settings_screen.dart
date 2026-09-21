@@ -40,10 +40,8 @@ class SettingsScreen extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Icons.workspace_premium,
                     color: kLeafGreen),
-                title: const Text('DayZero Premium',
-                    style: TextStyle(
-                        fontFamily: 'DayZeroNunito',
-                        fontWeight: FontWeight.w700)),
+                title: Text(l10n.settingsPremium,
+                    style: const TextStyle(fontWeight: FontWeight.w700)),
                 subtitle: Text(l10n.premiumSubtitle),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
@@ -58,7 +56,7 @@ class SettingsScreen extends StatelessWidget {
                 subtitle: Text(l10n.settingsPremiumActive),
               ),
             ),
-          // Premium themes (part of the paywall's feature list).
+          // Appearance customization (part of the paywall's feature list).
           if (state.isPremium)
             Card(
               child: Padding(
@@ -66,31 +64,121 @@ class SettingsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
                         Icon(Icons.palette_outlined, color: kLeafGreen),
-                        SizedBox(width: 12),
-                        Text('Themes',
-                            style: TextStyle(
-                                fontFamily: 'DayZeroNunito',
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16)),
+                        const SizedBox(width: 12),
+                        Text(l10n.settingsThemes,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16)),
                       ],
                     ),
                     const SizedBox(height: 12),
                     Wrap(
                       spacing: 8,
-                      children: kThemePresets.keys.map((code) {
-                        final preset = kThemePresets[code]!;
-                        final selected = state.themeCode == code;
-                        return ChoiceChip(
+                      runSpacing: 8,
+                      children: [
+                        ...kThemePresets.keys.map((code) {
+                          final preset = kThemePresets[code]!;
+                          final selected = state.themeCode == code;
+                          return ChoiceChip(
+                            avatar: CircleAvatar(
+                              backgroundColor: preset.seed,
+                              radius: 10,
+                            ),
+                            label: Text(_themeLabel(l10n, code)),
+                            selected: selected,
+                            onSelected: (_) => state.setTheme(code),
+                          );
+                        }),
+                        // Fully custom: hue slider dialog.
+                        ChoiceChip(
                           avatar: CircleAvatar(
-                            backgroundColor: preset.seed,
+                            backgroundColor: HSLColor.fromAHSL(
+                                    1,
+                                    state.customHue.toDouble(),
+                                    0.55,
+                                    0.35)
+                                .toColor(),
                             radius: 10,
                           ),
-                          label: Text(code[0].toUpperCase() + code.substring(1)),
+                          label: Text(l10n.theme_custom),
+                          selected: state.themeCode == 'custom',
+                          onSelected: (_) => _customThemeDialog(context),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Icon(Icons.text_fields, color: kLeafGreen),
+                        const SizedBox(width: 12),
+                        Text(l10n.settingsFont,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16)),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      children: kFontFamilies.entries.map((entry) {
+                        final selected = state.fontCode == entry.key;
+                        return ChoiceChip(
+                          avatar: Text('Aa',
+                              style: TextStyle(
+                                fontFamily: entry.value,
+                                fontWeight: FontWeight.w700,
+                              )),
+                          label: Text(entry.value
+                              .replaceFirst('DayZero', '')
+                              .replaceFirst('Space', 'Space ')),
                           selected: selected,
-                          onSelected: (_) => state.setTheme(code),
+                          onSelected: (_) => state.setFont(entry.key),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Icon(Icons.format_color_text, color: kLeafGreen),
+                        const SizedBox(width: 12),
+                        Text(l10n.settingsTextColor,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 16)),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: kTextColorOptions.entries.map((entry) {
+                        final selected = state.textColorCode == entry.key;
+                        return GestureDetector(
+                          onTap: () => state.setTextColor(entry.key),
+                          child: Container(
+                            width: 36,
+                            height: 36,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: entry.value ??
+                                  Theme.of(context).colorScheme.onSurface,
+                              border: Border.all(
+                                color: selected
+                                    ? kLeafGreen
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .outlineVariant,
+                                width: selected ? 3 : 1,
+                              ),
+                            ),
+                            child: entry.value == null
+                                ? Icon(Icons.text_fields,
+                                    size: 16,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surface)
+                                : null,
+                          ),
                         );
                       }).toList(),
                     ),
@@ -188,8 +276,7 @@ class SettingsScreen extends StatelessWidget {
               title: Text(l10n.settingsNotifications),
               trailing: Text(
                 '${state.reminderHour.toString().padLeft(2, '0')}:00',
-                style: const TextStyle(
-                    fontFamily: 'DayZeroNunito', fontWeight: FontWeight.w700),
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               onTap: () async {
                 final picked = await showTimePicker(
@@ -343,6 +430,97 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  String _themeLabel(AppLocalizations l10n, String code) {
+    switch (code) {
+      case 'sage':
+        return l10n.theme_sage;
+      case 'forest':
+        return l10n.theme_forest;
+      case 'ocean':
+        return l10n.theme_ocean;
+      case 'rose':
+        return l10n.theme_rose;
+      case 'sunset':
+        return l10n.theme_sunset;
+      case 'violet':
+        return l10n.theme_violet;
+      default:
+        return l10n.theme_custom;
+    }
+  }
+
+  /// Hue-slider dialog: pick any color on the wheel, live preview included.
+  Future<void> _customThemeDialog(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final state = context.read<AppState>();
+    var hue = state.customHue;
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (dialogContext, setDialogState) {
+            final color =
+                HSLColor.fromAHSL(1, hue.toDouble(), 0.55, 0.35).toColor();
+            return AlertDialog(
+              title: Text(l10n.theme_custom),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: color,
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.withValues(alpha: 0.4),
+                          blurRadius: 16,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Slider(
+                    value: hue.toDouble(),
+                    min: 0,
+                    max: 360,
+                    activeColor: color,
+                    onChanged: (v) {
+                      hue = v.round();
+                      setDialogState(() {});
+                      state.setCustomHue(hue);
+                    },
+                  ),
+                  Text(
+                    'HUE $hue°',
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.outline),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: Text(l10n.cancel),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    state.setTheme('custom');
+                    Navigator.of(dialogContext).pop();
+                  },
+                  child: Text(l10n.save),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 

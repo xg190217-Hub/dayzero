@@ -49,6 +49,15 @@ class AppState extends ChangeNotifier {
   String localeCode = 'system';
   String themeCode = 'sage';
 
+  /// Hue (0-360) used when [themeCode] is 'custom'.
+  int customHue = 150;
+
+  /// Body font selection (see kFontFamilies in theme.dart).
+  String fontCode = 'roboto';
+
+  /// Text color selection (see kTextColorOptions in theme.dart).
+  String textColorCode = 'auto';
+
   /// Currency symbol for the "money saved" counters.
   String currencySymbol = '¥';
   List<String> reasons = [];
@@ -84,6 +93,9 @@ class AppState extends ChangeNotifier {
     reminderHour = _prefs.getInt('reminderHour') ?? 20;
     localeCode = _prefs.getString('locale') ?? 'system';
     themeCode = _prefs.getString('theme') ?? 'sage';
+    customHue = _prefs.getInt('customHue') ?? 150;
+    fontCode = _prefs.getString('font') ?? 'roboto';
+    textColorCode = _prefs.getString('textColor') ?? 'auto';
     currencySymbol = _prefs.getString('currency') ?? '¥';
     reasons = _prefs.getStringList('reasons') ?? [];
 
@@ -297,6 +309,24 @@ class AppState extends ChangeNotifier {
   Future<void> setCurrency(String symbol) async {
     currencySymbol = symbol;
     await _prefs.setString('currency', symbol);
+    notifyListeners();
+  }
+
+  Future<void> setCustomHue(int hue) async {
+    customHue = hue;
+    await _prefs.setInt('customHue', hue);
+    notifyListeners();
+  }
+
+  Future<void> setFont(String code) async {
+    fontCode = code;
+    await _prefs.setString('font', code);
+    notifyListeners();
+  }
+
+  Future<void> setTextColor(String code) async {
+    textColorCode = code;
+    await _prefs.setString('textColor', code);
     notifyListeners();
   }
 

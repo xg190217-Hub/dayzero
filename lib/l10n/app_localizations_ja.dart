@@ -225,6 +225,42 @@ class AppLocalizationsJa extends AppLocalizations {
   String get statsView7 => '7日ビュー';
 
   @override
+  String get sosAmbient => '環境音';
+
+  @override
+  String get textAuto => '自動';
+
+  @override
+  String get theme_violet => 'バイオレット';
+
+  @override
+  String get theme_sunset => 'サンセット';
+
+  @override
+  String get theme_rose => 'ローズ';
+
+  @override
+  String get theme_ocean => 'オーシャン';
+
+  @override
+  String get theme_forest => 'フォレスト';
+
+  @override
+  String get theme_sage => 'セージ';
+
+  @override
+  String get theme_custom => 'カスタム';
+
+  @override
+  String get settingsTextColor => '文字の色';
+
+  @override
+  String get settingsFont => 'フォント';
+
+  @override
+  String get settingsThemes => 'テーマ';
+
+  @override
   String get statsView30 => '30日ビュー';
 
   @override

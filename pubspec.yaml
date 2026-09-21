@@ -66,6 +66,22 @@ flutter:
           weight: 500
         - asset: assets/fonts/nunito-latin-700-normal.ttf
           weight: 700
+    - family: Lora
+      fonts:
+        - asset: assets/fonts/lora-latin-400-normal.ttf
+          weight: 400
+        - asset: assets/fonts/lora-latin-500-normal.ttf
+          weight: 500
+        - asset: assets/fonts/lora-latin-700-normal.ttf
+          weight: 700
+    - family: SpaceGrotesk
+      fonts:
+        - asset: assets/fonts/space-grotesk-latin-400-normal.ttf
+          weight: 400
+        - asset: assets/fonts/space-grotesk-latin-500-normal.ttf
+          weight: 500
+        - asset: assets/fonts/space-grotesk-latin-700-normal.ttf
+          weight: 700
 
   assets:
     - assets/sounds/

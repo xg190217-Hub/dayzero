@@ -229,6 +229,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statsView7 => '7-day view';
 
   @override
+  String get sosAmbient => 'Calm ambient';
+
+  @override
+  String get textAuto => 'Auto (default)';
+
+  @override
+  String get theme_violet => 'Violet';
+
+  @override
+  String get theme_sunset => 'Sunset';
+
+  @override
+  String get theme_rose => 'Rose';
+
+  @override
+  String get theme_ocean => 'Ocean';
+
+  @override
+  String get theme_forest => 'Forest';
+
+  @override
+  String get theme_sage => 'Sage';
+
+  @override
+  String get theme_custom => 'Custom';
+
+  @override
+  String get settingsTextColor => 'Text color';
+
+  @override
+  String get settingsFont => 'Font';
+
+  @override
+  String get settingsThemes => 'Themes';
+
+  @override
   String get statsView30 => '30-day view';
 
   @override

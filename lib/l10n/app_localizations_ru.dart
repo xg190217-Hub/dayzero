@@ -229,6 +229,42 @@ class AppLocalizationsRu extends AppLocalizations {
   String get statsView7 => 'Вид за 7 дней';
 
   @override
+  String get sosAmbient => 'Спокойный фон';
+
+  @override
+  String get textAuto => 'Авто';
+
+  @override
+  String get theme_violet => 'Фиолетовый';
+
+  @override
+  String get theme_sunset => 'Закат';
+
+  @override
+  String get theme_rose => 'Роза';
+
+  @override
+  String get theme_ocean => 'Океан';
+
+  @override
+  String get theme_forest => 'Лес';
+
+  @override
+  String get theme_sage => 'Шалфей';
+
+  @override
+  String get theme_custom => 'Свой';
+
+  @override
+  String get settingsTextColor => 'Цвет текста';
+
+  @override
+  String get settingsFont => 'Шрифт';
+
+  @override
+  String get settingsThemes => 'Темы';
+
+  @override
   String get statsView30 => 'Вид за 30 дней';
 
   @override

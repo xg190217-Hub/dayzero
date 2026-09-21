@@ -228,6 +228,42 @@ class AppLocalizationsAr extends AppLocalizations {
   String get statsView7 => 'عرض 7 أيام';
 
   @override
+  String get sosAmbient => 'أجواء هادئة';
+
+  @override
+  String get textAuto => 'تلقائي';
+
+  @override
+  String get theme_violet => 'بنفسجي';
+
+  @override
+  String get theme_sunset => 'غروب';
+
+  @override
+  String get theme_rose => 'ورد';
+
+  @override
+  String get theme_ocean => 'محيط';
+
+  @override
+  String get theme_forest => 'غابة';
+
+  @override
+  String get theme_sage => 'ميرمية';
+
+  @override
+  String get theme_custom => 'مخصص';
+
+  @override
+  String get settingsTextColor => 'لون النص';
+
+  @override
+  String get settingsFont => 'الخط';
+
+  @override
+  String get settingsThemes => 'الثيمات';
+
+  @override
   String get statsView30 => 'عرض 30 يومًا';
 
   @override

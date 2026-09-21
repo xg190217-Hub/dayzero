@@ -143,7 +143,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 child: Text(
                   _habitLabel(l10n, widget.habit),
                   style: const TextStyle(
-                      fontFamily: 'DayZeroNunito',
                       fontWeight: FontWeight.w700,
                       fontSize: 16),
                 ),
@@ -159,7 +158,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 children: [
                   Text(l10n.checkinMood,
                       style: const TextStyle(
-                          fontFamily: 'DayZeroNunito',
                           fontWeight: FontWeight.w700,
                           fontSize: 18)),
                   const SizedBox(height: 16),
@@ -209,7 +207,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     children: [
                       Text(l10n.checkinCraving,
                           style: const TextStyle(
-                              fontFamily: 'DayZeroNunito',
                               fontWeight: FontWeight.w700,
                               fontSize: 18)),
                       Text('${_craving.round()}/5',
@@ -237,7 +234,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
                 children: [
                   Text(l10n.checkinTrigger,
                       style: const TextStyle(
-                          fontFamily: 'DayZeroNunito',
                           fontWeight: FontWeight.w700,
                           fontSize: 18)),
                   const SizedBox(height: 12),

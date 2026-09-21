@@ -162,7 +162,6 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 '🔥 ${l10n.homeStreak(_streak(state, habit))}',
                 style: const TextStyle(
-                    fontFamily: 'DayZeroNunito',
                     fontWeight: FontWeight.w700,
                     fontSize: 15),
               ),
@@ -194,7 +193,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   '${l10n.homeMoneySaved}: ${_money(habit.dailySpend * days)}',
                   style: const TextStyle(
-                      fontFamily: 'DayZeroNunito',
                       fontWeight: FontWeight.w700,
                       color: kDeepGreen),
                 ),
@@ -274,7 +272,6 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Text(l10n.homeHealthTimeline,
             style: const TextStyle(
-                fontFamily: 'DayZeroNunito',
                 fontWeight: FontWeight.w700,
                 fontSize: 18)),
         const SizedBox(height: 12),
@@ -377,7 +374,6 @@ class _HomeScreenState extends State<HomeScreen> {
           labels,
           textAlign: TextAlign.center,
           style: const TextStyle(
-              fontFamily: 'DayZeroNunito',
               fontWeight: FontWeight.w700,
               fontSize: 16),
         ),

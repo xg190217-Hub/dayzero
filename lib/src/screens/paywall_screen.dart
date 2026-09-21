@@ -122,7 +122,6 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   l10n.premiumSubtitle,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontFamily: 'DayZeroNunito',
                     fontWeight: FontWeight.w700,
                     fontSize: 20,
                     color: Colors.white,
@@ -287,7 +286,6 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 children: [
                   Text(name,
                       style: const TextStyle(
-                          fontFamily: 'DayZeroNunito',
                           fontWeight: FontWeight.w700,
                           fontSize: 15)),
                   if (id == 'dayzero_yearly' && kOfferFreeTrial)

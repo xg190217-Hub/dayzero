@@ -116,7 +116,6 @@ class _StatsBody extends StatelessWidget {
             Text(
               _label(l10n, habit),
               style: const TextStyle(
-                  fontFamily: 'DayZeroNunito',
                   fontWeight: FontWeight.w700,
                   fontSize: 18),
             ),
@@ -141,7 +140,6 @@ class _StatsBody extends StatelessWidget {
               children: [
                 Text(l10n.statsWeeklyReport,
                     style: const TextStyle(
-                        fontFamily: 'DayZeroNunito',
                         fontWeight: FontWeight.w700,
                         fontSize: 18)),
                 const SizedBox(height: 8),

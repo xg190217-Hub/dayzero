@@ -538,6 +538,78 @@ abstract class AppLocalizations {
   /// **'7-day view'**
   String get statsView7;
 
+  /// No description provided for @sosAmbient.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm ambient'**
+  String get sosAmbient;
+
+  /// No description provided for @textAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto (default)'**
+  String get textAuto;
+
+  /// No description provided for @theme_violet.
+  ///
+  /// In en, this message translates to:
+  /// **'Violet'**
+  String get theme_violet;
+
+  /// No description provided for @theme_sunset.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset'**
+  String get theme_sunset;
+
+  /// No description provided for @theme_rose.
+  ///
+  /// In en, this message translates to:
+  /// **'Rose'**
+  String get theme_rose;
+
+  /// No description provided for @theme_ocean.
+  ///
+  /// In en, this message translates to:
+  /// **'Ocean'**
+  String get theme_ocean;
+
+  /// No description provided for @theme_forest.
+  ///
+  /// In en, this message translates to:
+  /// **'Forest'**
+  String get theme_forest;
+
+  /// No description provided for @theme_sage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sage'**
+  String get theme_sage;
+
+  /// No description provided for @theme_custom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get theme_custom;
+
+  /// No description provided for @settingsTextColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Text color'**
+  String get settingsTextColor;
+
+  /// No description provided for @settingsFont.
+  ///
+  /// In en, this message translates to:
+  /// **'Font'**
+  String get settingsFont;
+
+  /// No description provided for @settingsThemes.
+  ///
+  /// In en, this message translates to:
+  /// **'Themes'**
+  String get settingsThemes;
+
   /// No description provided for @statsView30.
   ///
   /// In en, this message translates to:

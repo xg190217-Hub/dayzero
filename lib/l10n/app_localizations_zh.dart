@@ -222,6 +222,42 @@ class AppLocalizationsZh extends AppLocalizations {
   String get statsView7 => '7 天视图';
 
   @override
+  String get sosAmbient => '静心环境音';
+
+  @override
+  String get textAuto => '默认';
+
+  @override
+  String get theme_violet => '暮光紫';
+
+  @override
+  String get theme_sunset => '日落橙';
+
+  @override
+  String get theme_rose => '玫瑰粉';
+
+  @override
+  String get theme_ocean => '海洋蓝';
+
+  @override
+  String get theme_forest => '森林绿';
+
+  @override
+  String get theme_sage => '鼠尾草绿';
+
+  @override
+  String get theme_custom => '自定义';
+
+  @override
+  String get settingsTextColor => '文字颜色';
+
+  @override
+  String get settingsFont => '字体';
+
+  @override
+  String get settingsThemes => '主题';
+
+  @override
   String get statsView30 => '30 天视图';
 
   @override

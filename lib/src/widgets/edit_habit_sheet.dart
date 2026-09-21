@@ -106,7 +106,6 @@ class _EditHabitSheetState extends State<EditHabitSheet> {
                   child: Text(
                     _habitLabel(l10n, h),
                     style: const TextStyle(
-                        fontFamily: 'DayZeroNunito',
                         fontWeight: FontWeight.w700,
                         fontSize: 18),
                   ),

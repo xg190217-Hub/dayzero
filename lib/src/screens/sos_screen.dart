@@ -191,7 +191,6 @@ class _SosScreenState extends State<SosScreen>
                 children: [
                   Text(l10n.sosBreathing,
                       style: const TextStyle(
-                          fontFamily: 'DayZeroNunito',
                           fontWeight: FontWeight.w700,
                           fontSize: 18)),
                   const SizedBox(height: 20),
@@ -225,7 +224,6 @@ class _SosScreenState extends State<SosScreen>
                               child: Text(
                                 _phaseLabel(l10n),
                                 style: const TextStyle(
-                                  fontFamily: 'DayZeroNunito',
                                   fontWeight: FontWeight.w700,
                                   fontSize: 18,
                                   color: kDeepGreen,
@@ -256,7 +254,7 @@ class _SosScreenState extends State<SosScreen>
                             : state.isPremium
                                 ? Icons.waves_outlined
                                 : Icons.lock_outline),
-                        tooltip: 'Ambient',
+                        tooltip: l10n.sosAmbient,
                         onPressed: state.isPremium
                             ? _toggleAmbient
                             : () => Navigator.of(context).push(
@@ -279,7 +277,6 @@ class _SosScreenState extends State<SosScreen>
                   children: [
                     Text(l10n.sosReasons,
                         style: const TextStyle(
-                            fontFamily: 'DayZeroNunito',
                             fontWeight: FontWeight.w700,
                             fontSize: 18)),
                     const SizedBox(height: 12),
@@ -310,7 +307,6 @@ class _SosScreenState extends State<SosScreen>
                       children: [
                         Text(l10n.sosDistract,
                             style: const TextStyle(
-                                fontFamily: 'DayZeroNunito',
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18)),
                         const SizedBox(height: 4),
@@ -349,7 +345,6 @@ class _SosScreenState extends State<SosScreen>
           Text(l10n.sosDone,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                  fontFamily: 'DayZeroNunito',
                   fontWeight: FontWeight.w700,
                   fontSize: 16)),
           const SizedBox(height: 12),
@@ -367,7 +362,6 @@ class _SosScreenState extends State<SosScreen>
       children: [
         Text('${l10n.sosTapsLeft}: $remaining',
             style: const TextStyle(
-                fontFamily: 'DayZeroNunito',
                 fontWeight: FontWeight.w700,
                 fontSize: 16)),
         const SizedBox(height: 12),
