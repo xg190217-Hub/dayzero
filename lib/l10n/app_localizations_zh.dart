@@ -113,6 +113,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get timerBrokenHint => '现在打卡，从零重新开始计时';
 
   @override
+  String get pattern444 => '4-4-4 箱式';
+
+  @override
+  String get pattern55 => '5-5 平衡';
+
+  @override
+  String get pattern478 => '4-7-8 深度放松';
+
+  @override
+  String get pattern446 => '4-4-6 舒缓';
+
+  @override
   String get timerBroken => '已中断';
 
   @override

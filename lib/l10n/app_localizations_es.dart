@@ -119,6 +119,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get timerBrokenHint => 'Regístrate ya para reiniciar desde cero';
 
   @override
+  String get pattern444 => '4-4-4 Caja';
+
+  @override
+  String get pattern55 => '5-5 Equilibrada';
+
+  @override
+  String get pattern478 => '4-7-8 Profunda';
+
+  @override
+  String get pattern446 => '4-4-6 Calma';
+
+  @override
   String get timerBroken => 'Racha interrumpida';
 
   @override

@@ -119,6 +119,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get timerBrokenHint => 'Отметьтесь сейчас — начнём с нуля';
 
   @override
+  String get pattern444 => '4-4-4 Квадрат';
+
+  @override
+  String get pattern55 => '5-5 Баланс';
+
+  @override
+  String get pattern478 => '4-7-8 Глубокое';
+
+  @override
+  String get pattern446 => '4-4-6 Спокойствие';
+
+  @override
   String get timerBroken => 'Серия прервана';
 
   @override

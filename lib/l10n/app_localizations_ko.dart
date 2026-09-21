@@ -117,6 +117,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get timerBrokenHint => '지금 체크인하고 0부터 다시 시작하세요';
 
   @override
+  String get pattern444 => '4-4-4 박스';
+
+  @override
+  String get pattern55 => '5-5 균형';
+
+  @override
+  String get pattern478 => '4-7-8 심호흡';
+
+  @override
+  String get pattern446 => '4-4-6 이완';
+
+  @override
   String get timerBroken => '연속 기록 중단됨';
 
   @override

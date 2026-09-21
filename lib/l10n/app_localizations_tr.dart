@@ -119,6 +119,18 @@ class AppLocalizationsTr extends AppLocalizations {
   String get timerBrokenHint => 'Sıfırdan başlamak için şimdi işaretleyin';
 
   @override
+  String get pattern444 => '4-4-4 Kutu';
+
+  @override
+  String get pattern55 => '5-5 Dengeli';
+
+  @override
+  String get pattern478 => '4-7-8 Derin';
+
+  @override
+  String get pattern446 => '4-4-6 Sakinlik';
+
+  @override
   String get timerBroken => 'Seri koptu';
 
   @override

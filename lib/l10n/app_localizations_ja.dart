@@ -116,6 +116,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get timerBrokenHint => '今チェックインしてゼロから再スタート';
 
   @override
+  String get pattern444 => '4-4-4 ボックス';
+
+  @override
+  String get pattern55 => '5-5 バランス';
+
+  @override
+  String get pattern478 => '4-7-8 ディープ';
+
+  @override
+  String get pattern446 => '4-4-6 リラックス';
+
+  @override
   String get timerBroken => '途切れています';
 
   @override

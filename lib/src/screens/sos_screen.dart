@@ -48,17 +48,30 @@ class _SosScreenState extends State<SosScreen>
   /// (the element tree is already being torn down by then).
   AudioService? _audio;
 
-  static const _durations = {
-    _Phase.breatheIn: Duration(seconds: 4),
-    _Phase.hold: Duration(seconds: 4),
-    _Phase.breatheOut: Duration(seconds: 6),
-  };
+  /// Breathing patterns: each is a full guide (durations + audio pair).
+  /// A zero hold means the pattern skips the hold phase entirely (5-5).
+  static const _patterns = [
+    _Pattern('pattern446', 4, 4, 6, 'sounds/breath_in.wav', 'sounds/breath_out.wav'),
+    _Pattern('pattern478', 4, 7, 8, 'sounds/breath_in.wav', 'sounds/breath_out_8.wav'),
+    _Pattern('pattern55', 5, 0, 5, 'sounds/breath_in_5.wav', 'sounds/breath_out_5.wav'),
+    _Pattern('pattern444', 4, 4, 4, 'sounds/breath_in.wav', 'sounds/breath_out_4.wav'),
+  ];
+
+  int _patternIndex = 0;
+
+  _Pattern get _pattern => _patterns[_patternIndex];
+
+  Duration _durFor(_Phase phase) => switch (phase) {
+        _Phase.breatheIn => Duration(seconds: _pattern.inDur),
+        _Phase.hold => Duration(seconds: _pattern.holdDur),
+        _Phase.breatheOut => Duration(seconds: _pattern.outDur),
+      };
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: _durations[_Phase.breatheIn]!)
+        vsync: this, duration: _durFor(_Phase.breatheIn))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _controller
@@ -80,18 +93,23 @@ class _SosScreenState extends State<SosScreen>
   void _nextPhase() {
     _phaseTimer?.cancel();
     setState(() {
-      _phase = switch (_phase) {
-        _Phase.breatheIn => _Phase.hold,
-        _Phase.hold => _Phase.breatheOut,
-        _Phase.breatheOut => _Phase.breatheIn,
-      };
+      // A zero-length hold phase is skipped (the 5-5 pattern).
+      if (_phase == _Phase.breatheIn && _pattern.holdDur == 0) {
+        _phase = _Phase.breatheOut;
+      } else {
+        _phase = switch (_phase) {
+          _Phase.breatheIn => _Phase.hold,
+          _Phase.hold => _Phase.breatheOut,
+          _Phase.breatheOut => _Phase.breatheIn,
+        };
+      }
     });
     _controller
-      ..duration = _durations[_phase]!
+      ..duration = _durFor(_phase)
       ..reset()
       ..forward();
     if (_audioOn && !_ambientOn) _playPhaseSound();
-    _phaseTimer = Timer(_durations[_phase]!, _nextPhase);
+    _phaseTimer = Timer(_durFor(_phase), _nextPhase);
   }
 
   Future<void> _playPhaseSound() async {
@@ -99,11 +117,11 @@ class _SosScreenState extends State<SosScreen>
     if (audio == null) return;
     switch (_phase) {
       case _Phase.breatheIn:
-        await audio.loop('sounds/breath_in.wav');
+        await audio.loop(_pattern.inFile);
       case _Phase.hold:
         await audio.stop();
       case _Phase.breatheOut:
-        await audio.loop('sounds/breath_out.wav');
+        await audio.loop(_pattern.outFile);
     }
   }
 
@@ -191,6 +209,19 @@ class _SosScreenState extends State<SosScreen>
         _Phase.breatheOut => l10n.sosBreatheOut,
       };
 
+  String _patternLabel(AppLocalizations l10n, String key) {
+    switch (key) {
+      case 'pattern478':
+        return l10n.pattern478;
+      case 'pattern55':
+        return l10n.pattern55;
+      case 'pattern444':
+        return l10n.pattern444;
+      default:
+        return l10n.pattern446;
+    }
+  }
+
   String _triggerLabel(AppLocalizations l10n, String key) {
     switch (key) {
       case 'trigger_stress':
@@ -234,6 +265,30 @@ class _SosScreenState extends State<SosScreen>
                       style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18)),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    alignment: WrapAlignment.center,
+                    children: List.generate(_patterns.length, (i) {
+                      final selected = i == _patternIndex;
+                      return ChoiceChip(
+                        label: Text(_patternLabel(l10n, _patterns[i].key)),
+                        selected: selected,
+                        onSelected: (_) => setState(() {
+                          _patternIndex = i;
+                          _phase = _Phase.breatheIn;
+                          _controller
+                            ..duration = _durFor(_phase)
+                            ..reset()
+                            ..forward();
+                          _phaseTimer?.cancel();
+                          _phaseTimer = Timer(_durFor(_phase), _nextPhase);
+                          if (_audioOn && !_ambientOn) _playPhaseSound();
+                        }),
+                      );
+                    }),
+                  ),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: 180,
@@ -607,4 +662,16 @@ class _WavePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _WavePainter oldDelegate) =>
       oldDelegate.phase != phase || oldDelegate.color != color;
+}
+
+/// One breathing guide: phase durations (seconds) + the synthesized audio
+/// pair that accompanies inhale/exhale.
+class _Pattern {
+  const _Pattern(this.key, this.inDur, this.holdDur, this.outDur, this.inFile, this.outFile);
+  final String key;
+  final int inDur;
+  final int holdDur;
+  final int outDur;
+  final String inFile;
+  final String outFile;
 }

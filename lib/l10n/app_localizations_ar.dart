@@ -119,6 +119,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get timerBrokenHint => 'سجّل الآن للبدء من الصفر';
 
   @override
+  String get pattern444 => '4-4-4 مربع';
+
+  @override
+  String get pattern55 => '5-5 متوازن';
+
+  @override
+  String get pattern478 => '4-7-8 عميق';
+
+  @override
+  String get pattern446 => '4-4-6 استرخاء';
+
+  @override
   String get timerBroken => 'انقطعت السلسلة';
 
   @override

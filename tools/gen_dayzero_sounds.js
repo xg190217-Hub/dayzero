@@ -71,40 +71,32 @@ function lowpass(samples, cutoff) {
   return samples;
 }
 
-// --- breath_in.wav: 4s rising sine 220→330 Hz, gentle swell ---------------
-(function breathIn() {
-  const dur = 4.0;
+// --- parametric breathing tones: one per (name, duration, direction) ------
+function breathTone(name, dur, rise) {
   const n = Math.floor(SR * dur);
   const out = new Float64Array(n);
   let phase = 0;
   for (let i = 0; i < n; i++) {
     const t = i / n;
-    const freq = 220 + 110 * Math.pow(t, 1.4);
+    const freq = rise ? 220 + 110 * Math.pow(t, 1.4) : 330 - 134 * Math.pow(t, 1.15);
     phase += (2 * Math.PI * freq) / SR;
-    const swell = Math.pow(t, 1.5); // slow build, mirroring an inhale
-    out[i] = 0.55 * swell * env(i, n, 0.08, 0.06) * Math.sin(phase);
-    // faint breath overtone
-    out[i] += 0.12 * swell * env(i, n, 0.08, 0.06) * Math.sin(2 * phase);
+    const shape = rise ? Math.pow(t, 1.5) : Math.pow(1 - t, 0.8);
+    out[i] = 0.55 * shape * env(i, n, 0.08, 0.06) * Math.sin(phase);
+    out[i] += 0.12 * shape * env(i, n, 0.08, 0.06) * Math.sin(2 * phase);
   }
-  writeWav(path.join(OUT, 'breath_in.wav'), out);
-})();
+  writeWav(path.join(OUT, name), out);
+}
 
-// --- breath_out.wav: 6s falling sine 330→196 Hz, slow decay ---------------
-(function breathOut() {
-  const dur = 6.0;
-  const n = Math.floor(SR * dur);
-  const out = new Float64Array(n);
-  let phase = 0;
-  for (let i = 0; i < n; i++) {
-    const t = i / n;
-    const freq = 330 - 134 * Math.pow(t, 1.15);
-    phase += (2 * Math.PI * freq) / SR;
-    const fade = Math.pow(1 - t, 0.8); // long release, like an exhale
-    out[i] = 0.55 * fade * env(i, n, 0.06, 0.1) * Math.sin(phase);
-    out[i] += 0.1 * fade * env(i, n, 0.06, 0.1) * Math.sin(2 * phase);
-  }
-  writeWav(path.join(OUT, 'breath_out.wav'), out);
-})();
+// 4-4-6 pattern (default): 4s in, 6s out
+breathTone('breath_in.wav', 4.0, true);
+breathTone('breath_out.wav', 6.0, false);
+// 4-7-8 pattern: 4s in (shared), 8s out
+breathTone('breath_out_8.wav', 8.0, false);
+// 5-5 pattern: 5s in, 5s out
+breathTone('breath_in_5.wav', 5.0, true);
+breathTone('breath_out_5.wav', 5.0, false);
+// 4-4-4 box pattern: 4s in (shared), 4s out
+breathTone('breath_out_4.wav', 4.0, false);
 
 // --- chime.wav: 2.5s bell (C5 + E6 + G6 partials, exponential decay) ------
 (function chime() {
@@ -127,31 +119,38 @@ function lowpass(samples, cutoff) {
   writeWav(path.join(OUT, 'chime.wav'), out);
 })();
 
-// --- calm_ambient.wav: 24s seamless loop, filtered noise + soft pad -------
+// --- calm_ambient.wav: 24s seamless loop — a musical chord drone with a
+// barely-audible air bed. v1 was dominated by filtered noise ("全是噪音");
+// v2 inverts the mix: chord first, whisper of air last.
 (function ambient() {
   const dur = 24.0;
   const n = Math.floor(SR * dur);
   const rand = mulberry32(42);
   const out = new Float64Array(n);
 
-  // Lowpassed pink-ish noise: the "air".
+  // Very soft, very dark air bed (cutoff 350 Hz, level 0.035).
   const noise = new Float64Array(n);
   for (let i = 0; i < n; i++) {
     noise[i] = rand() * 2 - 1;
   }
-  lowpass(noise, 700);
+  lowpass(noise, 350);
 
-  // Very slow pad: A2 + E3 with a 12s LFO so it breathes.
-  const chord = [110.0, 164.81]; // A2, E3
-  const lfoPeriod = SR * 12;
+  // A-major-ish drone: A2, E3, A3, C#4 — each with its own slow swell so
+  // the chord breathes instead of sitting flat.
+  const voices = [
+    { f: 110.0, a: 0.12, period: 9.0 },
+    { f: 164.81, a: 0.09, period: 11.0 },
+    { f: 220.0, a: 0.07, period: 13.0 },
+    { f: 277.18, a: 0.05, period: 17.0 },
+  ];
   for (let i = 0; i < n; i++) {
     const t = i / SR;
-    const lfo = 0.5 + 0.5 * Math.sin((2 * Math.PI * i) / lfoPeriod);
     let pad = 0;
-    for (const f of chord) {
-      pad += Math.sin(2 * Math.PI * f * t);
+    for (const v of voices) {
+      const lfo = 0.5 + 0.5 * Math.sin((2 * Math.PI * t) / v.period);
+      pad += v.a * (0.45 + 0.55 * lfo) * Math.sin(2 * Math.PI * v.f * t);
     }
-    out[i] = 0.16 * noise[i] + 0.05 * (0.4 + 0.6 * lfo) * pad;
+    out[i] = 0.035 * noise[i] + pad;
   }
 
   // 3s crossfade of tail into head for a click-free loop.

@@ -120,6 +120,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get timerBrokenHint => 'Check-in maintenant pour repartir de zéro';
 
   @override
+  String get pattern444 => '4-4-4 Carré';
+
+  @override
+  String get pattern55 => '5-5 Équilibré';
+
+  @override
+  String get pattern478 => '4-7-8 Profond';
+
+  @override
+  String get pattern446 => '4-4-6 Calme';
+
+  @override
   String get timerBroken => 'Série interrompue';
 
   @override

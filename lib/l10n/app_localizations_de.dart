@@ -119,6 +119,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get timerBrokenHint => 'Check-in jetzt — Neustart bei null';
 
   @override
+  String get pattern444 => '4-4-4 Box';
+
+  @override
+  String get pattern55 => '5-5 Balance';
+
+  @override
+  String get pattern478 => '4-7-8 Tief';
+
+  @override
+  String get pattern446 => '4-4-6 Ruhe';
+
+  @override
   String get timerBroken => 'Serie unterbrochen';
 
   @override

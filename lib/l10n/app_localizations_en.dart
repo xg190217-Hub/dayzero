@@ -119,6 +119,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timerBrokenHint => 'Check in now to restart from zero';
 
   @override
+  String get pattern444 => '4-4-4 Box';
+
+  @override
+  String get pattern55 => '5-5 Balanced';
+
+  @override
+  String get pattern478 => '4-7-8 Deep';
+
+  @override
+  String get pattern446 => '4-4-6 Calm';
+
+  @override
   String get timerBroken => 'Streak broken';
 
   @override

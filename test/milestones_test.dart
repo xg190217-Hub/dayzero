@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:dayzero/src/db/database.dart';
+import 'package:dayzero/src/logic/progress.dart';
 import 'package:dayzero/src/models/habit.dart';
 import 'package:dayzero/src/state/app_state.dart';
 
@@ -189,8 +190,12 @@ void main() {
       await state.saveCheckIn(habit: habit, mood: 3, craving: 2);
       expect(state.habits.first.quitDate, isNot(firstRunStart));
       expect(state.isRunBroken(habit.id!), isFalse);
-      // Historical achievements survive (earned once, kept forever).
-      expect(unlockedFor(state, habit.id!), isNotEmpty);
+      // The 25h run earned 'first hour' — the badge SURVIVES the break
+      // (it was truly earned), while the NEXT milestone's countdown
+      // restarts from the new run (days reset to zero).
+      final set = unlockedFor(state, habit.id!);
+      expect(set, contains('milestone_1h'));
+      expect(daysFree(state.habits.first, clock.value), 0);
     });
 
     test('backdated quit date is NOT overridden by the first check-in',

@@ -316,6 +316,30 @@ abstract class AppLocalizations {
   /// **'Check in now to restart from zero'**
   String get timerBrokenHint;
 
+  /// No description provided for @pattern444.
+  ///
+  /// In en, this message translates to:
+  /// **'4-4-4 Box'**
+  String get pattern444;
+
+  /// No description provided for @pattern55.
+  ///
+  /// In en, this message translates to:
+  /// **'5-5 Balanced'**
+  String get pattern55;
+
+  /// No description provided for @pattern478.
+  ///
+  /// In en, this message translates to:
+  /// **'4-7-8 Deep'**
+  String get pattern478;
+
+  /// No description provided for @pattern446.
+  ///
+  /// In en, this message translates to:
+  /// **'4-4-6 Calm'**
+  String get pattern446;
+
   /// No description provided for @timerBroken.
   ///
   /// In en, this message translates to:
