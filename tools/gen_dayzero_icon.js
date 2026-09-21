@@ -122,10 +122,16 @@ for (let py = 0; py < W; py++) {
       b = horizonColor[2];
     }
 
-    // The white "zero" ring, centered slightly above the sun center.
+    // The white "zero" ring — deliberately BROKEN at the top: quitting is
+    // breaking the cue→routine→reward loop, and the opening faces up
+    // (the way out). The sun rises inside, through the break.
     const dRing = ringSdf(px, py, cx, horizonY - W * 0.10, ringRadius, ringThickness);
+    // Gap at the top: angular window centered straight up (±26°).
+    const angle = Math.atan2(py - (horizonY - W * 0.10), px - cx); // y-down coords
+    const gapHalf = (26 * Math.PI) / 180;
+    const inGap = angle < -Math.PI / 2 + gapHalf && angle > -Math.PI / 2 - gapHalf;
     const aa = 0.75; // px of anti-aliasing (pre-supersample units)
-    if (dRing <= 0) {
+    if (dRing <= 0 && !inGap) {
       const alpha = dRing < -aa ? 1 : (aa - dRing) / (2 * aa);
       r = mix(r, ringColor[0], alpha);
       g = mix(g, ringColor[1], alpha);
