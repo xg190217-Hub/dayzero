@@ -115,6 +115,18 @@ class AppState extends ChangeNotifier {
     checkIns
       ..clear()
       ..addAll(checkInRows.map(CheckIn.fromRow));
+    // Migration backfill: rows created before v3 have no timestamp. Use
+    // 20:00 on their date (a reasonable proxy for "evening check-in").
+    for (final c in List.of(checkIns)) {
+      if (c.at == null) {
+        final day = DateTime.parse(c.date);
+        final at = DateTime(day.year, day.month, day.day, 20, 0);
+        await db.update('check_ins', {'at': at.millisecondsSinceEpoch},
+            where: 'id = ?', whereArgs: [c.id]);
+        final i = checkIns.indexWhere((x) => x.id == c.id);
+        if (i >= 0) checkIns[i] = c.copyWith(at: at);
+      }
+    }
     final lapseRows = await db.query('lapses');
     lapses
       ..clear()
@@ -220,7 +232,30 @@ class AppState extends ChangeNotifier {
 
   // -------------------------------------------------------------- check-ins
 
+  /// Exact time of the last check-in for a habit.
+  DateTime? lastCheckInAtFor(int habitId) {
+    DateTime? last;
+    for (final c in checkIns) {
+      if (c.habitId != habitId || c.at == null) continue;
+      if (last == null || c.at!.isAfter(last)) last = c.at;
+    }
+    return last;
+  }
+
+  /// The run is broken when the last check-in is more than 24h old — the
+  /// timer then waits for a fresh check-in to restart from zero.
+  bool isRunBroken(int habitId) {
+    final last = lastCheckInAtFor(habitId);
+    if (last == null) return false;
+    return now.difference(last) > const Duration(hours: 24);
+  }
+
   /// Saves (or updates) today's check-in for [habit].
+  ///
+  /// Timer semantics (the user's spec): the FIRST check-in starts the run
+  /// timer at 0:00:00; a check-in after a broken streak restarts it. A
+  /// deliberately backdated quit date (set in onboarding/editor) is kept —
+  /// it already counts real pre-install progress.
   Future<CheckIn> saveCheckIn({
     required Habit habit,
     required int mood,
@@ -229,6 +264,9 @@ class AppState extends ChangeNotifier {
     String? note,
   }) async {
     final key = CheckIn.dateKey(now);
+    final savedAt = now;
+    final hadCheckIns = checkIns.any((c) => c.habitId == habit.id);
+    final wasBroken = isRunBroken(habit.id!);
     final existing = checkInToday(habit.id!);
     if (existing != null) {
       final updated = existing.copyWith(
@@ -248,6 +286,7 @@ class AppState extends ChangeNotifier {
       craving: craving,
       trigger: trigger,
       note: note,
+      at: savedAt,
     );
     final id = await db.insert('check_ins', checkIn.toRow());
     checkIns.add(CheckIn(
@@ -258,7 +297,14 @@ class AppState extends ChangeNotifier {
       craving: checkIn.craving,
       trigger: checkIn.trigger,
       note: checkIn.note,
+      at: checkIn.at,
     ));
+    // Start/restart the run timer from this exact check-in moment, unless
+    // the user chose a backdated quit date on purpose.
+    final quitIsToday = _startOfDay(habit.quitDate) == _startOfDay(now);
+    if (quitIsToday && (!hadCheckIns || wasBroken)) {
+      await updateHabit(habit.copyWith(quitDate: savedAt));
+    }
     _evaluateMilestones();
     notifyListeners();
     return checkIns.last;

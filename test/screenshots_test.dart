@@ -137,6 +137,13 @@ Widget _wrap(AppState state) {
   );
 }
 
+/// Fixed pumps instead of pumpAndSettle: the home run timer ticks every
+/// second, so pumpAndSettle would never settle.
+Future<void> _settle(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 450));
+}
+
 /// Pumps two settle frames first so fonts are fully rasterized.
 Future<void> _shot(WidgetTester tester, String label) async {
   await tester.pump(const Duration(milliseconds: 150));
@@ -155,16 +162,16 @@ Future<void> _renderSet(
 
   // 1 — Home: the day counter + money saved hero.
   await tester.pumpWidget(_wrap(state));
-  await tester.pumpAndSettle();
+  await _settle(tester);
   await _shot(tester, '${prefix}01_home.png');
 
   // 2 — Check-in: mood, craving and triggers. Icon finders are
   // locale-independent (the screenshot set renders in EN and ZH).
   await tester.tap(find.byIcon(Icons.edit_note).first);
-  await tester.pumpAndSettle();
+  await _settle(tester);
   await _shot(tester, '${prefix}02_checkin.png');
   await tester.tap(find.byType(BackButton).first);
-  await tester.pumpAndSettle();
+  await _settle(tester);
 
   // 3 — SOS: the breathing circle. The animation loops forever, so use
   // fixed pumps instead of pumpAndSettle.
@@ -175,23 +182,23 @@ Future<void> _renderSet(
   await tester.tap(find.byType(BackButton).first);
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 600));
-  await tester.pumpAndSettle();
+  await _settle(tester);
 
   // 4 — Stats: weekly charts with two weeks of data.
   await tester.tap(find.byIcon(Icons.insights_outlined));
-  await tester.pumpAndSettle();
+  await _settle(tester);
   await _shot(tester, '${prefix}04_stats.png');
 
   // 5 — Milestones: unlocked and upcoming badges.
   await tester.tap(find.byIcon(Icons.emoji_events_outlined));
-  await tester.pumpAndSettle();
+  await _settle(tester);
   await _shot(tester, '${prefix}05_milestones.png');
 
   // 6 — Paywall: premium tiers and compliance links.
   await tester.tap(find.byIcon(Icons.settings_outlined));
-  await tester.pumpAndSettle();
+  await _settle(tester);
   await tester.tap(find.byIcon(Icons.workspace_premium).first);
-  await tester.pumpAndSettle();
+  await _settle(tester);
   await _shot(tester, '${prefix}06_paywall.png');
 }
 

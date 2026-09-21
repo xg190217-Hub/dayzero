@@ -310,6 +310,30 @@ abstract class AppLocalizations {
   /// **'Day {n}'**
   String homeDayN(Object n);
 
+  /// No description provided for @timerBrokenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in now to restart from zero'**
+  String get timerBrokenHint;
+
+  /// No description provided for @timerBroken.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak broken'**
+  String get timerBroken;
+
+  /// No description provided for @timerNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in to start your timer'**
+  String get timerNotStarted;
+
+  /// No description provided for @secondUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'s'**
+  String get secondUnit;
+
   /// No description provided for @homeMoneySaved.
   ///
   /// In en, this message translates to:

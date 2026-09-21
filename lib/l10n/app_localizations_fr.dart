@@ -117,6 +117,18 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => 'Check-in maintenant pour repartir de zéro';
+
+  @override
+  String get timerBroken => 'Série interrompue';
+
+  @override
+  String get timerNotStarted => 'Un check-in démarre votre chrono';
+
+  @override
+  String get secondUnit => 's';
+
+  @override
   String get homeMoneySaved => 'économisé';
 
   @override

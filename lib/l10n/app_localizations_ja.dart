@@ -113,6 +113,18 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => '今チェックインしてゼロから再スタート';
+
+  @override
+  String get timerBroken => '途切れています';
+
+  @override
+  String get timerNotStarted => 'チェックインするとタイマーが始まります';
+
+  @override
+  String get secondUnit => '秒';
+
+  @override
   String get homeMoneySaved => '節約';
 
   @override

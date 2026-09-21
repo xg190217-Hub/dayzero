@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,12 +28,35 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _habitIndex = 0;
 
+  /// Live 1-second tick for the run timer. Runs only while an active run
+  /// is displayed; cancelled otherwise (and in dispose).
+  Timer? _ticker;
+
+  @override
+  void dispose() {
+    _ticker?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final state = context.watch<AppState>();
     if (state.habits.isEmpty) {
       return const OnboardingScreen();
+    }
+    final activeHabit =
+        state.habits[_habitIndex.clamp(0, state.habits.length - 1)];
+    // Keep the seconds ticking only while a run is live.
+    final runLive = state.checkIns.any((c) => c.habitId == activeHabit.id) &&
+        !state.isRunBroken(activeHabit.id!);
+    if (runLive && _ticker == null) {
+      _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
+        if (mounted) setState(() {});
+      });
+    } else if (!runLive && _ticker != null) {
+      _ticker!.cancel();
+      _ticker = null;
     }
     // Celebrate freshly unlocked milestones once per session.
     if (state.newlyUnlocked.isNotEmpty) {
@@ -132,10 +157,31 @@ class _HomeScreenState extends State<HomeScreen> {
     // The number is the hero, the unit is its caption. Rendering them as one
     // string once produced a broken Chinese singular ("天自由" with no
     // number); split, the count is always visible and every language works.
-    // "Day N" counting: the quit moment is Day 1, +1 for every full day.
-    // No "day 0" and no clock-looking hour readouts.
-    final hero = l10n.homeDayN('${days + 1}');
-    final caption = '$days ${l10n.homeDaysSince}';
+    // The run timer: starts at 0:00:00 at the FIRST check-in moment,
+    // becomes 1天0时0分0秒 after 24h, and shows "已中断" when the last
+    // check-in is more than 24h old.
+    final hasCheckIns = state.checkIns.any((c) => c.habitId == habit.id);
+    final broken = hasCheckIns && state.isRunBroken(habit.id!);
+    final String hero;
+    final String? caption;
+    if (!hasCheckIns) {
+      hero =
+          '0${l10n.hourUnit} 0${l10n.minuteUnit} 0${l10n.secondUnit}';
+      caption = l10n.timerNotStarted;
+    } else if (broken) {
+      hero = l10n.timerBroken;
+      caption = l10n.timerBrokenHint;
+    } else {
+      final elapsed = state.now.difference(habit.quitDate);
+      final d = elapsed.inDays;
+      final h = elapsed.inHours % 24;
+      final m = elapsed.inMinutes % 60;
+      final sec = elapsed.inSeconds % 60;
+      hero = d > 0
+          ? '$d${l10n.dayUnit} $h${l10n.hourUnit} $m${l10n.minuteUnit} $sec${l10n.secondUnit}'
+          : '$h${l10n.hourUnit} $m${l10n.minuteUnit} $sec${l10n.secondUnit}';
+      caption = '$days ${l10n.homeDaysSince}';
+    }
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -144,12 +190,13 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               hero,
               textAlign: TextAlign.center,
-              style: displayFont(context, size: 56)
-                  .copyWith(color: scheme.primary),
+              style: displayFont(context, size: broken ? 44 : 40)
+                  .copyWith(color: broken ? const Color(0xFFB71C1C) : scheme.primary),
             ),
             const SizedBox(height: 2),
             Text(
               caption,
+              textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -157,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             // Identity framing (evidence: identity predicts long-term
             // maintenance — "I don't smoke" beats "I'm quitting").
-            if (_identityLabel(l10n, habit) != null) ...[
+            if (days >= 1 && _identityLabel(l10n, habit) != null) ...[
               const SizedBox(height: 6),
               Text(
                 l10n.identityLine(_identityLabel(l10n, habit)!, '${days + 1}'),

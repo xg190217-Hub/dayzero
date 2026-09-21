@@ -116,6 +116,18 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => 'Отметьтесь сейчас — начнём с нуля';
+
+  @override
+  String get timerBroken => 'Серия прервана';
+
+  @override
+  String get timerNotStarted => 'Отметьтесь, чтобы запустить таймер';
+
+  @override
+  String get secondUnit => 'с';
+
+  @override
   String get homeMoneySaved => 'сэкономлено';
 
   @override

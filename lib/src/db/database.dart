@@ -29,7 +29,7 @@ Future<sqflite.Database> openAppDatabase(String path,
   return f.openDatabase(
     path,
     options: sqflite.OpenDatabaseOptions(
-      version: 2,
+      version: 3,
       onCreate: (db, version) async {
         await _createTables(db);
       },
@@ -44,6 +44,12 @@ Future<sqflite.Database> openAppDatabase(String path,
               note TEXT
             )
           ''');
+        }
+        if (oldVersion < 3) {
+          // Exact check-in timestamp: the run timer starts at the FIRST
+          // check-in moment and breaks after 24h without one.
+          await db.execute(
+              'ALTER TABLE check_ins ADD COLUMN at INTEGER');
         }
       },
     ),
@@ -71,6 +77,7 @@ Future<void> _createTables(sqflite.DatabaseExecutor db) async {
             craving INTEGER NOT NULL,
             trigger TEXT,
             note TEXT,
+            at INTEGER,
             UNIQUE (habit_id, date)
           )
         ''');

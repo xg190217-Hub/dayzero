@@ -116,6 +116,18 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => 'سجّل الآن للبدء من الصفر';
+
+  @override
+  String get timerBroken => 'انقطعت السلسلة';
+
+  @override
+  String get timerNotStarted => 'سجّل اليوم لبدء المؤقت';
+
+  @override
+  String get secondUnit => 'ث';
+
+  @override
   String get homeMoneySaved => 'وفّرت';
 
   @override

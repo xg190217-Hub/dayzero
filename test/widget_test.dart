@@ -94,10 +94,10 @@ void main() {
     await tester.pumpWidget(wrap(state));
     await dismissCelebration(tester);
 
-    // Quit 3 days ago → "Day 4" hero (day-numbered counting) with the
-    // "3 days free" caption.
-    expect(find.text('Day 4'), findsOneWidget);
-    expect(find.text('3 days free'), findsOneWidget);
+    // No check-ins yet → the run timer shows 0:00:00 and invites the
+    // first check-in.
+    expect(find.text('0h 0m 0s'), findsOneWidget);
+    expect(find.text('Check in to start your timer'), findsOneWidget);
     // Money saved = 3 × 10.
     expect(find.textContaining('saved'), findsOneWidget);
   });
@@ -132,7 +132,14 @@ void main() {
     // Let the real database write finish (fake clock can't drive it).
     await tester.runAsync(
         () => Future<void>.delayed(const Duration(milliseconds: 400)));
-    await tester.pumpAndSettle();
+    // The live run timer ticks every second — pumpAndSettle would never
+    // settle, so use fixed pumps and dismiss the milestone celebration.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    if (find.text('Done').evaluate().isNotEmpty) {
+      await tester.tap(find.text('Done'));
+      await tester.pump(const Duration(milliseconds: 300));
+    }
 
     expect(state.checkIns.length, 1);
     expect(state.checkIns.first.mood, 3);

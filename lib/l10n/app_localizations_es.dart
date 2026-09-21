@@ -116,6 +116,18 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => 'Regístrate ya para reiniciar desde cero';
+
+  @override
+  String get timerBroken => 'Racha interrumpida';
+
+  @override
+  String get timerNotStarted => 'Regístrate para iniciar tu cronómetro';
+
+  @override
+  String get secondUnit => 's';
+
+  @override
   String get homeMoneySaved => 'ahorrado';
 
   @override

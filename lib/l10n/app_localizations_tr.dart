@@ -116,6 +116,18 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => 'Sıfırdan başlamak için şimdi işaretleyin';
+
+  @override
+  String get timerBroken => 'Seri koptu';
+
+  @override
+  String get timerNotStarted => 'Zamanlayıcıyı başlatmak için işaretleyin';
+
+  @override
+  String get secondUnit => 'sn';
+
+  @override
   String get homeMoneySaved => 'birikti';
 
   @override

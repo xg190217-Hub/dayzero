@@ -110,6 +110,18 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => '现在打卡，从零重新开始计时';
+
+  @override
+  String get timerBroken => '已中断';
+
+  @override
+  String get timerNotStarted => '打卡后开始计时';
+
+  @override
+  String get secondUnit => '秒';
+
+  @override
   String get homeMoneySaved => '已省下';
 
   @override

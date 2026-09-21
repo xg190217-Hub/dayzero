@@ -116,6 +116,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => 'Check in now to restart from zero';
+
+  @override
+  String get timerBroken => 'Streak broken';
+
+  @override
+  String get timerNotStarted => 'Check in to start your timer';
+
+  @override
+  String get secondUnit => 's';
+
+  @override
   String get homeMoneySaved => 'saved';
 
   @override

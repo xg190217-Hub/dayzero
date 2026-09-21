@@ -114,6 +114,18 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get timerBrokenHint => '지금 체크인하고 0부터 다시 시작하세요';
+
+  @override
+  String get timerBroken => '연속 기록 중단됨';
+
+  @override
+  String get timerNotStarted => '체크인하면 타이머가 시작됩니다';
+
+  @override
+  String get secondUnit => '초';
+
+  @override
   String get homeMoneySaved => '절약';
 
   @override

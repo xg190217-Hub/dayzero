@@ -8,6 +8,7 @@ class CheckIn {
     required this.craving,
     this.trigger,
     this.note,
+    this.at,
   });
 
   final int? id;
@@ -15,6 +16,10 @@ class CheckIn {
 
   /// Local calendar day (yyyy-mm-dd), not a timestamp: one check-in per day.
   final String date;
+
+  /// Exact save time (ms epoch). The run timer starts at the first check-in
+  /// moment and a run breaks when the last check-in is > 24h old.
+  final DateTime? at;
 
   /// Mood 1 (worst) – 5 (best).
   final int mood;
@@ -31,6 +36,7 @@ class CheckIn {
     int? craving,
     String? trigger,
     String? note,
+    DateTime? at,
   }) {
     return CheckIn(
       id: id,
@@ -40,6 +46,7 @@ class CheckIn {
       craving: craving ?? this.craving,
       trigger: trigger ?? this.trigger,
       note: note ?? this.note,
+      at: at ?? this.at,
     );
   }
 
@@ -51,6 +58,7 @@ class CheckIn {
         'craving': craving,
         'trigger': trigger,
         'note': note,
+        'at': at?.millisecondsSinceEpoch,
       };
 
   factory CheckIn.fromRow(Map<String, Object?> row) => CheckIn(
@@ -61,6 +69,9 @@ class CheckIn {
         craving: row['craving'] as int,
         trigger: row['trigger'] as String?,
         note: row['note'] as String?,
+        at: row['at'] == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(row['at'] as int),
       );
 
   /// YYYY-MM-DD for the given date (local time).
