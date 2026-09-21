@@ -12,7 +12,7 @@
 | Bundle ID | `io.dayzero.app` |
 | SKU | `dayzero` |
 | 主分类 / 次分类 | Health & Fitness / Lifestyle |
-| 版权 | `© 2026 DayZero` |
+| 版权 | `© 2026 Zhenjie Gao` |
 | 年龄分级 | 12+（含酒精/烟草相关内容的引用） |
 | 上架地区 | 除中国大陆外的全部（中国大陆等 ICP 豁免批复后再开） |
 | 定价 | 免费（含 IAP） |
@@ -108,7 +108,7 @@ In-app purchases: the paywall is at Settings → DayZero Premium (also reachable
 - [ ] 订阅组本地化完成
 - [ ] 年龄分级问卷完成（12+）
 - [ ] 出口合规：`ITSAppUsesNonExemptEncryption=false`（代码里已配置）
-- [ ] 版权字段 `© 2026 DayZero`
+- [ ] 版权字段 `© 2026 Zhenjie Gao`
 - [ ] 联系信息电话带 +86 国家码
 - [ ] 真机录屏已录好（从点图标开始，含付费墙与沙盒购买）并传网盘拿永久链接
 - [ ] 截图 6.9"（1320×2868）×6 张已上传（test/screenshots/6.9_en/）
