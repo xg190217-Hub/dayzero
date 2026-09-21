@@ -30,6 +30,7 @@
   "homeDaysSince": "日フリー",
   "homeDaysSinceOne": "日フリー",
   "homeTimeFree": "フリー",
+  "homeHoursFree": "自由になって {hours}時間 {minutes}分",
   "homeMoneySaved": "節約",
   "homeCheckIn": "今日のチェックイン",
   "homeSOS": "欲求SOS",

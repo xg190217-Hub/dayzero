@@ -30,6 +30,7 @@
   "homeDaysSince": "يوم حرية",
   "homeDaysSinceOne": "يوم حرية",
   "homeTimeFree": "حر",
+  "homeHoursFree": "حر منذ {hours} ساعة و{minutes} دقيقة",
   "homeMoneySaved": "وفّرت",
   "homeCheckIn": "تسجيل اليوم",
   "homeSOS": "إنقاذ الرغبة",

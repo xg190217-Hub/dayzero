@@ -31,6 +31,7 @@
   "homeDaysSince": "days free",
   "homeDaysSinceOne": "day free",
   "homeTimeFree": "free",
+  "homeHoursFree": "Free for {hours} hours {minutes} minutes",
   "homeMoneySaved": "saved",
   "homeCheckIn": "Check in today",
   "homeSOS": "Craving SOS",

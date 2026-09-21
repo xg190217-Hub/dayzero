@@ -82,6 +82,10 @@ class _CheckInScreenState extends State<CheckInScreen> {
     setState(() => _saving = true);
     final state = context.read<AppState>();
     final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    // Capture the navigator NOW: this screen pops right after saving, and a
+    // deactivated context would make the snackbar action throw and stick.
+    final navigator = Navigator.of(context);
     await state.saveCheckIn(
       habit: widget.habit,
       mood: _mood,
@@ -96,13 +100,14 @@ class _CheckInScreenState extends State<CheckInScreen> {
     // average craving with last week's (Harkin 2016: monitoring+feedback
     // d=.42 vs monitoring alone d=.25).
     final insight = _insight(l10n, state);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    messenger.showSnackBar(SnackBar(
+      duration: const Duration(seconds: 5),
       content: Text(insight == null ? l10n.checkinDone : '$l10n.checkinDone\n$insight'),
       // One-tap way back in when the user wants to adjust their entry.
       action: SnackBarAction(
         label: l10n.settingsEditHabit,
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
+          navigator.push(MaterialPageRoute(
               builder: (_) => CheckInScreen(habit: widget.habit)));
         },
       ),

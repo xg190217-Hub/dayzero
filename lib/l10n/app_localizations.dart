@@ -298,6 +298,12 @@ abstract class AppLocalizations {
   /// **'free'**
   String get homeTimeFree;
 
+  /// No description provided for @homeHoursFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free for {hours} hours {minutes} minutes'**
+  String homeHoursFree(Object hours, Object minutes);
+
   /// No description provided for @homeMoneySaved.
   ///
   /// In en, this message translates to:

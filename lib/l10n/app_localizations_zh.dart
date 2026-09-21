@@ -100,6 +100,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeTimeFree => '自由';
 
   @override
+  String homeHoursFree(Object hours, Object minutes) {
+    return '已自由 $hours 小时 $minutes 分钟';
+  }
+
+  @override
   String get homeMoneySaved => '已省下';
 
   @override

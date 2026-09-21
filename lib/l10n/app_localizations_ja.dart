@@ -103,6 +103,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get homeTimeFree => 'フリー';
 
   @override
+  String homeHoursFree(Object hours, Object minutes) {
+    return '自由になって $hours時間 $minutes分';
+  }
+
+  @override
   String get homeMoneySaved => '節約';
 
   @override

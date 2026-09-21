@@ -30,6 +30,7 @@
   "homeDaysSince": "일 자유",
   "homeDaysSinceOne": "일 자유",
   "homeTimeFree": "자유",
+  "homeHoursFree": "{hours}시간 {minutes}분 자유",
   "homeMoneySaved": "절약",
   "homeCheckIn": "오늘 체크인",
   "homeSOS": "갈망 SOS",

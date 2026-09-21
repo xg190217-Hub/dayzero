@@ -107,6 +107,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeTimeFree => 'libre';
 
   @override
+  String homeHoursFree(Object hours, Object minutes) {
+    return 'Libre depuis $hours h et $minutes min';
+  }
+
+  @override
   String get homeMoneySaved => 'économisé';
 
   @override

@@ -106,6 +106,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get homeTimeFree => 'özgür';
 
   @override
+  String homeHoursFree(Object hours, Object minutes) {
+    return '$hours saat $minutes dakikadır özgürsünüz';
+  }
+
+  @override
   String get homeMoneySaved => 'birikti';
 
   @override

@@ -30,6 +30,7 @@
   "homeDaysSince": "дней свободы",
   "homeDaysSinceOne": "день свободы",
   "homeTimeFree": "свободен",
+  "homeHoursFree": "Свободны уже {hours} ч {minutes} мин",
   "homeMoneySaved": "сэкономлено",
   "homeCheckIn": "Отметиться сегодня",
   "homeSOS": "SOS при тяге",

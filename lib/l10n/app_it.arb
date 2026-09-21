@@ -30,6 +30,7 @@
   "homeDaysSince": "giorni libero",
   "homeDaysSinceOne": "giorno libero",
   "homeTimeFree": "libero",
+  "homeHoursFree": "Libero da {hours} ore e {minutes} minuti",
   "homeMoneySaved": "risparmiati",
   "homeCheckIn": "Check-in di oggi",
   "homeSOS": "SOS desiderio",

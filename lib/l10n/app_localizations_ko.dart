@@ -104,6 +104,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get homeTimeFree => '자유';
 
   @override
+  String homeHoursFree(Object hours, Object minutes) {
+    return '$hours시간 $minutes분 자유';
+  }
+
+  @override
   String get homeMoneySaved => '절약';
 
   @override

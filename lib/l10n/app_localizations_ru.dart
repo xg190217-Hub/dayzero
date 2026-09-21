@@ -106,6 +106,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homeTimeFree => 'свободен';
 
   @override
+  String homeHoursFree(Object hours, Object minutes) {
+    return 'Свободны уже $hours ч $minutes мин';
+  }
+
+  @override
   String get homeMoneySaved => 'сэкономлено';
 
   @override

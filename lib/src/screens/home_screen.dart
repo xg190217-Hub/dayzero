@@ -134,10 +134,12 @@ class _HomeScreenState extends State<HomeScreen> {
     // string once produced a broken Chinese singular ("天自由" with no
     // number); split, the count is always visible and every language works.
     final isDayZero = days == 0 && !elapsed.isNegative;
-    final hero = isDayZero ? _hoursLabel(l10n, elapsed) : '$days';
-    final caption = isDayZero
-        ? l10n.homeTimeFree
-        : (days == 1 ? l10n.homeDaysSinceOne : l10n.homeDaysSince);
+    // Day zero keeps the normal "0 / 天自由" counter and explains the
+    // elapsed time in a subtitle — "20时30分" read like a CLOCK, not a
+    // duration.
+    final hero = '$days';
+    final caption =
+        days == 1 ? l10n.homeDaysSinceOne : l10n.homeDaysSince;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -145,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               hero,
-              style: displayFont(context, size: isDayZero ? 40 : 72)
+              style: displayFont(context, size: 72)
                   .copyWith(color: scheme.primary),
             ),
             const SizedBox(height: 2),
@@ -156,6 +158,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w600,
                   color: scheme.outline),
             ),
+            // Day zero: explain the elapsed hours (duration, not clock).
+            if (isDayZero) ...[
+              const SizedBox(height: 6),
+              Text(
+                l10n.homeHoursFree('${elapsed.inHours}',
+                    '${elapsed.inMinutes % 60}'),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: scheme.primary,
+                ),
+              ),
+            ],
             // Identity framing (evidence: identity predicts long-term
             // maintenance — "I don't smoke" beats "I'm quitting").
             if (days >= 1 && _identityLabel(l10n, habit) != null) ...[
@@ -240,14 +256,6 @@ class _HomeScreenState extends State<HomeScreen> {
       case HabitType.custom:
         return null;
     }
-  }
-
-  /// "2时 15分" — the caption (unit word) is rendered separately above.
-  String _hoursLabel(AppLocalizations l10n, Duration d) {
-    final h = d.inHours;
-    final m = d.inMinutes % 60;
-    if (m == 0) return '$h${l10n.hourUnit}';
-    return '$h${l10n.hourUnit} $m${l10n.minuteUnit}';
   }
 
   String _money(double value) {
