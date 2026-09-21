@@ -317,8 +317,11 @@ class AppState extends ChangeNotifier {
   void _evaluateMilestones({bool celebrate = true}) {
     if (celebrate) newlyUnlocked = {};
     for (final habit in habits) {
+      // Nothing is earned before the first check-in starts the run.
+      if (!checkIns.any((c) => c.habitId == habit.id)) continue;
       final set = unlocked.putIfAbsent(habit.id!, () => {});
       final days = daysFree(habit, now);
+      final elapsed = now.difference(habit.quitDate);
       final money = moneySaved(habit, now);
       final streak = currentStreak(checkInsFor(habit.id!), now);
 
@@ -337,7 +340,11 @@ class AppState extends ChangeNotifier {
       }
 
       for (final m in kTimeMilestones) {
-        check(m.key, days >= m.at);
+        // "First hour" needs a real hour of run time, not day zero.
+        final reached = m.key == 'milestone_1h'
+            ? elapsed.inHours >= 1
+            : days >= m.at;
+        check(m.key, reached);
       }
       for (final m in kMoneyMilestones) {
         if (habit.dailySpend > 0) check(m.key, money >= m.at);

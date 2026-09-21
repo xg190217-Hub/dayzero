@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (days >= 1 && _identityLabel(l10n, habit) != null) ...[
               const SizedBox(height: 6),
               Text(
-                l10n.identityLine(_identityLabel(l10n, habit)!, '${days + 1}'),
+                l10n.identityLine('${days + 1}', _identityLabel(l10n, habit)!),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,

@@ -199,7 +199,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
           const SizedBox(height: 8),
           Text(
             l10n.premiumTermsLinks(
-                l10n.termsLink, l10n.privacyLink),
+                l10n.privacyLink, l10n.termsLink),
             textAlign: TextAlign.center,
             style: TextStyle(color: scheme.outline, fontSize: 11, height: 1.4),
           ),
