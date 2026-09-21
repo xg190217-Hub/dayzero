@@ -31,6 +31,7 @@
   "homeDaysSinceOne": "gün özgür",
   "homeTimeFree": "özgür",
   "homeHoursFree": "{hours} saat {minutes} dakikadır özgürsünüz",
+  "homeDayN": "{n}. Gün",
   "homeMoneySaved": "birikti",
   "homeCheckIn": "Bugün işaretle",
   "homeSOS": "İstek SOS",

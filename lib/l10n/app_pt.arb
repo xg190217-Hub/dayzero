@@ -31,6 +31,7 @@
   "homeDaysSinceOne": "dia livre",
   "homeTimeFree": "livre",
   "homeHoursFree": "Livre há {hours} h e {minutes} min",
+  "homeDayN": "Dia {n}",
   "homeMoneySaved": "economizado",
   "homeCheckIn": "Registrar hoje",
   "homeSOS": "SOS fissura",

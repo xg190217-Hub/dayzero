@@ -109,6 +109,11 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String homeDayN(Object n) {
+    return '$n일째';
+  }
+
+  @override
   String get homeMoneySaved => '절약';
 
   @override

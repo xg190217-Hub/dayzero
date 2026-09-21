@@ -128,18 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _dayCounterCard(AppLocalizations l10n, Habit habit) {
     final state = context.watch<AppState>();
     final days = daysFree(habit, state.now);
-    final elapsed = state.now.difference(habit.quitDate);
     final scheme = Theme.of(context).colorScheme;
     // The number is the hero, the unit is its caption. Rendering them as one
     // string once produced a broken Chinese singular ("天自由" with no
     // number); split, the count is always visible and every language works.
-    final isDayZero = days == 0 && !elapsed.isNegative;
-    // Day zero keeps the normal "0 / 天自由" counter and explains the
-    // elapsed time in a subtitle — "20时30分" read like a CLOCK, not a
-    // duration.
-    final hero = '$days';
-    final caption =
-        days == 1 ? l10n.homeDaysSinceOne : l10n.homeDaysSince;
+    // "Day N" counting: the quit moment is Day 1, +1 for every full day.
+    // No "day 0" and no clock-looking hour readouts.
+    final hero = l10n.homeDayN('${days + 1}');
+    final caption = '$days ${l10n.homeDaysSince}';
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -147,7 +143,8 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               hero,
-              style: displayFont(context, size: 72)
+              textAlign: TextAlign.center,
+              style: displayFont(context, size: 56)
                   .copyWith(color: scheme.primary),
             ),
             const SizedBox(height: 2),
@@ -158,26 +155,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w600,
                   color: scheme.outline),
             ),
-            // Day zero: explain the elapsed hours (duration, not clock).
-            if (isDayZero) ...[
-              const SizedBox(height: 6),
-              Text(
-                l10n.homeHoursFree('${elapsed.inHours}',
-                    '${elapsed.inMinutes % 60}'),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: scheme.primary,
-                ),
-              ),
-            ],
             // Identity framing (evidence: identity predicts long-term
             // maintenance — "I don't smoke" beats "I'm quitting").
-            if (days >= 1 && _identityLabel(l10n, habit) != null) ...[
+            if (_identityLabel(l10n, habit) != null) ...[
               const SizedBox(height: 6),
               Text(
-                l10n.identityLine(_identityLabel(l10n, habit)!, '$days'),
+                l10n.identityLine(_identityLabel(l10n, habit)!, '${days + 1}'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,

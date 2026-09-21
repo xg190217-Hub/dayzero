@@ -105,6 +105,11 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String homeDayN(Object n) {
+    return '第 $n 天';
+  }
+
+  @override
   String get homeMoneySaved => '已省下';
 
   @override

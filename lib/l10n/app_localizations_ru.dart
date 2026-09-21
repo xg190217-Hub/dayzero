@@ -111,6 +111,11 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String homeDayN(Object n) {
+    return 'День $n';
+  }
+
+  @override
   String get homeMoneySaved => 'сэкономлено';
 
   @override

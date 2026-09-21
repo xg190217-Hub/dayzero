@@ -111,6 +111,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String homeDayN(Object n) {
+    return 'Tag $n';
+  }
+
+  @override
   String get homeMoneySaved => 'gespart';
 
   @override

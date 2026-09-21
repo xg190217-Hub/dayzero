@@ -111,6 +111,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String homeDayN(Object n) {
+    return 'Day $n';
+  }
+
+  @override
   String get homeMoneySaved => 'saved';
 
   @override

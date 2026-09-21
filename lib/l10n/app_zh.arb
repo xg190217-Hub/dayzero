@@ -31,6 +31,7 @@
   "homeDaysSinceOne": "天自由",
   "homeTimeFree": "自由",
   "homeHoursFree": "已自由 {hours} 小时 {minutes} 分钟",
+  "homeDayN": "第 {n} 天",
   "homeMoneySaved": "已省下",
   "homeCheckIn": "今日打卡",
   "homeSOS": "渴求急救",
