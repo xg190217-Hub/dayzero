@@ -102,18 +102,25 @@ class _CheckInScreenState extends State<CheckInScreen> {
     // average craving with last week's (Harkin 2016: monitoring+feedback
     // d=.42 vs monitoring alone d=.25).
     final insight = _insight(l10n, state);
-    messenger.showSnackBar(SnackBar(
-      duration: const Duration(seconds: 5),
-      content: Text(insight == null ? l10n.checkinDone : '${l10n.checkinDone}\n$insight'),
-      // One-tap way back in when the user wants to adjust their entry.
-      action: SnackBarAction(
-        label: l10n.settingsEditHabit,
-        onPressed: () {
-          navigator.push(MaterialPageRoute(
-              builder: (_) => CheckInScreen(habit: widget.habit)));
-        },
-      ),
-    ));
+    // Show the confirmation with an EXPLICIT dismissal: the messenger's
+    // internal timer failed to fire on device, so we own the lifetime.
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        content: Text(
+            insight == null ? l10n.checkinDone : '${l10n.checkinDone}\n$insight'),
+        // One-tap way back in when the user wants to adjust their entry.
+        action: SnackBarAction(
+          label: l10n.settingsEditHabit,
+          onPressed: () {
+            navigator.push(MaterialPageRoute(
+                builder: (_) => CheckInScreen(habit: widget.habit)));
+          },
+        ),
+      ));
+    Timer(const Duration(seconds: 5), () {
+      messenger.hideCurrentSnackBar();
+    });
 
     // A strong craving is the exact moment the SOS screen exists for.
     // Fifth check-in = habit forming. The moment users feel the value is the

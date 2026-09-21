@@ -183,14 +183,12 @@ void main() {
     // The snackbar is visible right after saving…
     expect(find.textContaining('Saved'), findsOneWidget);
 
-    // Simulate the explicit 5-second dismissal timer firing: hide the
-    // current snackbar exactly as the Timer does, then let the exit
-    // animation complete. (The Timer itself runs in the real zone, which
-    // fake-async tests cannot advance — production is unaffected.)
-    final snackbarCtx = tester.element(find.byType(SnackBar).first);
-    ScaffoldMessenger.of(snackbarCtx).hideCurrentSnackBar();
+    // Advance the fake clock past the 5-second dismissal timer.
+    await tester.pump(const Duration(seconds: 6));
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pump(const Duration(milliseconds: 600));
+    // ignore: avoid_print
+    print('afterFake6s snackbar=${find.byType(SnackBar).evaluate().length}');
     expect(find.textContaining('Saved'), findsNothing);
   });
 }
