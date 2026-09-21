@@ -32,7 +32,22 @@ class _CheckInScreenState extends State<CheckInScreen> {
   final TextEditingController _note = TextEditingController();
   bool _saving = false;
 
-  static const _moodEmojis = ['😖', '😕', '😐', '🙂', '😄'];
+  // Vector mood faces: never tofu, render everywhere, and carry color +
+  // shape semantics (color-blind safe — no color-only coding).
+  static const _moodIcons = [
+    Icons.sentiment_very_dissatisfied,
+    Icons.sentiment_dissatisfied,
+    Icons.sentiment_neutral,
+    Icons.sentiment_satisfied,
+    Icons.sentiment_very_satisfied,
+  ];
+  static const _moodColors = [
+    Color(0xFFC62828),
+    Color(0xFFEF6C00),
+    Color(0xFFF9A825),
+    Color(0xFF9CCC65),
+    Color(0xFF2E7D32),
+  ];
 
   static const _triggers = [
     'trigger_stress',
@@ -189,8 +204,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
                               width: selected ? 2 : 1,
                             ),
                           ),
-                          child: Text(_moodEmojis[i],
-                              style: const TextStyle(fontSize: 26)),
+                          child: Icon(
+                            _moodIcons[i],
+                            size: 28,
+                            color: selected
+                                ? _moodColors[i]
+                                : scheme.outlineVariant,
+                          ),
                         ),
                       );
                     }),

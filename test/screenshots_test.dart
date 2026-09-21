@@ -50,7 +50,11 @@ Future<void> _loadFonts() async {
     await loader.load();
   }
   // Extra glyph coverage, same family so they act as fallbacks.
+  // Order matters: seguiemj must come BEFORE NotoSansSC, which declares
+  // monochrome glyphs for some emoji codepoints and would otherwise
+  // shadow the color versions (mood faces rendered as thin outlines).
   for (final path in [
+    'C:/Windows/Fonts/seguiemj.ttf', // color emoji: 🔥 😖😕😐🙂😄 …
     'C:/Windows/Fonts/NotoSansSC-VF.ttf', // CJK + kana + hangul
     'C:/Windows/Fonts/arial.ttf', // Cyrillic + Arabic
   ]) {
