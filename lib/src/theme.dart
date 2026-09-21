@@ -138,6 +138,19 @@ ThemeData buildDayZeroTheme(
     chipTheme: ChipThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
+    // The text style must carry the font family: a family-less override
+    // falls back to the engine default, which renders as solid black
+    // boxes in the golden/screenshot pipeline.
+    segmentedButtonTheme: SegmentedButtonThemeData(
+      style: ButtonStyle(
+        visualDensity: VisualDensity.compact,
+        textStyle: WidgetStatePropertyAll(TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          fontFamily: fontFamily,
+        )),
+      ),
+    ),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: scheme.surfaceContainer,
       indicatorColor: scheme.secondaryContainer,

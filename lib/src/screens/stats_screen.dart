@@ -153,7 +153,6 @@ class _StatsBody extends StatelessWidget {
                   showSelectedIcon: false,
                   style: const ButtonStyle(
                     visualDensity: VisualDensity.compact,
-                    textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12)),
                   ),
                 ),
                 const SizedBox(height: 4),

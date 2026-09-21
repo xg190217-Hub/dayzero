@@ -403,8 +403,6 @@ class _SosScreenState extends State<SosScreen>
                       showSelectedIcon: false,
                       style: const ButtonStyle(
                         visualDensity: VisualDensity.compact,
-                        textStyle:
-                            WidgetStatePropertyAll(TextStyle(fontSize: 12)),
                       ),
                     ),
                   ),
