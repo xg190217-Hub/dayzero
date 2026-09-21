@@ -156,6 +156,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w600,
                   color: scheme.outline),
             ),
+            // Identity framing (evidence: identity predicts long-term
+            // maintenance — "I don't smoke" beats "I'm quitting").
+            if (days >= 1 && _identityLabel(l10n, habit) != null) ...[
+              const SizedBox(height: 6),
+              Text(
+                l10n.identityLine(_identityLabel(l10n, habit)!, '$days'),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                  color: scheme.primary,
+                ),
+              ),
+            ],
             // A live streak badge: the single strongest retention hook.
             if (_streak(state, habit) >= 2) ...[
               const SizedBox(height: 10),
@@ -207,6 +221,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int _streak(AppState state, Habit habit) =>
       currentStreak(state.checkInsFor(habit.id!), state.now);
+
+  /// Identity noun for the habit ("a non-smoker"), null for custom habits.
+  String? _identityLabel(AppLocalizations l10n, Habit habit) {
+    switch (habit.type) {
+      case HabitType.smoking:
+        return l10n.identity_smoking;
+      case HabitType.alcohol:
+        return l10n.identity_alcohol;
+      case HabitType.vaping:
+        return l10n.identity_vaping;
+      case HabitType.sugar:
+        return l10n.identity_sugar;
+      case HabitType.caffeine:
+        return l10n.identity_caffeine;
+      case HabitType.social:
+        return l10n.identity_social;
+      case HabitType.custom:
+        return null;
+    }
+  }
 
   /// "2时 15分" — the caption (unit word) is rendered separately above.
   String _hoursLabel(AppLocalizations l10n, Duration d) {

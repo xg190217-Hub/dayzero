@@ -237,6 +237,44 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get surfingStep3 =>
+      'Zirveye ulaşır, sonra geçer. Siz hâlâ buradasınız.';
+
+  @override
+  String get surfingStep2 =>
+      'Dalga gibi yükselişini izleyin. Savaşmayın, yargılamayın.';
+
+  @override
+  String get surfingStep1 =>
+      'Duyguyu bedeninizde bulun. Nerede? Sadece fark edin.';
+
+  @override
+  String get surfingTitle => 'Dalganın üzerinde kal';
+
+  @override
+  String identityLine(Object days, Object identity) {
+    return '$days. günde $identity';
+  }
+
+  @override
+  String get identity_social => 'sosyal medyadan özgür biri';
+
+  @override
+  String get identity_caffeine => 'kafeinsiz biri';
+
+  @override
+  String get identity_sugar => 'şekerden özgür biri';
+
+  @override
+  String get identity_vaping => 'elektronik sigaradan özgür biri';
+
+  @override
+  String get identity_alcohol => 'içki içmeyen biri';
+
+  @override
+  String get identity_smoking => 'sigara içmeyen biri';
+
+  @override
   String get relapseRecordRestart => 'Kaymayı kaydet ve sayacı yeniden başlat';
 
   @override

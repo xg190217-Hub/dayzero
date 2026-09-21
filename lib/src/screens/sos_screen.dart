@@ -36,6 +36,14 @@ class _SosScreenState extends State<SosScreen>
   final Random _random = Random();
   bool _ambientOn = false;
 
+  /// Urge-surfing mode (acceptance path): watch the craving like a wave
+  /// instead of fighting it. Evidence: no worse than distraction overall,
+  /// better for high-craving moments; both paths stay available.
+  bool _surfingMode = false;
+  int _surfStep = 0;
+  Timer? _surfTimer;
+  late final AnimationController _waveController;
+
   /// Cached in didChangeDependencies: dispose() may not look up providers
   /// (the element tree is already being torn down by then).
   AudioService? _audio;
@@ -59,6 +67,9 @@ class _SosScreenState extends State<SosScreen>
         }
       })
       ..forward();
+    _waveController = AnimationController(
+        vsync: this, duration: const Duration(seconds: 4))
+      ..repeat();
     _startPhase();
   }
 
@@ -157,9 +168,21 @@ class _SosScreenState extends State<SosScreen>
   @override
   void dispose() {
     _phaseTimer?.cancel();
+    _surfTimer?.cancel();
     _controller.dispose();
+    _waveController.dispose();
     _audio?.stop();
     super.dispose();
+  }
+
+  void _startSurfing() {
+    _surfTimer?.cancel();
+    _surfStep = 0;
+    _surfTimer = Timer.periodic(const Duration(seconds: 40), (_) {
+      if (mounted) {
+        setState(() => _surfStep = (_surfStep + 1) % 3);
+      }
+    });
   }
 
   String _phaseLabel(AppLocalizations l10n) => switch (_phase) {
@@ -354,28 +377,60 @@ class _SosScreenState extends State<SosScreen>
           Card(
             child: Padding(
               padding: const EdgeInsets.all(20),
-              child: _distractActive
-                  ? _distractionGame(l10n)
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(l10n.sosDistract,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18)),
-                        const SizedBox(height: 4),
-                        Text(l10n.sosDistractBody,
-                            style: TextStyle(color: scheme.outline)),
-                        const SizedBox(height: 12),
-                        FilledButton.tonal(
-                          onPressed: () => setState(() {
-                            _distractActive = true;
-                            _taps = 0;
-                          }),
-                          child: Text(l10n.sosAgain),
-                        ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Two evidence-based ways to ride out a craving:
+                  // distraction (fast peak relief) and urge surfing
+                  // (acceptance — long-term desensitization).
+                  Center(
+                    child: SegmentedButton<bool>(
+                      segments: [
+                        ButtonSegment(
+                            value: false, label: Text(l10n.sosDistract)),
+                        ButtonSegment(
+                            value: true, label: Text(l10n.surfingTitle)),
                       ],
+                      selected: {_surfingMode},
+                      onSelectionChanged: (s) {
+                        setState(() {
+                          _surfingMode = s.first;
+                          _distractActive = false;
+                          _taps = 0;
+                        });
+                        if (_surfingMode) _startSurfing();
+                      },
+                      showSelectedIcon: false,
+                      style: const ButtonStyle(
+                        visualDensity: VisualDensity.compact,
+                        textStyle:
+                            WidgetStatePropertyAll(TextStyle(fontSize: 12)),
+                      ),
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  if (!_surfingMode)
+                    _distractActive
+                        ? _distractionGame(l10n)
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(l10n.sosDistractBody,
+                                  style: TextStyle(color: scheme.outline)),
+                              const SizedBox(height: 12),
+                              FilledButton.tonal(
+                                onPressed: () => setState(() {
+                                  _distractActive = true;
+                                  _taps = 0;
+                                }),
+                                child: Text(l10n.sosAgain),
+                              ),
+                            ],
+                          )
+                  else
+                    _surfingView(l10n, scheme),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -388,6 +443,62 @@ class _SosScreenState extends State<SosScreen>
           ),
         ],
       ),
+    );
+  }
+
+  /// Urge surfing: an animated wave + three 40-second guided steps that
+  /// teach the user to watch the craving pass instead of fighting it.
+  Widget _surfingView(AppLocalizations l10n, ColorScheme scheme) {
+    final stepText = switch (_surfStep) {
+      0 => l10n.surfingStep1,
+      1 => l10n.surfingStep2,
+      _ => l10n.surfingStep3,
+    };
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 90,
+          width: double.infinity,
+          child: AnimatedBuilder(
+            animation: _waveController,
+            builder: (context, _) => CustomPaint(
+              painter: _WavePainter(
+                phase: _waveController.value,
+                color: scheme.primary,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          stepText,
+          style: const TextStyle(fontSize: 15, height: 1.5),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: List.generate(3, (i) {
+            final active = i == _surfStep;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin: const EdgeInsets.only(right: 6),
+              width: active ? 22 : 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: active
+                    ? scheme.primary
+                    : scheme.outlineVariant,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            );
+          }),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          l10n.sosDone,
+          style: TextStyle(color: scheme.outline, fontSize: 13),
+        ),
+      ],
     );
   }
 
@@ -464,4 +575,38 @@ class _SosScreenState extends State<SosScreen>
       ],
     );
   }
+}
+
+/// A single drifting sine wave: the urge-surfing visual metaphor.
+class _WavePainter extends CustomPainter {
+  _WavePainter({required this.phase, required this.color});
+
+  /// 0..1 — the wave drifts as it advances.
+  final double phase;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round
+      ..color = color;
+    final path = Path();
+    for (var x = 0.0; x <= size.width; x += 2) {
+      final t = x / size.width;
+      final y = size.height / 2 +
+          sin(t * 2 * pi * 2 + phase * 2 * pi) * 18;
+      if (x == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _WavePainter oldDelegate) =>
+      oldDelegate.phase != phase || oldDelegate.color != color;
 }

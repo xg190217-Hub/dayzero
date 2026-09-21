@@ -236,6 +236,41 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get surfingStep3 => 'تبلغ ذروتها ثم تمر. ما زلت هنا.';
+
+  @override
+  String get surfingStep2 => 'راقبها ترتفع كالموجة. لا تقاومها ولا تحكم عليها.';
+
+  @override
+  String get surfingStep1 => 'ابحث عن الإحساس في جسدك. أين هو؟ فقط لاحظه.';
+
+  @override
+  String get surfingTitle => 'اركب الموجة';
+
+  @override
+  String identityLine(Object days, Object identity) {
+    return 'أنت $identity في اليوم $days';
+  }
+
+  @override
+  String get identity_social => 'متحرر من وسائل التواصل';
+
+  @override
+  String get identity_caffeine => 'متحرر من الكافيين';
+
+  @override
+  String get identity_sugar => 'متحرر من السكر';
+
+  @override
+  String get identity_vaping => 'متحرر من التدخين الإلكتروني';
+
+  @override
+  String get identity_alcohol => 'غير شارب';
+
+  @override
+  String get identity_smoking => 'غير مدخن';
+
+  @override
   String get relapseRecordRestart => 'سجّل الزلة وأعد تشغيل العداد';
 
   @override

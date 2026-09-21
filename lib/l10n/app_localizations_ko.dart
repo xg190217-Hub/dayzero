@@ -234,6 +234,41 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get surfingStep3 => '정점에 이르면, 결국 지나갑니다. 당신은 여전히 여기 있어요.';
+
+  @override
+  String get surfingStep2 => '파도처럼 올라오는 것을 지켜보세요. 맞서지도, 판단하지도 마세요.';
+
+  @override
+  String get surfingStep1 => '몸 안에서 갈망의 느낌을 찾아보세요. 어디에 있나요? 그저 알아차리기만 하세요.';
+
+  @override
+  String get surfingTitle => '파도 타기';
+
+  @override
+  String identityLine(Object days, Object identity) {
+    return '당신은 $days일째 $identity';
+  }
+
+  @override
+  String get identity_social => 'SNS에서 자유로운 사람';
+
+  @override
+  String get identity_caffeine => '카페인에서 자유로운 사람';
+
+  @override
+  String get identity_sugar => '설탕에서 자유로운 사람';
+
+  @override
+  String get identity_vaping => '베이핑에서 자유로운 사람';
+
+  @override
+  String get identity_alcohol => '비음주자';
+
+  @override
+  String get identity_smoking => '비흡연자';
+
+  @override
   String get relapseRecordRestart => '실수를 기록하고 카운터 다시 시작';
 
   @override

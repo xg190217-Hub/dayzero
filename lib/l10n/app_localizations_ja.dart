@@ -233,6 +233,41 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get surfingStep3 => 'ピークを過ぎれば、やがて引いていく。あなたはここにいる。';
+
+  @override
+  String get surfingStep2 => '波のように高まるのを眺めて。戦わず、裁かず。';
+
+  @override
+  String get surfingStep1 => '体のどこに欲求を感じるか探してみて。ただ気づくだけでいい。';
+
+  @override
+  String get surfingTitle => '波に乗る';
+
+  @override
+  String identityLine(Object days, Object identity) {
+    return 'あなたは$identity、$days日目';
+  }
+
+  @override
+  String get identity_social => 'SNSから離れた人';
+
+  @override
+  String get identity_caffeine => 'カフェインを断った人';
+
+  @override
+  String get identity_sugar => '砂糖を断った人';
+
+  @override
+  String get identity_vaping => '電子タバコを吸わない人';
+
+  @override
+  String get identity_alcohol => '飲酒しない人';
+
+  @override
+  String get identity_smoking => '非喫煙者';
+
+  @override
   String get relapseRecordRestart => '失敗を記録してカウンターを再スタート';
 
   @override

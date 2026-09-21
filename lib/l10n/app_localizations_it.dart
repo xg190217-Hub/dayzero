@@ -237,6 +237,44 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get surfingStep3 =>
+      'Raggiunge il picco, poi passa. Tu sei ancora qui.';
+
+  @override
+  String get surfingStep2 =>
+      'Guardala salire come un\'onda. Non combatterla, non giudicarla.';
+
+  @override
+  String get surfingStep1 =>
+      'Trova la sensazione nel tuo corpo. Dov\'è? Limitati a notarla.';
+
+  @override
+  String get surfingTitle => 'Cavalca l\'onda';
+
+  @override
+  String identityLine(Object days, Object identity) {
+    return 'Sei $identity, giorno $days';
+  }
+
+  @override
+  String get identity_social => 'libero dai social';
+
+  @override
+  String get identity_caffeine => 'libero dalla caffeina';
+
+  @override
+  String get identity_sugar => 'libero dallo zucchero';
+
+  @override
+  String get identity_vaping => 'libero dallo svapo';
+
+  @override
+  String get identity_alcohol => 'non bevitore';
+
+  @override
+  String get identity_smoking => 'non fumatore';
+
+  @override
   String get relapseRecordRestart =>
       'Registra la ricaduta e riavvia il contatore';
 

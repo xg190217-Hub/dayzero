@@ -550,6 +550,72 @@ abstract class AppLocalizations {
   /// **'Save {amount}'**
   String premiumSaveAmount(Object amount);
 
+  /// No description provided for @surfingStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'It peaks, then it passes. You\'re still here.'**
+  String get surfingStep3;
+
+  /// No description provided for @surfingStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch it rise like a wave. Don\'t fight it, don\'t judge it.'**
+  String get surfingStep2;
+
+  /// No description provided for @surfingStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the feeling in your body. Where is it? Just notice it.'**
+  String get surfingStep1;
+
+  /// No description provided for @surfingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ride the wave'**
+  String get surfingTitle;
+
+  /// No description provided for @identityLine.
+  ///
+  /// In en, this message translates to:
+  /// **'You are {identity} on day {days}'**
+  String identityLine(Object days, Object identity);
+
+  /// No description provided for @identity_social.
+  ///
+  /// In en, this message translates to:
+  /// **'screen-free'**
+  String get identity_social;
+
+  /// No description provided for @identity_caffeine.
+  ///
+  /// In en, this message translates to:
+  /// **'caffeine-free'**
+  String get identity_caffeine;
+
+  /// No description provided for @identity_sugar.
+  ///
+  /// In en, this message translates to:
+  /// **'sugar-free'**
+  String get identity_sugar;
+
+  /// No description provided for @identity_vaping.
+  ///
+  /// In en, this message translates to:
+  /// **'vape-free'**
+  String get identity_vaping;
+
+  /// No description provided for @identity_alcohol.
+  ///
+  /// In en, this message translates to:
+  /// **'a non-drinker'**
+  String get identity_alcohol;
+
+  /// No description provided for @identity_smoking.
+  ///
+  /// In en, this message translates to:
+  /// **'a non-smoker'**
+  String get identity_smoking;
+
   /// No description provided for @relapseRecordRestart.
   ///
   /// In en, this message translates to:

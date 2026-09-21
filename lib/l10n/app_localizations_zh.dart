@@ -230,6 +230,41 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get surfingStep3 => '它到达峰值，然后退去。你还在。';
+
+  @override
+  String get surfingStep2 => '看着它像海浪一样升起。不要对抗，不要评判。';
+
+  @override
+  String get surfingStep1 => '在身体里找到渴求的感觉。它在哪里？只是注意它。';
+
+  @override
+  String get surfingTitle => '冲浪观察';
+
+  @override
+  String identityLine(Object days, Object identity) {
+    return '你是$identity，第 $days 天';
+  }
+
+  @override
+  String get identity_social => '不刷社交媒体的人';
+
+  @override
+  String get identity_caffeine => '不喝咖啡因的人';
+
+  @override
+  String get identity_sugar => '不吃糖的人';
+
+  @override
+  String get identity_vaping => '不吸电子烟的人';
+
+  @override
+  String get identity_alcohol => '不喝酒的人';
+
+  @override
+  String get identity_smoking => '不吸烟的人';
+
+  @override
   String get relapseRecordRestart => '记录失误并重新计时';
 
   @override

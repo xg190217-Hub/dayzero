@@ -238,6 +238,44 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get surfingStep3 =>
+      'Elle culmine, puis elle passe. Vous êtes toujours là.';
+
+  @override
+  String get surfingStep2 =>
+      'Regardez-la monter comme une vague. Ne luttez pas, ne jugez pas.';
+
+  @override
+  String get surfingStep1 =>
+      'Localisez la sensation dans votre corps. Où est-elle ? Remarquez-la simplement.';
+
+  @override
+  String get surfingTitle => 'Surfer sur la vague';
+
+  @override
+  String identityLine(Object days, Object identity) {
+    return 'Vous êtes $identity, jour $days';
+  }
+
+  @override
+  String get identity_social => 'libre des réseaux';
+
+  @override
+  String get identity_caffeine => 'sans caféine';
+
+  @override
+  String get identity_sugar => 'sans sucre';
+
+  @override
+  String get identity_vaping => 'sans vapotage';
+
+  @override
+  String get identity_alcohol => 'non-buveur';
+
+  @override
+  String get identity_smoking => 'non-fumeur';
+
+  @override
   String get relapseRecordRestart => 'Noter l\'écart et redémarrer le compteur';
 
   @override

@@ -237,6 +237,44 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get surfingStep3 =>
+      'Оно достигает пика, потом отступает. Вы всё ещё здесь.';
+
+  @override
+  String get surfingStep2 =>
+      'Смотрите, как оно поднимается волной. Не боритесь, не судите.';
+
+  @override
+  String get surfingStep1 =>
+      'Найдите это ощущение в теле. Где оно? Просто заметьте его.';
+
+  @override
+  String get surfingTitle => 'Оседлайте волну';
+
+  @override
+  String identityLine(Object days, Object identity) {
+    return 'Вы $identity, день $days';
+  }
+
+  @override
+  String get identity_social => 'свободный от соцсетей';
+
+  @override
+  String get identity_caffeine => 'свободный от кофеина';
+
+  @override
+  String get identity_sugar => 'свободный от сахара';
+
+  @override
+  String get identity_vaping => 'свободный от вейпа';
+
+  @override
+  String get identity_alcohol => 'непьющий человек';
+
+  @override
+  String get identity_smoking => 'некурящий человек';
+
+  @override
   String get relapseRecordRestart => 'Записать срыв и перезапустить счётчик';
 
   @override
