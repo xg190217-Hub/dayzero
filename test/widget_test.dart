@@ -31,6 +31,11 @@ void main() {
     final db = (await tester.runAsync(() => openAppDatabase(
         inMemoryDatabasePath,
         factory: databaseFactoryFfi)))!;
+    // sqflite reuses open databases per path — close it so tests never
+    // share one :memory: store.
+    addTearDown(() async {
+      await tester.runAsync(db.close);
+    });
     final state = AppState(
       db: db,
       prefs: prefs!,

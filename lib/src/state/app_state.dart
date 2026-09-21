@@ -299,13 +299,27 @@ class AppState extends ChangeNotifier {
       note: checkIn.note,
       at: checkIn.at,
     ));
-    // Start/restart the run timer from this exact check-in moment, unless
-    // the user chose a backdated quit date on purpose.
-    final quitIsToday = _startOfDay(habit.quitDate) == _startOfDay(now);
-    if (quitIsToday && (!hadCheckIns || wasBroken)) {
-      await updateHabit(habit.copyWith(quitDate: savedAt));
-    }
+    // Award the OLD run's earned milestones first — the restart below
+    // resets the clock, and a 25-hour run deserves its 'first hour' badge
+    // even though it ended in a break.
     _evaluateMilestones();
+    // Start/restart the run timer from this exact check-in moment.
+    // A quit date chosen by the user (onboarding/editor) is always stored
+    // at midnight; one set by a previous check-in alignment carries a
+    // time-of-day component — that's how we tell "deliberate backdate"
+    // (keep it) from "previous run start" (restart after a break).
+    // Use the FRESH habit from the list: callers may hold stale references.
+    final freshHabit =
+        habits.firstWhere((h) => h.id == habit.id, orElse: () => habit);
+    final alignedByCheckIn =
+        freshHabit.quitDate != _startOfDay(freshHabit.quitDate);
+    final quitIsToday =
+        _startOfDay(freshHabit.quitDate) == _startOfDay(now);
+    final shouldAlign =
+        (!hadCheckIns && quitIsToday) || (wasBroken && alignedByCheckIn);
+    if (shouldAlign) {
+      await updateHabit(freshHabit.copyWith(quitDate: savedAt));
+    }
     notifyListeners();
     return checkIns.last;
   }

@@ -29,7 +29,7 @@ workflows:
       - name: Run functional tests
         # Golden/screenshot tests are excluded: cross-platform font rendering
         # breaks golden matching.
-        script: flutter test test/progress_logic_test.dart test/widget_test.dart
+        script: flutter test test/progress_logic_test.dart test/milestones_test.dart test/widget_test.dart
       - name: Set up iOS code signing
         script: |
           set -e
