@@ -85,4 +85,31 @@ void main() {
       expect(weeklySummary(cis, today).isEmpty, isTrue);
     });
   });
+
+  group('trigger breakdown', () {
+    CheckIn ci(String date, {String? trigger}) => CheckIn(
+        habitId: 1, date: date, mood: 3, craving: 2, trigger: trigger);
+
+    test('counts and sorts triggers, most frequent first', () {
+      final cis = [
+        ci('2026-09-17', trigger: 'trigger_stress'),
+        ci('2026-09-18', trigger: 'trigger_social'),
+        ci('2026-09-19', trigger: 'trigger_stress'),
+      ];
+      expect(triggerBreakdown(cis), [
+        ('trigger_stress', 2),
+        ('trigger_social', 1),
+      ]);
+    });
+
+    test('missing trigger counts as trigger_none', () {
+      expect(triggerBreakdown([ci('2026-09-19')]), [
+        ('trigger_none', 1),
+      ]);
+    });
+
+    test('empty history yields empty breakdown', () {
+      expect(triggerBreakdown(const []), isEmpty);
+    });
+  });
 }

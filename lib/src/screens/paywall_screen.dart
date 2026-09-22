@@ -162,7 +162,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
             ('premiumFeature1', Icons.all_inclusive),
             ('premiumFeature2', Icons.graphic_eq),
             ('premiumFeature3', Icons.palette),
-            ('premiumFeature4', Icons.emoji_events),
+            ('premiumFeature4', Icons.insights),
           ])
             _featureRow(context, l10n, key, feature),
           const SizedBox(height: 16),

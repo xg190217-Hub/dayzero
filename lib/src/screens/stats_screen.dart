@@ -97,6 +97,7 @@ class _StatsBody extends StatelessWidget {
     final days = daysFree(habit, state.now);
     final streak = currentStreak(checkIns, state.now);
     final best = bestStreak(checkIns);
+    final breakdown = triggerBreakdown(checkIns);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
@@ -220,20 +221,112 @@ class _StatsBody extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        if (!state.isPremium) ...[
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.lock_outline, color: Theme.of(context).colorScheme.primary),
-              title: Text(l10n.settingsPremium),
-              subtitle: Text(l10n.premiumFeature2),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => const PaywallScreen())),
+        // Trigger insights: premium feature backed by the check-in data
+        // (the feedback loop with the strongest evidence).
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(l10n.statsTriggerTitle,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 18)),
+                    ),
+                    if (!state.isPremium)
+                      const Icon(Icons.lock_outline, size: 18),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                if (!state.isPremium)
+                  Text(
+                    l10n.statsTriggerLocked,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline),
+                  )
+                else if (breakdown.isEmpty)
+                  Text(
+                    l10n.statsNoData,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.outline),
+                  )
+                else
+                  ...breakdown.take(3).map((e) {
+                    final (key, count) = e;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        children: [
+                          Icon(
+                            _triggerIcon(key),
+                            size: 16,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(child: Text(_triggerText(l10n, key))),
+                          Text('$count',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w700)),
+                        ],
+                      ),
+                    );
+                  }),
+                if (!state.isPremium) ...[
+                  const SizedBox(height: 8),
+                  FilledButton.tonal(
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => const PaywallScreen())),
+                    child: Text(l10n.settingsPremium),
+                  ),
+                ],
+              ],
             ),
           ),
-        ],
+        ),
       ],
     );
+  }
+
+  String _triggerText(AppLocalizations l10n, String key) {
+    switch (key) {
+      case 'trigger_stress':
+        return l10n.trigger_stress;
+      case 'trigger_social':
+        return l10n.trigger_social;
+      case 'trigger_boredom':
+        return l10n.trigger_boredom;
+      case 'trigger_habit_loop':
+        return l10n.trigger_habit_loop;
+      case 'trigger_negative':
+        return l10n.trigger_negative;
+      case 'trigger_celebration':
+        return l10n.trigger_celebration;
+      default:
+        return l10n.trigger_none;
+    }
+  }
+
+  IconData _triggerIcon(String key) {
+    switch (key) {
+      case 'trigger_stress':
+        return Icons.psychology_outlined;
+      case 'trigger_social':
+        return Icons.groups_outlined;
+      case 'trigger_boredom':
+        return Icons.hourglass_bottom;
+      case 'trigger_habit_loop':
+        return Icons.repeat;
+      case 'trigger_negative':
+        return Icons.sentiment_dissatisfied_outlined;
+      case 'trigger_celebration':
+        return Icons.celebration_outlined;
+      default:
+        return Icons.circle_outlined;
+    }
   }
 
   /// Last [n] days of a metric, oldest first, null when missing.
