@@ -151,6 +151,88 @@ void main() {
     expect(state.checkIns.first.craving, 2);
   });
 
+  testWidgets('timer lifecycle: check-in starts it, restart idles it',
+      (tester) async {
+    usePhoneView(tester);
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await tester.runAsync(SharedPreferences.getInstance);
+    final db = (await tester.runAsync(() => openAppDatabase(
+        inMemoryDatabasePath,
+        factory: databaseFactoryFfi)))!;
+    addTearDown(() async {
+      await tester.runAsync(db.close);
+    });
+    var now = DateTime(2026, 9, 22, 14, 0);
+    final state = AppState(db: db, prefs: prefs!, clock: () => now);
+    await tester.runAsync(state.load);
+    await tester.runAsync(() => state.addHabit(
+          type: HabitType.alcohol,
+          name: 'Alcohol',
+          quitDate: DateTime(2026, 9, 22),
+        ));
+    await tester.pumpWidget(wrap(state));
+    await dismissCelebration(tester);
+
+    // Idle before any check-in.
+    expect(find.text('Check in to start your timer'), findsOneWidget);
+
+    // First check-in starts the run.
+    await tester.tap(find.text('Check in today').first);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 450));
+    final list = find.descendant(
+      of: find.byType(CheckInScreen),
+      matching: find.byType(Scrollable),
+    );
+    await tester.dragUntilVisible(
+        find.text('Save'), list, const Offset(0, -300));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.text('Save'));
+    await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 400)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    if (find.text('Done').evaluate().isNotEmpty) {
+      await tester.tap(find.text('Done'));
+      await tester.pump(const Duration(milliseconds: 300));
+    }
+    // The idle hint is gone; the run is live.
+    expect(find.text('Check in to start your timer'), findsNothing);
+    expect(state.hasRunStarted(state.habits.first.id!), isTrue);
+
+    // Relapse restart idles the timer again.
+    now = DateTime(2026, 9, 22, 15, 30);
+    await tester.runAsync(() => state.recordLapse(state.habits.first,
+        trigger: 'trigger_stress'));
+    await tester.runAsync(() => state.resetQuitDate(state.habits.first));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(state.hasRunStarted(state.habits.first.id!), isFalse);
+    expect(find.text('Check in to start your timer'), findsOneWidget);
+
+    // Re-check-in starts the run again at that moment.
+    await tester.tap(find.text('Check in today').first);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 450));
+    final list2 = find.descendant(
+      of: find.byType(CheckInScreen),
+      matching: find.byType(Scrollable),
+    );
+    await tester.dragUntilVisible(
+        find.text('Save'), list2, const Offset(0, -300));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.text('Save'));
+    await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 400)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('Check in to start your timer'), findsNothing);
+    expect(state.hasRunStarted(state.habits.first.id!), isTrue);
+    expect(state.habits.first.quitDate, DateTime(2026, 9, 22, 15, 30));
+  });
+
   testWidgets('check-in snackbar auto-dismisses after 5 seconds',
       (tester) async {
     usePhoneView(tester);

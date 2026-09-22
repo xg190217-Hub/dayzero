@@ -79,6 +79,16 @@ class _CheckInScreenState extends State<CheckInScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // A confirmation snackbar from a recent save lives for 5 seconds and
+    // would cover THIS screen's Save button (the same screen position) —
+    // a fast relapse-restart flow then silently eats the tap. Clear any
+    // lingering snackbar the moment the check-in screen appears.
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
+  @override
   void dispose() {
     _snackbarTimer?.cancel();
     _note.dispose();
