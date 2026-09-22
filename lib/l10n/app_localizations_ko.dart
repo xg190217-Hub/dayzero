@@ -263,6 +263,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get sosAmbient => '평온한 배경음';
 
   @override
+  String get ambientFire => '모닥불';
+
+  @override
+  String get ambientForest => '숲소리';
+
+  @override
+  String get ambientOcean => '파도 소리';
+
+  @override
+  String get ambientRain => '빗소리';
+
+  @override
+  String get ambientMusic => '오르골';
+
+  @override
   String premiumSaveAmount(Object amount) {
     return '$amount 절약';
   }

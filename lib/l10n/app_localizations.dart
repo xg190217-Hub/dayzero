@@ -604,6 +604,36 @@ abstract class AppLocalizations {
   /// **'Calm ambient'**
   String get sosAmbient;
 
+  /// No description provided for @ambientFire.
+  ///
+  /// In en, this message translates to:
+  /// **'Campfire'**
+  String get ambientFire;
+
+  /// No description provided for @ambientForest.
+  ///
+  /// In en, this message translates to:
+  /// **'Forest'**
+  String get ambientForest;
+
+  /// No description provided for @ambientOcean.
+  ///
+  /// In en, this message translates to:
+  /// **'Ocean waves'**
+  String get ambientOcean;
+
+  /// No description provided for @ambientRain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get ambientRain;
+
+  /// No description provided for @ambientMusic.
+  ///
+  /// In en, this message translates to:
+  /// **'Music box'**
+  String get ambientMusic;
+
   /// No description provided for @premiumSaveAmount.
   ///
   /// In en, this message translates to:

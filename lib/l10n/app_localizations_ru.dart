@@ -266,6 +266,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sosAmbient => 'Спокойный фон';
 
   @override
+  String get ambientFire => 'Костёр';
+
+  @override
+  String get ambientForest => 'Лес';
+
+  @override
+  String get ambientOcean => 'Морские волны';
+
+  @override
+  String get ambientRain => 'Дождь';
+
+  @override
+  String get ambientMusic => 'Музыкальная шкатулка';
+
+  @override
   String premiumSaveAmount(Object amount) {
     return 'Экономьте $amount';
   }

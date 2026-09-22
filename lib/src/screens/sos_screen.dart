@@ -144,23 +144,73 @@ class _SosScreenState extends State<SosScreen>
     }
   }
 
-  /// Premium calm-ambient loop (second sound of the audio library).
-  Future<void> _toggleAmbient() async {
+  static const _ambientFiles = <String, String>{
+    'music': 'sounds/calm_ambient.wav',
+    'rain': 'sounds/rain.wav',
+    'ocean': 'sounds/ocean.wav',
+    'forest': 'sounds/forest.wav',
+    'fire': 'sounds/campfire.wav',
+  };
+
+  String _ambientLabel(AppLocalizations l10n, String code) {
+    switch (code) {
+      case 'rain':
+        return l10n.ambientRain;
+      case 'ocean':
+        return l10n.ambientOcean;
+      case 'forest':
+        return l10n.ambientForest;
+      case 'fire':
+        return l10n.ambientFire;
+      default:
+        return l10n.ambientMusic;
+    }
+  }
+
+  /// Premium ambient library: five synthesized nature soundscapes.
+  Future<void> _pickAmbient() async {
+    final state = context.read<AppState>();
+    final l10n = AppLocalizations.of(context);
+    final picked = await showModalBottomSheet<String>(
+      context: context,
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: _ambientFiles.keys.map((code) {
+            final active = state.ambientCode == code && _ambientOn;
+            return ListTile(
+              leading: Icon(
+                code == state.ambientCode
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_off,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              title: Text(_ambientLabel(l10n, code)),
+              trailing: active ? const Icon(Icons.volume_up) : null,
+              onTap: () => Navigator.of(sheetContext).pop(code),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+    if (picked == null) return;
     final audio = _audio;
     if (audio == null) return;
-    if (_ambientOn) {
+    if (picked == state.ambientCode && _ambientOn) {
+      // Tapping the active sound turns it off.
       await audio.stop();
       if (mounted) setState(() => _ambientOn = false);
-    } else {
-      if (mounted) {
-        setState(() {
-          _ambientOn = true;
-          _audioOn = false;
-        });
-      }
-      await audio.loop('sounds/calm_ambient.wav');
-      _checkAudioHealth();
+      return;
     }
+    await state.setAmbient(picked);
+    if (mounted) {
+      setState(() {
+        _ambientOn = true;
+        _audioOn = false;
+      });
+    }
+    await audio.loop(_ambientFiles[picked]!);
+    _checkAudioHealth();
   }
 
   /// Silent audio failure is the most expensive failure: surface it.
@@ -345,7 +395,7 @@ class _SosScreenState extends State<SosScreen>
                         onPressed: _toggleAudio,
                       ),
                       const SizedBox(width: 16),
-                      // Calm ambient loop (premium).
+                      // Ambient soundscape library (premium).
                       IconButton.filledTonal(
                         icon: Icon(_ambientOn
                             ? Icons.waves
@@ -354,7 +404,7 @@ class _SosScreenState extends State<SosScreen>
                                 : Icons.lock_outline),
                         tooltip: l10n.sosAmbient,
                         onPressed: state.isPremium
-                            ? _toggleAmbient
+                            ? _pickAmbient
                             : () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => const PaywallScreen())),

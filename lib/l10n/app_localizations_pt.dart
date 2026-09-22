@@ -266,6 +266,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get sosAmbient => 'Ambiente calmo';
 
   @override
+  String get ambientFire => 'Fogueira';
+
+  @override
+  String get ambientForest => 'Floresta';
+
+  @override
+  String get ambientOcean => 'Ondas do mar';
+
+  @override
+  String get ambientRain => 'Chuva';
+
+  @override
+  String get ambientMusic => 'Caixa de música';
+
+  @override
   String premiumSaveAmount(Object amount) {
     return 'Economize $amount';
   }

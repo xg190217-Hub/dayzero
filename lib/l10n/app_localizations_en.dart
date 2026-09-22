@@ -266,6 +266,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sosAmbient => 'Calm ambient';
 
   @override
+  String get ambientFire => 'Campfire';
+
+  @override
+  String get ambientForest => 'Forest';
+
+  @override
+  String get ambientOcean => 'Ocean waves';
+
+  @override
+  String get ambientRain => 'Rain';
+
+  @override
+  String get ambientMusic => 'Music box';
+
+  @override
   String premiumSaveAmount(Object amount) {
     return 'Save $amount';
   }

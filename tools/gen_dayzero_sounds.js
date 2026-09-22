@@ -149,17 +149,16 @@ breathTone('breath_out_4.wav', 4.0, false);
     for (const p of padVoices) {
       const lfo = 0.5 + 0.5 * Math.sin((2 * Math.PI * t) / p.period);
       const swell = 0.5 + 0.5 * lfo;
-      v += p.a * swell * (Math.sin(2 * Math.PI * p.f * t) +
-          0.5 * Math.sin(2 * Math.PI * p.f * 1.003 * t) +
-          0.5 * Math.sin(2 * Math.PI * p.f * 0.997 * t));
+      v += p.a * swell * Math.sin(2 * Math.PI * p.f * t);
     }
     // Pluck: bell-like note with a fast-decaying overtone.
     const step = Math.floor(t / 3.0) % 4;
     const since = t - Math.floor(t / 3.0) * 3.0;
     const f = arp[step];
     const pluck = Math.exp(-since / 0.9) * Math.sin(2 * Math.PI * f * since);
-    const overtone = 0.35 * Math.exp(-since / 0.35) *
-        Math.sin(2 * Math.PI * f * 2.76 * since);
+    // Harmonic octave instead of the metallic 2.76 partial.
+    const overtone = 0.25 * Math.exp(-since / 0.4) *
+        Math.sin(2 * Math.PI * f * 2.0 * since);
     const pluckEnv = since < 0.02 ? since / 0.02 : 1; // click-free attack
     v += 0.16 * pluckEnv * (pluck + overtone);
     out[i] = v;
@@ -173,4 +172,189 @@ breathTone('breath_out_4.wav', 4.0, false);
   }
   const looped = out.slice(0, n - fadeN);
   writeWav(path.join(OUT, 'calm_ambient.wav'), looped);
+})();
+
+// --- rain.wav: 20s seamless loop — steady soft rain + droplet patter ------
+(function rain() {
+  const dur = 20.0;
+  const n = Math.floor(SR * dur);
+  const rand = mulberry32(7);
+  const out = new Float64Array(n);
+
+  // Steady hiss bed: white noise, lowpassed at 1400 Hz.
+  for (let i = 0; i < n; i++) out[i] = rand() * 2 - 1;
+  lowpass(out, 1400);
+
+  // Droplet patter: short noise bursts with fast decay.
+  const drops = Math.floor(dur * 45);
+  for (let d = 0; d < drops; d++) {
+    const at = Math.floor(rand() * (n - 200));
+    const len = 60 + Math.floor(rand() * 160);
+    const amp = 0.10 + rand() * 0.22;
+    for (let i = 0; i < len; i++) {
+      const decay = Math.exp(-i / (len * 0.25));
+      out[at + i] += amp * decay * (rand() * 2 - 1) * env(i, len, 0.02, 0.5);
+    }
+  }
+  // Normalize to a gentle level.
+  let peak = 0;
+  for (const v of out) peak = Math.max(peak, Math.abs(v));
+  for (let i = 0; i < n; i++) out[i] *= 0.55 / peak;
+  // Crossfade loop.
+  const fadeN = Math.floor(SR * 2);
+  for (let i = 0; i < fadeN; i++) {
+    const k = i / fadeN;
+    out[i] = out[i] * k + out[n - fadeN + i] * (1 - k);
+  }
+  writeWav(path.join(OUT, 'rain.wav'), out.slice(0, n - fadeN));
+})();
+
+// --- ocean.wav: 20s seamless loop — three overlapping swells ---------------
+(function ocean() {
+  const dur = 20.0;
+  const n = Math.floor(SR * dur);
+  const rand = mulberry32(11);
+  const out = new Float64Array(n);
+
+  // Distant surf bed.
+  const bed = new Float64Array(n);
+  for (let i = 0; i < n; i++) bed[i] = rand() * 2 - 1;
+  lowpass(bed, 420);
+  for (let i = 0; i < n; i++) out[i] = 0.07 * bed[i];
+
+  // Three wave layers, each a swell: slow build, soft crash, recede.
+  const periods = [8.0, 6.4, 9.6];
+  const offsets = [0.0, 2.6, 4.9];
+  for (let w = 0; w < 3; w++) {
+    const burst = new Float64Array(n);
+    for (let i = 0; i < n; i++) burst[i] = rand() * 2 - 1;
+    lowpass(burst, 650);
+    const T = SR * periods[w];
+    const off = SR * offsets[w];
+    for (let i = 0; i < n; i++) {
+      const ph = ((i + off) % T) / T; // 0..1 within this wave's cycle
+      // Envelope: quiet lull (0-0.55), building swell (0.55-0.82),
+      // crash + recede (0.82-1).
+      let e = 0.05;
+      if (ph < 0.55) e = 0.05 + 0.10 * (ph / 0.55);
+      else if (ph < 0.82) e = 0.15 + 0.85 * ((ph - 0.55) / 0.27);
+      else e = 1.0 * Math.exp(-(ph - 0.82) / 0.10);
+      out[i] += 0.30 * e * burst[i];
+    }
+  }
+  const fadeN = Math.floor(SR * 2);
+  for (let i = 0; i < fadeN; i++) {
+    const k = i / fadeN;
+    out[i] = out[i] * k + out[n - fadeN + i] * (1 - k);
+  }
+  writeWav(path.join(OUT, 'ocean.wav'), out.slice(0, n - fadeN));
+})();
+
+// --- forest.wav: 20s loop — gusting breeze, leaf rustle, bird chirps ------
+(function forest() {
+  const dur = 20.0;
+  const n = Math.floor(SR * dur);
+  const rand = mulberry32(23);
+  const out = new Float64Array(n);
+
+  // Breeze: lowpassed noise with slow gusts.
+  const wind = new Float64Array(n);
+  for (let i = 0; i < n; i++) wind[i] = rand() * 2 - 1;
+  lowpass(wind, 480);
+  for (let i = 0; i < n; i++) {
+    const t = i / SR;
+    const gust = 0.55 + 0.45 * Math.sin((2 * Math.PI * t) / 7.0);
+    out[i] = 0.14 * gust * wind[i];
+  }
+  // Leaf rustle: brief high band swishes.
+  const rustle = new Float64Array(n);
+  for (let i = 0; i < n; i++) rustle[i] = rand() * 2 - 1;
+  lowpass(rustle, 2600);
+  const rustles = 26;
+  for (let r = 0; r < rustles; r++) {
+    const at = Math.floor(rand() * (n - 9000));
+    const len = 2500 + Math.floor(rand() * 6000);
+    for (let i = 0; i < len; i++) {
+      const e = Math.sin((Math.PI * i) / len);
+      out[at + i] += 0.06 * e * rustle[at + i];
+    }
+  }
+  // Bird chirps: quick downward sweeps with a harmonic.
+  const chirps = 7;
+  for (let c = 0; c < chirps; c++) {
+    const at = Math.floor(2000 + rand() * (n - 6000));
+    const base = 2800 + rand() * 900;
+    const len = Math.floor(SR * (0.05 + rand() * 0.05));
+    let phase = 0;
+    for (let i = 0; i < len; i++) {
+      const t = i / SR;
+      const f = base - 700 * (i / len);
+      phase += (2 * Math.PI * f) / SR;
+      const e = Math.sin((Math.PI * i) / len);
+      out[at + i] += 0.12 * e * Math.sin(phase) +
+          0.05 * e * Math.sin(2 * phase);
+    }
+    // Some chirps repeat: a second note 250ms later.
+    if (rand() < 0.5) {
+      const at2 = at + Math.floor(SR * 0.25);
+      phase = 0;
+      for (let i = 0; i < len; i++) {
+        const t = i / SR;
+        const f = base * 1.15 - 600 * (i / len);
+        phase += (2 * Math.PI * f) / SR;
+        const e = Math.sin((Math.PI * i) / len);
+        out[at2 + i] += 0.10 * e * Math.sin(phase);
+      }
+    }
+  }
+  const fadeN = Math.floor(SR * 2);
+  for (let i = 0; i < fadeN; i++) {
+    const k = i / fadeN;
+    out[i] = out[i] * k + out[n - fadeN + i] * (1 - k);
+  }
+  writeWav(path.join(OUT, 'forest.wav'), out.slice(0, n - fadeN));
+})();
+
+// --- campfire.wav: 20s loop — low rumble + random crackles and pops -------
+(function campfire() {
+  const dur = 20.0;
+  const n = Math.floor(SR * dur);
+  const rand = mulberry32(31);
+  const out = new Float64Array(n);
+
+  // Warm low rumble.
+  const rumble = new Float64Array(n);
+  for (let i = 0; i < n; i++) rumble[i] = rand() * 2 - 1;
+  lowpass(rumble, 140);
+  for (let i = 0; i < n; i++) {
+    const t = i / SR;
+    const flicker = 0.8 + 0.2 * Math.sin((2 * Math.PI * t) / 5.3);
+    out[i] = 0.22 * flicker * rumble[i];
+  }
+  // Crackles: many tiny ticks.
+  const crackles = 130;
+  for (let c = 0; c < crackles; c++) {
+    const at = Math.floor(rand() * (n - 300));
+    const len = 2 + Math.floor(rand() * 9);
+    const amp = 0.12 + rand() * 0.4;
+    for (let i = 0; i < len; i++) {
+      out[at + i] += amp * Math.exp(-i / 2.2) * (rand() * 2 - 1);
+    }
+  }
+  // Occasional louder pops.
+  const pops = 9;
+  for (let p = 0; p < pops; p++) {
+    const at = Math.floor(rand() * (n - 800));
+    const len = 18 + Math.floor(rand() * 40);
+    const amp = 0.5 + rand() * 0.35;
+    for (let i = 0; i < len; i++) {
+      out[at + i] += amp * Math.exp(-i / 6) * (rand() * 2 - 1);
+    }
+  }
+  const fadeN = Math.floor(SR * 2);
+  for (let i = 0; i < fadeN; i++) {
+    const k = i / fadeN;
+    out[i] = out[i] * k + out[n - fadeN + i] * (1 - k);
+  }
+  writeWav(path.join(OUT, 'campfire.wav'), out.slice(0, n - fadeN));
 })();

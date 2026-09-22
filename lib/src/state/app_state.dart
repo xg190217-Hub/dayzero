@@ -59,6 +59,9 @@ class AppState extends ChangeNotifier {
   /// Text color selection (see kTextColorOptions in theme.dart).
   String textColorCode = 'auto';
 
+  /// Selected ambient sound for the SOS screen (music/rain/ocean/forest/fire).
+  String ambientCode = 'music';
+
   /// Currency symbol for the "money saved" counters.
   String currencySymbol = '¥';
   List<String> reasons = [];
@@ -103,6 +106,7 @@ class AppState extends ChangeNotifier {
     customHue = prefs.getInt('customHue') ?? 150;
     fontCode = prefs.getString('font') ?? 'roboto';
     textColorCode = prefs.getString('textColor') ?? 'auto';
+    ambientCode = prefs.getString('ambient') ?? 'music';
     currencySymbol = prefs.getString('currency') ?? '¥';
     reasons = prefs.getStringList('reasons') ?? [];
     plans = IfThenPlan.decodeList(prefs.getString('plans'));
@@ -456,6 +460,12 @@ class AppState extends ChangeNotifier {
   Future<void> setTextColor(String code) async {
     textColorCode = code;
     await prefs.setString('textColor', code);
+    notifyListeners();
+  }
+
+  Future<void> setAmbient(String code) async {
+    ambientCode = code;
+    await prefs.setString('ambient', code);
     notifyListeners();
   }
 

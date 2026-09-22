@@ -259,6 +259,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sosAmbient => '静心环境音';
 
   @override
+  String get ambientFire => '篝火声';
+
+  @override
+  String get ambientForest => '森林';
+
+  @override
+  String get ambientOcean => '海浪声';
+
+  @override
+  String get ambientRain => '下雨声';
+
+  @override
+  String get ambientMusic => '静心音乐盒';
+
+  @override
   String premiumSaveAmount(Object amount) {
     return '省 $amount';
   }

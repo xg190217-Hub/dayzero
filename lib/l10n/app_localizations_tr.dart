@@ -266,6 +266,21 @@ class AppLocalizationsTr extends AppLocalizations {
   String get sosAmbient => 'Sakin ortam sesi';
 
   @override
+  String get ambientFire => 'Kamp ateşi';
+
+  @override
+  String get ambientForest => 'Orman';
+
+  @override
+  String get ambientOcean => 'Deniz dalgaları';
+
+  @override
+  String get ambientRain => 'Yağmur';
+
+  @override
+  String get ambientMusic => 'Müzik kutusu';
+
+  @override
   String premiumSaveAmount(Object amount) {
     return '$amount tasarruf';
   }

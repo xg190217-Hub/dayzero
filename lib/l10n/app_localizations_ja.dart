@@ -262,6 +262,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get sosAmbient => '環境音';
 
   @override
+  String get ambientFire => '焚き火';
+
+  @override
+  String get ambientForest => '森の音';
+
+  @override
+  String get ambientOcean => '波の音';
+
+  @override
+  String get ambientRain => '雨音';
+
+  @override
+  String get ambientMusic => 'オルゴール';
+
+  @override
   String premiumSaveAmount(Object amount) {
     return '$amountお得';
   }

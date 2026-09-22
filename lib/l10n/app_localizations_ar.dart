@@ -265,6 +265,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sosAmbient => 'أجواء هادئة';
 
   @override
+  String get ambientFire => 'نار المخيم';
+
+  @override
+  String get ambientForest => 'غابة';
+
+  @override
+  String get ambientOcean => 'أمواج البحر';
+
+  @override
+  String get ambientRain => 'مطر';
+
+  @override
+  String get ambientMusic => 'صندوق الموسيقى';
+
+  @override
   String premiumSaveAmount(Object amount) {
     return 'وفّر $amount';
   }
