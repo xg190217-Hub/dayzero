@@ -198,6 +198,39 @@ void main() {
       expect(daysFree(state.habits.first, clock.value), 0);
     });
 
+    test('relapse restart resets the timer to the exact moment (not midnight)',
+        () async {
+      final (state, clock) = await makeState();
+      final habit = state.habits.first;
+      clock.value = DateTime(2026, 9, 19, 20, 0);
+      await state.saveCheckIn(habit: habit, mood: 3, craving: 2);
+      // Two days later, the user lapses and chooses to restart.
+      clock.value = DateTime(2026, 9, 21, 10, 23);
+      await state.recordLapse(habit, trigger: 'trigger_stress');
+      await state.resetQuitDate(habit);
+      expect(state.habits.first.quitDate, DateTime(2026, 9, 21, 10, 23));
+      expect(daysFree(state.habits.first, clock.value), 0);
+      // The timer restarts from 0:00:00, not "10:23" (midnight bug).
+      expect(state.habits.first.quitDate.hour, 10);
+      expect(state.habits.first.quitDate.minute, 23);
+    });
+
+    test('relapse keep-going records the lapse and keeps the clock running',
+        () async {
+      final (state, clock) = await makeState();
+      final habit = state.habits.first;
+      clock.value = DateTime(2026, 9, 19, 20, 0);
+      await state.saveCheckIn(habit: habit, mood: 3, craving: 2);
+      final runStart = state.habits.first.quitDate;
+      clock.value = DateTime(2026, 9, 20, 9, 0);
+      await state.recordLapse(habit, trigger: 'trigger_social');
+      // Timer keeps counting from the original run start.
+      expect(state.habits.first.quitDate, runStart);
+      expect(state.lapsesFor(habit.id!).length, 1);
+      // 13 hours later but on the NEXT calendar day → 1 whole day counted.
+      expect(daysFree(state.habits.first, clock.value), 1);
+    });
+
     test('backdated quit date is NOT overridden by the first check-in',
         () async {
       SharedPreferences.setMockInitialValues({});

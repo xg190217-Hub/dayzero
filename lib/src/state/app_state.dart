@@ -212,9 +212,11 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Restarts the counter (relapse handling).
+  /// Restarts the counter from THIS exact moment (relapse handling).
+  /// Setting it to start-of-day made the timer show the local clock time
+  /// ("10时23分" = hours since midnight) instead of restarting at zero.
   Future<void> resetQuitDate(Habit habit) async {
-    await updateHabit(habit.copyWith(quitDate: _startOfDay(now)));
+    await updateHabit(habit.copyWith(quitDate: now));
   }
 
   Future<void> deleteHabit(Habit habit) async {

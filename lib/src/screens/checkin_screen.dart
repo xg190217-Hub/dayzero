@@ -34,6 +34,10 @@ class _CheckInScreenState extends State<CheckInScreen> {
   final TextEditingController _note = TextEditingController();
   bool _saving = false;
 
+  /// Owns the snackbar dismissal so it can be cancelled in dispose (a
+  /// dangling timer would outlive the screen).
+  Timer? _snackbarTimer;
+
   // Vector mood faces: never tofu, render everywhere, and carry color +
   // shape semantics (color-blind safe — no color-only coding).
   static const _moodIcons = [
@@ -76,6 +80,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
 
   @override
   void dispose() {
+    _snackbarTimer?.cancel();
     _note.dispose();
     super.dispose();
   }
@@ -118,7 +123,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
           },
         ),
       ));
-    Timer(const Duration(seconds: 5), () {
+    _snackbarTimer?.cancel();
+    _snackbarTimer = Timer(const Duration(seconds: 5), () {
       messenger.hideCurrentSnackBar();
     });
 
