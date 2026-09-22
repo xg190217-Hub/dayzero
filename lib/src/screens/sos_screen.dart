@@ -71,27 +71,27 @@ class _SosScreenState extends State<SosScreen>
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: _durFor(_Phase.breatheIn))
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _controller
-            ..reset()
-            ..forward();
-        }
-      })
-      ..forward();
+        vsync: this, duration: _durFor(_Phase.breatheIn));
     _waveController = AnimationController(
         vsync: this, duration: const Duration(seconds: 4))
       ..repeat();
+    // Start with the CURRENT phase (breathe in) instead of advancing first:
+    // the circle must expand from the very first moment, not sit still.
     _startPhase();
   }
 
+  /// Runs the current phase's animation + timer. Never advances the phase.
   void _startPhase() {
-    _nextPhase();
+    _phaseTimer?.cancel();
+    _controller
+      ..duration = _durFor(_phase)
+      ..reset()
+      ..forward();
+    if (_audioOn && !_ambientOn) _playPhaseSound();
+    _phaseTimer = Timer(_durFor(_phase), _nextPhase);
   }
 
   void _nextPhase() {
-    _phaseTimer?.cancel();
     setState(() {
       // A zero-length hold phase is skipped (the 5-5 pattern).
       if (_phase == _Phase.breatheIn && _pattern.holdDur == 0) {
@@ -104,12 +104,7 @@ class _SosScreenState extends State<SosScreen>
         };
       }
     });
-    _controller
-      ..duration = _durFor(_phase)
-      ..reset()
-      ..forward();
-    if (_audioOn && !_ambientOn) _playPhaseSound();
-    _phaseTimer = Timer(_durFor(_phase), _nextPhase);
+    _startPhase();
   }
 
   Future<void> _playPhaseSound() async {
@@ -329,13 +324,7 @@ class _SosScreenState extends State<SosScreen>
                         onSelected: (_) => setState(() {
                           _patternIndex = i;
                           _phase = _Phase.breatheIn;
-                          _controller
-                            ..duration = _durFor(_phase)
-                            ..reset()
-                            ..forward();
-                          _phaseTimer?.cancel();
-                          _phaseTimer = Timer(_durFor(_phase), _nextPhase);
-                          if (_audioOn && !_ambientOn) _playPhaseSound();
+                          _startPhase();
                         }),
                       );
                     }),

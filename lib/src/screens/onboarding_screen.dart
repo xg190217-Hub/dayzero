@@ -28,7 +28,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _page = 0;
 
   Set<HabitType> _selected = {HabitType.alcohol};
-  DateTime _quitDate = DateTime.now();
+  late DateTime _quitDate;
   final TextEditingController _spend = TextEditingController();
   final TextEditingController _customName = TextEditingController();
   final TextEditingController _reason = TextEditingController();
@@ -37,6 +37,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
+    // Single clock source: the app's injectable now, never DateTime.now().
+    // Two clocks drift apart (tests, screenshot pipeline) and silently
+    // break day-based logic like the run timer.
+    _quitDate = context.read<AppState>().now;
     if (widget.addMode) {
       _selected = {};
       // The add-mode flow has no welcome/reasons pages; "choose" is page 0.
@@ -317,6 +321,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _datePage(AppLocalizations l10n) {
+    final state = context.read<AppState>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -337,10 +342,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     leading: Icon(Icons.play_circle_outline,
                         color: Theme.of(context).colorScheme.primary),
                     title: Text(l10n.today),
-                    trailing: _quitDate.day == DateTime.now().day
+                    trailing: _quitDate.day == state.now.day
                         ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
                         : null,
-                    onTap: () => setState(() => _quitDate = DateTime.now()),
+                    onTap: () => setState(() => _quitDate = state.now),
                   ),
                   ListTile(
                     leading: Icon(Icons.event, color: Theme.of(context).colorScheme.primary),
@@ -351,10 +356,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       final picked = await showDatePicker(
                         context: context,
                         initialDate: _quitDate,
-                        firstDate: DateTime.now()
+                        firstDate: state.now
                             .subtract(const Duration(days: 365 * 10)),
                         lastDate:
-                            DateTime.now().add(const Duration(days: 365)),
+                            state.now.add(const Duration(days: 365)),
                       );
                       if (picked != null) {
                         setState(() => _quitDate = picked);
