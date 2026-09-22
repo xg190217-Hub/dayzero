@@ -228,6 +228,10 @@ class _SosScreenState extends State<SosScreen>
   void didChangeDependencies() {
     super.didChangeDependencies();
     _audio ??= context.read<AudioService>();
+    // Same defense as the check-in and paywall screens: a lingering
+    // snackbar (the check-in confirmation lives 5 seconds) floats exactly
+    // over this screen's bottom Done button. Clear it on entry.
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
   @override

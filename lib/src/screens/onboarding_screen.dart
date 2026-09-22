@@ -174,9 +174,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   else
                     const SizedBox(width: 64),
                   const Spacer(),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                        minimumSize: const Size(160, 52)),
+                  // Flexible: long translations or large accessibility text
+                  // scales must shrink the button instead of overflowing
+                  // the row (which would push the button off-screen).
+                  Flexible(
+                    child: FilledButton(
+                      style: FilledButton.styleFrom(
+                          minimumSize: const Size(160, 52)),
                     onPressed: () async {
                       if (_page == chooseIndex && _selected.isEmpty) {
                         // Dead buttons are the worst UX: explain instead.
@@ -193,7 +197,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         await _finish();
                       }
                     },
-                    child: Text(l10n.startJourney),
+                      child: Text(l10n.startJourney),
+                    ),
                   ),
                 ],
               ),

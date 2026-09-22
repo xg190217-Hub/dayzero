@@ -504,7 +504,11 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (dialogContext) => StatefulBuilder(
         builder: (dialogContext, setDialogState) => AlertDialog(
           title: Text(l10n.relapseTitle),
-          content: Column(
+          // Scrollable: 7 trigger chips + long translations + accessibility
+          // text scaling must never push the action buttons off a small
+          // screen.
+          content: SingleChildScrollView(
+            child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -539,6 +543,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ],
+            ),
           ),
           actions: [
             TextButton(

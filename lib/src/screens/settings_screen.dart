@@ -591,34 +591,38 @@ class SettingsScreen extends StatelessWidget {
       builder: (dialogContext) => StatefulBuilder(
         builder: (dialogContext, setDialogState) => AlertDialog(
           title: Text(l10n.plansAdd),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l10n.plansWhen,
-                  style: const TextStyle(fontWeight: FontWeight.w600)),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: triggers.map((key) {
-                  final selected = trigger == key;
-                  return ChoiceChip(
-                    label: Text(_triggerLabel(l10n, key)),
-                    selected: selected,
-                    onSelected: (_) => setDialogState(() => trigger = key),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: controller,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: l10n.plansAction,
+          // Scrollable: long trigger translations + accessibility text
+          // scaling must never push the actions off a small screen.
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.plansWhen,
+                    style: const TextStyle(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: triggers.map((key) {
+                    final selected = trigger == key;
+                    return ChoiceChip(
+                      label: Text(_triggerLabel(l10n, key)),
+                      selected: selected,
+                      onSelected: (_) => setDialogState(() => trigger = key),
+                    );
+                  }).toList(),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                TextField(
+                  controller: controller,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: l10n.plansAction,
+                  ),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(

@@ -31,6 +31,16 @@ class _PaywallScreenState extends State<PaywallScreen> {
   String _selected = 'dayzero_yearly';
   bool _busy = false;
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // A lingering snackbar (e.g. the check-in confirmation) floats exactly
+    // over the Restore Purchases button — a tap there would be silently
+    // eaten. Clear it the moment the paywall appears, same defense as the
+    // check-in screen.
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
   static const _tiers = <(String, String, String, String?)>[
     ('dayzero_weekly', 'premiumWeekly', 'premiumPerWeek', null),
     ('dayzero_monthly', 'premiumMonthly', 'premiumPerMonth', null),
@@ -207,13 +217,19 @@ class _PaywallScreenState extends State<PaywallScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
-                onPressed: () => _open(kTermsUrl),
-                child: Text(l10n.termsLink),
+              // Flexible: long translations must shrink/wrap instead of
+              // overflowing the row on narrow phones.
+              Flexible(
+                child: TextButton(
+                  onPressed: () => _open(kTermsUrl),
+                  child: Text(l10n.termsLink),
+                ),
               ),
-              TextButton(
-                onPressed: () => _open(kPrivacyUrl),
-                child: Text(l10n.privacyLink),
+              Flexible(
+                child: TextButton(
+                  onPressed: () => _open(kPrivacyUrl),
+                  child: Text(l10n.privacyLink),
+                ),
               ),
             ],
           ),
@@ -364,10 +380,18 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 ),
               ),
             const SizedBox(width: 8),
-            Text(
-              '$price$per',
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600, fontSize: 14),
+            // StoreKit price strings can be long in some currencies
+            // ("CHF 34.99/Jahr") — scale down instead of overflowing
+            // the tier row on narrow phones.
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  '$price$per',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+              ),
             ),
           ],
         ),
