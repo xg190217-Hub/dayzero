@@ -119,38 +119,50 @@ breathTone('breath_out_4.wav', 4.0, false);
   writeWav(path.join(OUT, 'chime.wav'), out);
 })();
 
-// --- calm_ambient.wav: 24s seamless loop — a musical chord drone with a
-// barely-audible air bed. v1 was dominated by filtered noise ("全是噪音");
-// v2 inverts the mix: chord first, whisper of air last.
+// --- calm_ambient.wav: 24s seamless loop — a warm chorus pad under a
+// slow music-box arpeggio (A major pentatonic). v3: actual MUSIC instead
+// of a sine drone; the air bed is barely a whisper.
 (function ambient() {
   const dur = 24.0;
   const n = Math.floor(SR * dur);
   const rand = mulberry32(42);
   const out = new Float64Array(n);
 
-  // Very soft, very dark air bed (cutoff 350 Hz, level 0.035).
+  // Whisper of dark air (cutoff 300 Hz, level 0.02).
   const noise = new Float64Array(n);
   for (let i = 0; i < n; i++) {
     noise[i] = rand() * 2 - 1;
   }
-  lowpass(noise, 350);
+  lowpass(noise, 300);
 
-  // A-major-ish drone: A2, E3, A3, C#4 — each with its own slow swell so
-  // the chord breathes instead of sitting flat.
-  const voices = [
-    { f: 110.0, a: 0.12, period: 9.0 },
-    { f: 164.81, a: 0.09, period: 11.0 },
-    { f: 220.0, a: 0.07, period: 13.0 },
-    { f: 277.18, a: 0.05, period: 17.0 },
+  // Warm pad: each voice is a detuned pair (chorus) with a slow swell.
+  const padVoices = [
+    { f: 110.0, a: 0.10, period: 9.0 },   // A2
+    { f: 164.81, a: 0.07, period: 11.0 }, // E3
+    { f: 220.0, a: 0.06, period: 13.0 },  // A3
   ];
+  // Music-box arpeggio: A3 C#4 E4 A4, one soft pluck every 3 seconds.
+  const arp = [220.0, 277.18, 329.63, 440.0];
   for (let i = 0; i < n; i++) {
     const t = i / SR;
-    let pad = 0;
-    for (const v of voices) {
-      const lfo = 0.5 + 0.5 * Math.sin((2 * Math.PI * t) / v.period);
-      pad += v.a * (0.45 + 0.55 * lfo) * Math.sin(2 * Math.PI * v.f * t);
+    let v = 0.02 * noise[i];
+    for (const p of padVoices) {
+      const lfo = 0.5 + 0.5 * Math.sin((2 * Math.PI * t) / p.period);
+      const swell = 0.5 + 0.5 * lfo;
+      v += p.a * swell * (Math.sin(2 * Math.PI * p.f * t) +
+          0.5 * Math.sin(2 * Math.PI * p.f * 1.003 * t) +
+          0.5 * Math.sin(2 * Math.PI * p.f * 0.997 * t));
     }
-    out[i] = 0.035 * noise[i] + pad;
+    // Pluck: bell-like note with a fast-decaying overtone.
+    const step = Math.floor(t / 3.0) % 4;
+    const since = t - Math.floor(t / 3.0) * 3.0;
+    const f = arp[step];
+    const pluck = Math.exp(-since / 0.9) * Math.sin(2 * Math.PI * f * since);
+    const overtone = 0.35 * Math.exp(-since / 0.35) *
+        Math.sin(2 * Math.PI * f * 2.76 * since);
+    const pluckEnv = since < 0.02 ? since / 0.02 : 1; // click-free attack
+    v += 0.16 * pluckEnv * (pluck + overtone);
+    out[i] = v;
   }
 
   // 3s crossfade of tail into head for a click-free loop.
