@@ -611,13 +611,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get premiumFeature1 => 'Hábitos ilimitados';
 
   @override
-  String get premiumFeature2 => 'Biblioteca completa de audio de respiración';
+  String get premiumFeature2 => 'Paisajes sonoros (lluvia, olas, hoguera)';
 
   @override
   String get premiumFeature3 => 'Temas, fuentes y colores de texto';
 
   @override
-  String get premiumFeature4 => 'Ceremonias de celebración de hitos';
+  String get premiumFeature4 => 'Análisis de causas: qué te tienta más';
 
   @override
   String get premiumFreeNote =>
@@ -869,4 +869,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get minuteUnit => 'min';
+
+  @override
+  String get statsTriggerTitle => 'Principales causas';
+
+  @override
+  String get statsTriggerLocked => 'Premium desbloquea el análisis de causas';
 }

@@ -187,9 +187,9 @@
   "premiumTitle": "归零高级版",
   "premiumSubtitle": "保持自由所需的一切",
   "premiumFeature1": "无限个习惯",
-  "premiumFeature2": "全套呼吸练习音频",
+  "premiumFeature2": "环境音效库（雨声、海浪、篝火）",
   "premiumFeature3": "主题、字体与文字颜色",
-  "premiumFeature4": "里程碑庆祝仪式",
+  "premiumFeature4": "诱因分析：看清什么最容易让你破戒",
   "premiumFreeNote": "免费版可永久记录 2 个习惯及核心统计——无广告。",
   "premiumWeekly": "周订阅",
   "premiumMonthly": "月订阅",
@@ -268,5 +268,7 @@
   "health_social_1m": "专注力和效率提升",
   "dayUnit": "天",
   "hourUnit": "时",
-  "minuteUnit": "分"
+  "minuteUnit": "分",
+  "statsTriggerTitle": "主要诱因",
+  "statsTriggerLocked": "高级版解锁诱因分析"
 }

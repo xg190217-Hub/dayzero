@@ -187,9 +187,9 @@
   "premiumTitle": "DayZero Premium",
   "premiumSubtitle": "Tudo o que você precisa para continuar livre",
   "premiumFeature1": "Hábitos ilimitados",
-  "premiumFeature2": "Biblioteca completa de áudios de respiração",
+  "premiumFeature2": "Paisagens sonoras (chuva, ondas, fogueira)",
   "premiumFeature3": "Temas, fontes e cores de texto",
-  "premiumFeature4": "Cerimônias de celebração de marcos",
+  "premiumFeature4": "Análise de gatilhos: o que mais o tenta",
   "premiumFreeNote": "A versão gratuita acompanha 2 hábitos com estatísticas essenciais — para sempre, sem anúncios.",
   "premiumWeekly": "Semanal",
   "premiumMonthly": "Mensal",
@@ -268,5 +268,7 @@
   "health_social_1m": "Aumentam o foco e a produtividade",
   "dayUnit": "d",
   "hourUnit": "h",
-  "minuteUnit": "min"
+  "minuteUnit": "min",
+  "statsTriggerTitle": "Principais gatilhos",
+  "statsTriggerLocked": "Premium desbloqueia a análise de gatilhos"
 }

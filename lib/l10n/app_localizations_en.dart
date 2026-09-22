@@ -609,13 +609,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumFeature1 => 'Unlimited habits';
 
   @override
-  String get premiumFeature2 => 'Complete breathing audio library';
+  String get premiumFeature2 =>
+      'Ambient soundscape library (rain, ocean, campfire)';
 
   @override
   String get premiumFeature3 => 'Themes, fonts & text colors';
 
   @override
-  String get premiumFeature4 => 'Milestone celebration ceremonies';
+  String get premiumFeature4 => 'Trigger insights: see what tempts you most';
 
   @override
   String get premiumFreeNote =>
@@ -858,4 +859,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get minuteUnit => 'm';
+
+  @override
+  String get statsTriggerTitle => 'Top triggers';
+
+  @override
+  String get statsTriggerLocked => 'Unlock trigger insights with Premium';
 }

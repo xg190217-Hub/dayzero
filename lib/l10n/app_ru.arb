@@ -187,9 +187,9 @@
   "premiumTitle": "DayZero Premium",
   "premiumSubtitle": "Всё, что нужно, чтобы оставаться свободным",
   "premiumFeature1": "Неограниченные привычки",
-  "premiumFeature2": "Полная аудиотека дыхательных упражнений",
+  "premiumFeature2": "Библиотека звуков природы (дождь, волны, костёр)",
   "premiumFeature3": "Темы, шрифты и цвета текста",
-  "premiumFeature4": "Церемонии празднования вех",
+  "premiumFeature4": "Анализ триггеров: что искушает вас сильнее всего",
   "premiumFreeNote": "Бесплатная версия отслеживает 2 привычки с базовой статистикой — навсегда, без рекламы.",
   "premiumWeekly": "Неделя",
   "premiumMonthly": "Месяц",
@@ -268,5 +268,7 @@
   "health_social_1m": "Растут концентрация и продуктивность",
   "dayUnit": "дн",
   "hourUnit": "ч",
-  "minuteUnit": "мин"
+  "minuteUnit": "мин",
+  "statsTriggerTitle": "Главные триггеры",
+  "statsTriggerLocked": "Premium открывает анализ триггеров"
 }

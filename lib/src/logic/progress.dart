@@ -92,6 +92,21 @@ double? averageOver(
   return values.reduce((a, b) => a + b) / values.length;
 }
 
+/// Trigger frequency, sorted descending: what tempts the user most.
+/// Returns (triggerKey, count) pairs for triggers that appear at least once.
+List<(String, int)> triggerBreakdown(List<CheckIn> checkIns) {
+  final counts = <String, int>{};
+  for (final c in checkIns) {
+    final key = c.trigger ?? 'trigger_none';
+    counts[key] = (counts[key] ?? 0) + 1;
+  }
+  final entries = counts.entries
+      .map((e) => (e.key, e.value))
+      .toList()
+    ..sort((a, b) => b.$2 - a.$2);
+  return entries;
+}
+
 class WeeklySummary {
   const WeeklySummary({
     required this.checkInCount,

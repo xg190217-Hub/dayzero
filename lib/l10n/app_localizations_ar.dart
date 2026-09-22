@@ -604,13 +604,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get premiumFeature1 => 'عادات بلا حدود';
 
   @override
-  String get premiumFeature2 => 'مكتبة صوتية كاملة لتمارين التنفس';
+  String get premiumFeature2 => 'مكتبة الأصوات (مطر، أمواج، نار المخيم)';
 
   @override
   String get premiumFeature3 => 'الثيمات والخطوط وألوان النص';
 
   @override
-  String get premiumFeature4 => 'احتفالات الإنجازات';
+  String get premiumFeature4 => 'تحليل المحفزات: ما الذي يغرك أكثر';
 
   @override
   String get premiumFreeNote =>
@@ -852,4 +852,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get minuteUnit => 'د';
+
+  @override
+  String get statsTriggerTitle => 'أهم المحفزات';
+
+  @override
+  String get statsTriggerLocked => 'افتح تحليل المحفزات مع النسخة المميزة';
 }

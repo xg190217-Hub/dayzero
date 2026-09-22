@@ -187,9 +187,9 @@
   "premiumTitle": "DayZero المميز",
   "premiumSubtitle": "كل ما تحتاجه لتبقى حرًا",
   "premiumFeature1": "عادات بلا حدود",
-  "premiumFeature2": "مكتبة صوتية كاملة لتمارين التنفس",
+  "premiumFeature2": "مكتبة الأصوات (مطر، أمواج، نار المخيم)",
   "premiumFeature3": "الثيمات والخطوط وألوان النص",
-  "premiumFeature4": "احتفالات الإنجازات",
+  "premiumFeature4": "تحليل المحفزات: ما الذي يغرك أكثر",
   "premiumFreeNote": "النسخة المجانية تتابع عادتين مع الإحصاءات الأساسية — للأبد وبدون إعلانات.",
   "premiumWeekly": "أسبوعي",
   "premiumMonthly": "شهري",
@@ -268,5 +268,7 @@
   "health_social_1m": "يرتفع التركيز والإنتاجية",
   "dayUnit": "يوم",
   "hourUnit": "س",
-  "minuteUnit": "د"
+  "minuteUnit": "د",
+  "statsTriggerTitle": "أهم المحفزات",
+  "statsTriggerLocked": "افتح تحليل المحفزات مع النسخة المميزة"
 }

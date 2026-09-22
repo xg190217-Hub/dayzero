@@ -187,9 +187,9 @@
   "premiumTitle": "DayZeroプレミアム",
   "premiumSubtitle": "自由でいるために必要なすべて",
   "premiumFeature1": "無制限の習慣",
-  "premiumFeature2": "呼吸音声ライブラリ全種",
+  "premiumFeature2": "環境音ライブラリ（雨・波・焚き火）",
   "premiumFeature3": "テーマ・フォント・文字色",
-  "premiumFeature4": "マイルストーンお祝いセレモニー",
+  "premiumFeature4": "誘因分析：何があなたを誘うか見える化",
   "premiumFreeNote": "無料版は2つの習慣をコア統計付きでずっと使えます。広告もありません。",
   "premiumWeekly": "週間",
   "premiumMonthly": "月間",
@@ -268,5 +268,7 @@
   "health_social_1m": "集中力と生産性が上がります",
   "dayUnit": "日",
   "hourUnit": "時間",
-  "minuteUnit": "分"
+  "minuteUnit": "分",
+  "statsTriggerTitle": "主なきっかけ",
+  "statsTriggerLocked": "プレミアムで誘因分析をアンロック"
 }

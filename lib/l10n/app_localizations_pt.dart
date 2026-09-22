@@ -611,13 +611,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get premiumFeature1 => 'Hábitos ilimitados';
 
   @override
-  String get premiumFeature2 => 'Biblioteca completa de áudios de respiração';
+  String get premiumFeature2 => 'Paisagens sonoras (chuva, ondas, fogueira)';
 
   @override
   String get premiumFeature3 => 'Temas, fontes e cores de texto';
 
   @override
-  String get premiumFeature4 => 'Cerimônias de celebração de marcos';
+  String get premiumFeature4 => 'Análise de gatilhos: o que mais o tenta';
 
   @override
   String get premiumFreeNote =>
@@ -862,4 +862,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get minuteUnit => 'min';
+
+  @override
+  String get statsTriggerTitle => 'Principais gatilhos';
+
+  @override
+  String get statsTriggerLocked => 'Premium desbloqueia a análise de gatilhos';
 }

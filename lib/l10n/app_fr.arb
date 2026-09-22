@@ -187,9 +187,9 @@
   "premiumTitle": "DayZero Premium",
   "premiumSubtitle": "Tout ce qu'il faut pour rester libre",
   "premiumFeature1": "Habitudes illimitées",
-  "premiumFeature2": "Bibliothèque audio de respiration complète",
+  "premiumFeature2": "Paysages sonores (pluie, vagues, feu de camp)",
   "premiumFeature3": "Thèmes, polices & couleurs de texte",
-  "premiumFeature4": "Cérémonies de célébration des étapes",
+  "premiumFeature4": "Analyse des déclencheurs : ce qui vous tente le plus",
   "premiumFreeNote": "La version gratuite suit 2 habitudes avec les statistiques essentielles — pour toujours, sans pub.",
   "premiumWeekly": "Hebdomadaire",
   "premiumMonthly": "Mensuel",
@@ -268,5 +268,7 @@
   "health_social_1m": "La concentration et la productivité augmentent",
   "dayUnit": "j",
   "hourUnit": "h",
-  "minuteUnit": "min"
+  "minuteUnit": "min",
+  "statsTriggerTitle": "Déclencheurs principaux",
+  "statsTriggerLocked": "Premium débloque l'analyse des déclencheurs"
 }

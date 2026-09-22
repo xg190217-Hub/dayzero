@@ -187,9 +187,9 @@
   "premiumTitle": "DayZero 프리미엄",
   "premiumSubtitle": "자유롭게 지내기 위한 모든 것",
   "premiumFeature1": "무제한 습관",
-  "premiumFeature2": "호흡 오디오 전체 라이브러리",
+  "premiumFeature2": "환경음 라이브러리 (비, 파도, 모닥불)",
   "premiumFeature3": "테마·글꼴·글자 색",
-  "premiumFeature4": "이정표 축하 세리머니",
+  "premiumFeature4": "유발 요인 분석: 무엇이 나를 흔드는지",
   "premiumFreeNote": "무료 버전은 핵심 통계와 함께 2개의 습관을 영원히 추적합니다 — 광고 없이.",
   "premiumWeekly": "주간",
   "premiumMonthly": "월간",
@@ -268,5 +268,7 @@
   "health_social_1m": "집중력과 생산성이 올라갑니다",
   "dayUnit": "일",
   "hourUnit": "시간",
-  "minuteUnit": "분"
+  "minuteUnit": "분",
+  "statsTriggerTitle": "주요 유발 요인",
+  "statsTriggerLocked": "프리미엄으로 유발 요인 분석 잠금 해제"
 }

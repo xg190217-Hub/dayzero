@@ -613,13 +613,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get premiumFeature1 => 'Habitudes illimitées';
 
   @override
-  String get premiumFeature2 => 'Bibliothèque audio de respiration complète';
+  String get premiumFeature2 => 'Paysages sonores (pluie, vagues, feu de camp)';
 
   @override
   String get premiumFeature3 => 'Thèmes, polices & couleurs de texte';
 
   @override
-  String get premiumFeature4 => 'Cérémonies de célébration des étapes';
+  String get premiumFeature4 =>
+      'Analyse des déclencheurs : ce qui vous tente le plus';
 
   @override
   String get premiumFreeNote =>
@@ -873,4 +874,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get minuteUnit => 'min';
+
+  @override
+  String get statsTriggerTitle => 'Déclencheurs principaux';
+
+  @override
+  String get statsTriggerLocked =>
+      'Premium débloque l\'analyse des déclencheurs';
 }

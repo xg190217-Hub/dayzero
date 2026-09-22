@@ -187,9 +187,9 @@
   "premiumTitle": "DayZero Premium",
   "premiumSubtitle": "Tutto ciò che serve per restare libero",
   "premiumFeature1": "Abitudini illimitate",
-  "premiumFeature2": "Libreria audio completa di respirazione",
+  "premiumFeature2": "Paesaggi sonori (pioggia, onde, falò)",
   "premiumFeature3": "Temi, font e colori del testo",
-  "premiumFeature4": "Cerimonie di celebrazione",
+  "premiumFeature4": "Analisi dei fattori scatenanti: cosa ti tenta di più",
   "premiumFreeNote": "La versione gratuita segue 2 abitudini con le statistiche essenziali, per sempre e senza pubblicità.",
   "premiumWeekly": "Settimanale",
   "premiumMonthly": "Mensile",
@@ -268,5 +268,7 @@
   "health_social_1m": "Aumentano concentrazione e produttività",
   "dayUnit": "gg",
   "hourUnit": "h",
-  "minuteUnit": "min"
+  "minuteUnit": "min",
+  "statsTriggerTitle": "Fattori scatenanti",
+  "statsTriggerLocked": "Premium sblocca l'analisi dei fattori scatenanti"
 }

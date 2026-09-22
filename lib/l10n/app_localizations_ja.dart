@@ -596,13 +596,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumFeature1 => '無制限の習慣';
 
   @override
-  String get premiumFeature2 => '呼吸音声ライブラリ全種';
+  String get premiumFeature2 => '環境音ライブラリ（雨・波・焚き火）';
 
   @override
   String get premiumFeature3 => 'テーマ・フォント・文字色';
 
   @override
-  String get premiumFeature4 => 'マイルストーンお祝いセレモニー';
+  String get premiumFeature4 => '誘因分析：何があなたを誘うか見える化';
 
   @override
   String get premiumFreeNote => '無料版は2つの習慣をコア統計付きでずっと使えます。広告もありません。';
@@ -843,4 +843,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get minuteUnit => '分';
+
+  @override
+  String get statsTriggerTitle => '主なきっかけ';
+
+  @override
+  String get statsTriggerLocked => 'プレミアムで誘因分析をアンロック';
 }

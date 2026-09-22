@@ -612,13 +612,14 @@ class AppLocalizationsIt extends AppLocalizations {
   String get premiumFeature1 => 'Abitudini illimitate';
 
   @override
-  String get premiumFeature2 => 'Libreria audio completa di respirazione';
+  String get premiumFeature2 => 'Paesaggi sonori (pioggia, onde, falò)';
 
   @override
   String get premiumFeature3 => 'Temi, font e colori del testo';
 
   @override
-  String get premiumFeature4 => 'Cerimonie di celebrazione';
+  String get premiumFeature4 =>
+      'Analisi dei fattori scatenanti: cosa ti tenta di più';
 
   @override
   String get premiumFreeNote =>
@@ -866,4 +867,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get minuteUnit => 'min';
+
+  @override
+  String get statsTriggerTitle => 'Fattori scatenanti';
+
+  @override
+  String get statsTriggerLocked =>
+      'Premium sblocca l\'analisi dei fattori scatenanti';
 }

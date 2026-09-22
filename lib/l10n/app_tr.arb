@@ -187,9 +187,9 @@
   "premiumTitle": "DayZero Premium",
   "premiumSubtitle": "Özgür kalmak için gereken her şey",
   "premiumFeature1": "Sınırsız alışkanlık",
-  "premiumFeature2": "Eksiksiz nefes sesi kütüphanesi",
+  "premiumFeature2": "Ortam sesleri (yağmur, dalga, kamp ateşi)",
   "premiumFeature3": "Temalar, yazı tipleri ve metin renkleri",
-  "premiumFeature4": "Dönüm noktası kutlama törenleri",
+  "premiumFeature4": "Tetikleyici analizi: sizi en çok ne cezbediyor",
   "premiumFreeNote": "Ücretsiz sürüm, temel istatistiklerle 2 alışkanlığı sonsuza kadar takip eder — reklamsız.",
   "premiumWeekly": "Haftalık",
   "premiumMonthly": "Aylık",
@@ -268,5 +268,7 @@
   "health_social_1m": "Odaklanma ve üretkenlik artar",
   "dayUnit": "gün",
   "hourUnit": "sa",
-  "minuteUnit": "dk"
+  "minuteUnit": "dk",
+  "statsTriggerTitle": "Başlıca tetikleyiciler",
+  "statsTriggerLocked": "Premium ile tetikleyici analizini açın"
 }

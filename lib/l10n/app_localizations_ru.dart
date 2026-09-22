@@ -610,13 +610,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get premiumFeature1 => 'Неограниченные привычки';
 
   @override
-  String get premiumFeature2 => 'Полная аудиотека дыхательных упражнений';
+  String get premiumFeature2 =>
+      'Библиотека звуков природы (дождь, волны, костёр)';
 
   @override
   String get premiumFeature3 => 'Темы, шрифты и цвета текста';
 
   @override
-  String get premiumFeature4 => 'Церемонии празднования вех';
+  String get premiumFeature4 =>
+      'Анализ триггеров: что искушает вас сильнее всего';
 
   @override
   String get premiumFreeNote =>
@@ -860,4 +862,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get minuteUnit => 'мин';
+
+  @override
+  String get statsTriggerTitle => 'Главные триггеры';
+
+  @override
+  String get statsTriggerLocked => 'Premium открывает анализ триггеров';
 }

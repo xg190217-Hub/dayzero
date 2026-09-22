@@ -597,13 +597,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get premiumFeature1 => '무제한 습관';
 
   @override
-  String get premiumFeature2 => '호흡 오디오 전체 라이브러리';
+  String get premiumFeature2 => '환경음 라이브러리 (비, 파도, 모닥불)';
 
   @override
   String get premiumFeature3 => '테마·글꼴·글자 색';
 
   @override
-  String get premiumFeature4 => '이정표 축하 세리머니';
+  String get premiumFeature4 => '유발 요인 분석: 무엇이 나를 흔드는지';
 
   @override
   String get premiumFreeNote => '무료 버전은 핵심 통계와 함께 2개의 습관을 영원히 추적합니다 — 광고 없이.';
@@ -844,4 +844,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get minuteUnit => '분';
+
+  @override
+  String get statsTriggerTitle => '주요 유발 요인';
+
+  @override
+  String get statsTriggerLocked => '프리미엄으로 유발 요인 분석 잠금 해제';
 }

@@ -591,13 +591,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get premiumFeature1 => '无限个习惯';
 
   @override
-  String get premiumFeature2 => '全套呼吸练习音频';
+  String get premiumFeature2 => '环境音效库（雨声、海浪、篝火）';
 
   @override
   String get premiumFeature3 => '主题、字体与文字颜色';
 
   @override
-  String get premiumFeature4 => '里程碑庆祝仪式';
+  String get premiumFeature4 => '诱因分析：看清什么最容易让你破戒';
 
   @override
   String get premiumFreeNote => '免费版可永久记录 2 个习惯及核心统计——无广告。';
@@ -838,4 +838,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get minuteUnit => '分';
+
+  @override
+  String get statsTriggerTitle => '主要诱因';
+
+  @override
+  String get statsTriggerLocked => '高级版解锁诱因分析';
 }

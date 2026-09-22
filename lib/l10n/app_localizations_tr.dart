@@ -611,13 +611,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get premiumFeature1 => 'Sınırsız alışkanlık';
 
   @override
-  String get premiumFeature2 => 'Eksiksiz nefes sesi kütüphanesi';
+  String get premiumFeature2 => 'Ortam sesleri (yağmur, dalga, kamp ateşi)';
 
   @override
   String get premiumFeature3 => 'Temalar, yazı tipleri ve metin renkleri';
 
   @override
-  String get premiumFeature4 => 'Dönüm noktası kutlama törenleri';
+  String get premiumFeature4 =>
+      'Tetikleyici analizi: sizi en çok ne cezbediyor';
 
   @override
   String get premiumFreeNote =>
@@ -859,4 +860,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get minuteUnit => 'dk';
+
+  @override
+  String get statsTriggerTitle => 'Başlıca tetikleyiciler';
+
+  @override
+  String get statsTriggerLocked => 'Premium ile tetikleyici analizini açın';
 }

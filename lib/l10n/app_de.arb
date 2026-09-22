@@ -187,9 +187,9 @@
   "premiumTitle": "DayZero Premium",
   "premiumSubtitle": "Alles, was du brauchst, um frei zu bleiben",
   "premiumFeature1": "Unbegrenzte Gewohnheiten",
-  "premiumFeature2": "Komplette Atem-Audiobibliothek",
+  "premiumFeature2": "Klanglandschaften (Regen, Meer, Lagerfeuer)",
   "premiumFeature3": "Designs, Schriftarten & Textfarben",
-  "premiumFeature4": "Meilenstein-Feierlichkeiten",
+  "premiumFeature4": "Auslöser-Analyse: was dich am meisten reizt",
   "premiumFreeNote": "Die Gratisversion trackt 2 Gewohnheiten mit Kernstatistiken – für immer, ohne Werbung.",
   "premiumWeekly": "Wöchentlich",
   "premiumMonthly": "Monatlich",
@@ -268,5 +268,7 @@
   "health_social_1m": "Fokus und Produktivität steigen",
   "dayUnit": "T",
   "hourUnit": "Std.",
-  "minuteUnit": "Min."
+  "minuteUnit": "Min.",
+  "statsTriggerTitle": "Häufigste Auslöser",
+  "statsTriggerLocked": "Premium schaltet die Auslöser-Analyse frei"
 }

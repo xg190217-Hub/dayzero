@@ -613,13 +613,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get premiumFeature1 => 'Unbegrenzte Gewohnheiten';
 
   @override
-  String get premiumFeature2 => 'Komplette Atem-Audiobibliothek';
+  String get premiumFeature2 => 'Klanglandschaften (Regen, Meer, Lagerfeuer)';
 
   @override
   String get premiumFeature3 => 'Designs, Schriftarten & Textfarben';
 
   @override
-  String get premiumFeature4 => 'Meilenstein-Feierlichkeiten';
+  String get premiumFeature4 => 'Auslöser-Analyse: was dich am meisten reizt';
 
   @override
   String get premiumFreeNote =>
@@ -864,4 +864,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get minuteUnit => 'Min.';
+
+  @override
+  String get statsTriggerTitle => 'Häufigste Auslöser';
+
+  @override
+  String get statsTriggerLocked => 'Premium schaltet die Auslöser-Analyse frei';
 }

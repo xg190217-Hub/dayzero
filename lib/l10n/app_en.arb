@@ -2,7 +2,9 @@
   "@@locale": "en",
   "appTitle": "DayZero",
   "appTagline": "Your private quit companion",
-  "@appTagline": {"description": "Short selling line shown on onboarding"},
+  "@appTagline": {
+    "description": "Short selling line shown on onboarding"
+  },
   "onboardingWelcomeTitle": "A fresh start begins today",
   "onboardingWelcomeBody": "Track your quit journey privately. No account, no ads, no cloud. Everything stays on your device.",
   "onboardingChooseTitle": "What do you want to quit?",
@@ -188,9 +190,9 @@
   "premiumTitle": "DayZero Premium",
   "premiumSubtitle": "Everything you need to stay free",
   "premiumFeature1": "Unlimited habits",
-  "premiumFeature2": "Complete breathing audio library",
+  "premiumFeature2": "Ambient soundscape library (rain, ocean, campfire)",
   "premiumFeature3": "Themes, fonts & text colors",
-  "premiumFeature4": "Milestone celebration ceremonies",
+  "premiumFeature4": "Trigger insights: see what tempts you most",
   "premiumFreeNote": "Free version tracks 2 habits with core stats — forever, no ads.",
   "premiumWeekly": "Weekly",
   "premiumMonthly": "Monthly",
@@ -269,5 +271,7 @@
   "health_social_1m": "Focus and productivity climb",
   "dayUnit": "d",
   "hourUnit": "h",
-  "minuteUnit": "m"
+  "minuteUnit": "m",
+  "statsTriggerTitle": "Top triggers",
+  "statsTriggerLocked": "Unlock trigger insights with Premium"
 }

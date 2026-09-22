@@ -1243,7 +1243,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumFeature2.
   ///
   /// In en, this message translates to:
-  /// **'Complete breathing audio library'**
+  /// **'Ambient soundscape library (rain, ocean, campfire)'**
   String get premiumFeature2;
 
   /// No description provided for @premiumFeature3.
@@ -1255,7 +1255,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumFeature4.
   ///
   /// In en, this message translates to:
-  /// **'Milestone celebration ceremonies'**
+  /// **'Trigger insights: see what tempts you most'**
   String get premiumFeature4;
 
   /// No description provided for @premiumFreeNote.
@@ -1731,6 +1731,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'m'**
   String get minuteUnit;
+
+  /// No description provided for @statsTriggerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top triggers'**
+  String get statsTriggerTitle;
+
+  /// No description provided for @statsTriggerLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock trigger insights with Premium'**
+  String get statsTriggerLocked;
 }
 
 class _AppLocalizationsDelegate
