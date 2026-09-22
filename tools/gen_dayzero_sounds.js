@@ -169,40 +169,43 @@ breathTone('breath_out_4.wav', 4.0, false);
   writeWav(path.join(OUT, 'calm_ambient.wav'), out);
 })();
 
-// --- rain.wav: 18s loop — 细雨润无声: a very soft mist bed + sparse
-// water-droplet pings (small resonant drops, not hissy bursts).
+// --- rain.wav: 16s loop — steady bright drizzle, no swells (ocean owns
+// the rhythm): a fine constant patter + sparse resonant droplets.
 (function rain() {
-  const dur = 18.0;
+  const dur = 16.0;
   const n = Math.floor(SR * dur);
   const rand = mulberry32(7);
   const out = new Float64Array(n);
 
-  // Soft mist: white noise, heavily lowpassed at 700 Hz, low level, with
-  // a slow swell so it breathes instead of hissing steadily.
+  // Bright mist: higher cutoff than the ocean rumble (1200 Hz vs 400),
+  // steady level (rain does not swell).
   const mist = new Float64Array(n);
   for (let i = 0; i < n; i++) mist[i] = rand() * 2 - 1;
-  lowpass(mist, 700);
+  lowpass(mist, 1200);
+  for (let i = 0; i < n; i++) out[i] = 0.07 * mist[i];
+
+  // Fine continuous patter: dense tiny ticks, like steady drizzle.
   for (let i = 0; i < n; i++) {
-    const t = i / SR;
-    const swell = 0.7 + 0.3 * Math.sin((2 * Math.PI * t) / 6.0);
-    out[i] = 0.10 * swell * mist[i];
+    if (rand() < 0.0016) {
+      out[i] += (0.05 + rand() * 0.08) * (rand() * 2 - 1);
+    }
   }
 
-  // Droplet pings: tiny resonant sine drops, sparse (~6/s), random pitch.
-  const pings = Math.floor(dur * 6);
+  // Sparse resonant droplet pings (the water-drop character).
+  const pings = Math.floor(dur * 5);
   for (let p = 0; p < pings; p++) {
     const at = Math.floor(rand() * (n - 4000));
-    const f = 900 + rand() * 900;
+    const f = 1000 + rand() * 1000;
     const len = Math.floor(SR * (0.015 + rand() * 0.02));
     let phase = 0;
     for (let i = 0; i < len; i++) {
       phase += (2 * Math.PI * f) / SR;
       const decay = Math.exp(-i / (len * 0.3));
-      out[at + i] += 0.14 * decay * Math.sin(phase);
+      out[at + i] += 0.16 * decay * Math.sin(phase);
     }
   }
-  // Occasional deeper drip every few seconds.
-  const drips = Math.floor(dur / 3.5);
+  // Occasional deeper drip.
+  const drips = Math.floor(dur / 4.0);
   for (let d = 0; d < drips; d++) {
     const at = Math.floor(rand() * (n - 8000));
     const f = 420 + rand() * 160;
@@ -211,7 +214,7 @@ breathTone('breath_out_4.wav', 4.0, false);
     for (let i = 0; i < len; i++) {
       phase += (2 * Math.PI * f) / SR;
       const decay = Math.exp(-i / (len * 0.25));
-      out[at + i] += 0.16 * decay * Math.sin(phase) +
+      out[at + i] += 0.17 * decay * Math.sin(phase) +
           0.06 * decay * Math.sin(2.3 * phase);
     }
   }
@@ -262,70 +265,6 @@ breathTone('breath_out_4.wav', 4.0, false);
     out[i] = out[i] * k + out[n - fadeN + i] * (1 - k);
   }
   writeWav(path.join(OUT, 'ocean.wav'), out.slice(0, n - fadeN));
-})();
-
-// --- forest.wav: 18s loop — soft breeze + melodic bird phrases -----------
-(function forest() {
-  const dur = 18.0;
-  const n = Math.floor(SR * dur);
-  const rand = mulberry32(23);
-  const out = new Float64Array(n);
-
-  // Breeze: very soft, dark (cutoff 350 Hz), slow gusts.
-  const wind = new Float64Array(n);
-  for (let i = 0; i < n; i++) wind[i] = rand() * 2 - 1;
-  lowpass(wind, 350);
-  for (let i = 0; i < n; i++) {
-    const t = i / SR;
-    const gust = 0.6 + 0.4 * Math.sin((2 * Math.PI * t) / 6.0);
-    out[i] = 0.09 * gust * wind[i];
-  }
-  // Leaf rustle: brief soft swishes.
-  const rustle = new Float64Array(n);
-  for (let i = 0; i < n; i++) rustle[i] = rand() * 2 - 1;
-  lowpass(rustle, 2200);
-  const rustles = 20;
-  for (let r = 0; r < rustles; r++) {
-    const at = Math.floor(rand() * (n - 9000));
-    const len = 2200 + Math.floor(rand() * 5200);
-    for (let i = 0; i < len; i++) {
-      const e = Math.sin((Math.PI * i) / len);
-      out[at + i] += 0.045 * e * rustle[at + i];
-    }
-  }
-
-  // Bird phrases: short melodic motifs (2-4 notes each), like a real
-  // dawn chorus. Each note is a quick sweep with a soft harmonic.
-  const note = (at, f0, f1, len, amp) => {
-    let phase = 0;
-    for (let i = 0; i < len; i++) {
-      const t = i / SR;
-      const f = f0 + (f1 - f0) * (i / len);
-      phase += (2 * Math.PI * f) / SR;
-      const e = Math.sin((Math.PI * i) / len);
-      out[at + i] += amp * e * (Math.sin(phase) + 0.4 * Math.sin(2 * phase));
-    }
-  };
-  const motifs = [
-    { t0: 1.2, notes: [[3400, 3000, 0.05], [3000, 2700, 0.05], [3200, 2800, 0.07]] },
-    { t0: 4.6, notes: [[2700, 2400, 0.06], [2500, 2200, 0.06]] },
-    { t0: 8.0, notes: [[3600, 3200, 0.04], [3800, 3300, 0.04], [3400, 2900, 0.04], [3100, 2600, 0.06]] },
-    { t0: 11.9, notes: [[2900, 2500, 0.06], [3300, 2800, 0.05]] },
-    { t0: 14.8, notes: [[2600, 2300, 0.05], [2800, 2400, 0.05], [3000, 2500, 0.06]] },
-  ];
-  for (const m of motifs) {
-    let at = Math.floor(SR * m.t0);
-    for (const [f0, f1, len] of m.notes) {
-      note(at, f0, f1, Math.floor(SR * len), 0.13);
-      at += Math.floor(SR * (0.16 + 0.08 * rand()));
-    }
-  }
-  const fadeN = Math.floor(SR * 2);
-  for (let i = 0; i < fadeN; i++) {
-    const k = i / fadeN;
-    out[i] = out[i] * k + out[n - fadeN + i] * (1 - k);
-  }
-  writeWav(path.join(OUT, 'forest.wav'), out.slice(0, n - fadeN));
 })();
 
 // --- campfire.wav: 20s loop — low rumble + random crackles and pops -------

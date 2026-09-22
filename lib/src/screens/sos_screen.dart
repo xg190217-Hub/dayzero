@@ -148,7 +148,6 @@ class _SosScreenState extends State<SosScreen>
     'music': 'sounds/calm_ambient.wav',
     'rain': 'sounds/rain.wav',
     'ocean': 'sounds/ocean.wav',
-    'forest': 'sounds/forest.wav',
     'fire': 'sounds/campfire.wav',
   };
 
@@ -158,8 +157,6 @@ class _SosScreenState extends State<SosScreen>
         return l10n.ambientRain;
       case 'ocean':
         return l10n.ambientOcean;
-      case 'forest':
-        return l10n.ambientForest;
       case 'fire':
         return l10n.ambientFire;
       default:
