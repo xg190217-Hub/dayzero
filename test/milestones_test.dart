@@ -198,21 +198,30 @@ void main() {
       expect(daysFree(state.habits.first, clock.value), 0);
     });
 
-    test('relapse restart resets the timer to the exact moment (not midnight)',
+    test('relapse restart clears today and idles until the next check-in',
         () async {
       final (state, clock) = await makeState();
       final habit = state.habits.first;
       clock.value = DateTime(2026, 9, 19, 20, 0);
       await state.saveCheckIn(habit: habit, mood: 3, craving: 2);
-      // Two days later, the user lapses and chooses to restart.
+      // Two days later the user lapses and restarts.
       clock.value = DateTime(2026, 9, 21, 10, 23);
+      await state.saveCheckIn(habit: habit, mood: 2, craving: 4);
       await state.recordLapse(habit, trigger: 'trigger_stress');
       await state.resetQuitDate(habit);
-      expect(state.habits.first.quitDate, DateTime(2026, 9, 21, 10, 23));
+
+      // Today's check-in is cleared → "check in today" shows again.
+      expect(state.checkInToday(habit.id!), isNull);
+      // The timer idles (not started) instead of ticking from 10:23.
+      expect(state.hasRunStarted(habit.id!), isFalse);
       expect(daysFree(state.habits.first, clock.value), 0);
-      // The timer restarts from 0:00:00, not "10:23" (midnight bug).
-      expect(state.habits.first.quitDate.hour, 10);
-      expect(state.habits.first.quitDate.minute, 23);
+
+      // The NEXT check-in starts the new run at that exact moment.
+      clock.value = DateTime(2026, 9, 21, 14, 0);
+      await state.saveCheckIn(habit: habit, mood: 3, craving: 2);
+      expect(state.hasRunStarted(habit.id!), isTrue);
+      expect(state.habits.first.quitDate, DateTime(2026, 9, 21, 14, 0));
+      expect(daysFree(state.habits.first, clock.value), 0);
     });
 
     test('relapse keep-going records the lapse and keeps the clock running',

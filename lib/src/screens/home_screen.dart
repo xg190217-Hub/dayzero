@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final activeHabit =
         state.habits[_habitIndex.clamp(0, state.habits.length - 1)];
     // Keep the seconds ticking only while a run is live.
-    final runLive = state.checkIns.any((c) => c.habitId == activeHabit.id) &&
+    final runLive = state.hasRunStarted(activeHabit.id!) &&
         !state.isRunBroken(activeHabit.id!);
     if (runLive && _ticker == null) {
       _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -160,11 +160,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // The run timer: starts at 0:00:00 at the FIRST check-in moment,
     // becomes 1天0时0分0秒 after 24h, and shows "已中断" when the last
     // check-in is more than 24h old.
-    final hasCheckIns = state.checkIns.any((c) => c.habitId == habit.id);
-    final broken = hasCheckIns && state.isRunBroken(habit.id!);
+    final started = state.hasRunStarted(habit.id!);
+    final broken = started && state.isRunBroken(habit.id!);
     final String hero;
     final String? caption;
-    if (!hasCheckIns) {
+    if (!started) {
       hero =
           '0${l10n.hourUnit} 0${l10n.minuteUnit} 0${l10n.secondUnit}';
       caption = l10n.timerNotStarted;

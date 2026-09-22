@@ -212,10 +212,18 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Restarts the counter from THIS exact moment (relapse handling).
-  /// Setting it to start-of-day made the timer show the local clock time
-  /// ("10时23分" = hours since midnight) instead of restarting at zero.
+  /// Relapse restart: clear today's check-in (the "check in today" button
+  /// must refresh) and idle the timer at 0:00:00. The next check-in starts
+  /// the new run at that exact moment.
   Future<void> resetQuitDate(Habit habit) async {
+    final todayKey = CheckIn.dateKey(now);
+    final todays = checkIns
+        .where((c) => c.habitId == habit.id && c.date == todayKey)
+        .toList();
+    for (final c in todays) {
+      await db.delete('check_ins', where: 'id = ?', whereArgs: [c.id]);
+      checkIns.removeWhere((x) => x.id == c.id);
+    }
     await updateHabit(habit.copyWith(quitDate: now));
   }
 
@@ -242,6 +250,17 @@ class AppState extends ChangeNotifier {
       if (last == null || c.at!.isAfter(last)) last = c.at;
     }
     return last;
+  }
+
+  /// A run has started once there is a check-in at or after the current
+  /// run's start time. After a relapse restart, today's check-in is cleared
+  /// and the timer idles at 0:00:00 until the next check-in.
+  bool hasRunStarted(int habitId) {
+    final habit = habits.where((h) => h.id == habitId).firstOrNull;
+    if (habit == null) return false;
+    final last = lastCheckInAtFor(habitId);
+    if (last == null) return false;
+    return !last.isBefore(habit.quitDate);
   }
 
   /// The run is broken when the last check-in is more than 24h old — the
