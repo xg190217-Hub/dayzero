@@ -167,10 +167,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!started) {
       hero =
           '0${l10n.hourUnit} 0${l10n.minuteUnit} 0${l10n.secondUnit}';
-      caption = l10n.timerNotStarted;
+      // Progress is never hidden: days free since the quit date belong in
+      // the hero card even before the first check-in starts the run timer.
+      caption = '$days ${l10n.homeDaysSince} · ${l10n.timerNotStarted}';
     } else if (broken) {
       hero = l10n.timerBroken;
-      caption = l10n.timerBrokenHint;
+      caption = '$days ${l10n.homeDaysSince} · ${l10n.timerBrokenHint}';
     } else {
       final elapsed = state.now.difference(habit.quitDate);
       final d = elapsed.inDays;

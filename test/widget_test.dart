@@ -102,7 +102,7 @@ void main() {
     // No check-ins yet → the run timer shows 0:00:00 and invites the
     // first check-in.
     expect(find.text('0h 0m 0s'), findsOneWidget);
-    expect(find.text('Check in to start your timer'), findsOneWidget);
+    expect(find.textContaining('Check in to start your timer'), findsOneWidget);
     // Money saved = 3 × 10.
     expect(find.textContaining('saved'), findsOneWidget);
   });
@@ -174,7 +174,7 @@ void main() {
     await dismissCelebration(tester);
 
     // Idle before any check-in.
-    expect(find.text('Check in to start your timer'), findsOneWidget);
+    expect(find.textContaining('Check in to start your timer'), findsOneWidget);
 
     // First check-in starts the run.
     await tester.tap(find.text('Check in today').first);
@@ -198,7 +198,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
     }
     // The idle hint is gone; the run is live.
-    expect(find.text('Check in to start your timer'), findsNothing);
+    expect(find.textContaining('Check in to start your timer'), findsNothing);
     expect(state.hasRunStarted(state.habits.first.id!), isTrue);
 
     // Relapse restart idles the timer again.
@@ -209,7 +209,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     expect(state.hasRunStarted(state.habits.first.id!), isFalse);
-    expect(find.text('Check in to start your timer'), findsOneWidget);
+    expect(find.textContaining('Check in to start your timer'), findsOneWidget);
 
     // Re-check-in starts the run again at that moment.
     await tester.tap(find.text('Check in today').first);
@@ -228,7 +228,7 @@ void main() {
         () => Future<void>.delayed(const Duration(milliseconds: 400)));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('Check in to start your timer'), findsNothing);
+    expect(find.textContaining('Check in to start your timer'), findsNothing);
     expect(state.hasRunStarted(state.habits.first.id!), isTrue);
     expect(state.habits.first.quitDate, DateTime(2026, 9, 22, 15, 30));
   });

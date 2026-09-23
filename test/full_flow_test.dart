@@ -188,7 +188,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // ---- Home: two habits, idle timer, money chip.
-    expect(find.text('Check in to start your timer'), findsOneWidget);
+    expect(find.textContaining('Check in to start your timer'), findsOneWidget);
     expect(find.text('Smoking'), findsOneWidget); // habit tab
     expect(find.text('Gaming'), findsOneWidget);
     expect(find.textContaining('saved'), findsOneWidget);
@@ -202,13 +202,13 @@ void main() {
     expect(state.checkIns.first.craving, 5);
     expect(state.checkIns.first.trigger, 'trigger_stress');
     expect(state.checkIns.first.note, 'Tough day');
-    expect(find.text('Check in to start your timer'), findsNothing);
+    expect(find.textContaining('Check in to start your timer'), findsNothing);
     expect(find.text("Edit today's check-in"), findsOneWidget);
 
     // ---- Habit tabs switch the counter (Gaming still idle).
     await tester.tap(find.text('Gaming'));
     await tester.pump();
-    expect(find.text('Check in to start your timer'), findsOneWidget);
+    expect(find.textContaining('Check in to start your timer'), findsOneWidget);
     await tester.tap(find.text('Smoking'));
     await tester.pump();
     expect(find.text("Edit today's check-in"), findsOneWidget);
@@ -353,8 +353,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     // The home list was scrolled to the relapse button — scroll back up
     // so the counter card is built again.
-    await reveal(tester, find.text('Check in to start your timer'), up: true);
-    expect(find.text('Check in to start your timer'), findsOneWidget);
+    await reveal(tester, find.textContaining('Check in to start your timer'), up: true);
+    expect(find.textContaining('Check in to start your timer'), findsOneWidget);
     expect(state.lapses.length, 1);
     expect(state.lapses.first.trigger, 'trigger_social');
     expect(state.habits.first.quitDate, now);
@@ -362,7 +362,7 @@ void main() {
     // ---- Quick re-check-in right after the restart (the snackbar that
     // used to eat the Save tap is gone) and let the snackbar expire.
     await saveCheckIn(tester);
-    expect(find.text('Check in to start your timer'), findsNothing);
+    expect(find.textContaining('Check in to start your timer'), findsNothing);
     expect(state.hasRunStarted(state.habits.first.id!), isTrue);
     await tester.pump(const Duration(seconds: 6));
     await tester.pump(const Duration(milliseconds: 600));
